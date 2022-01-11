@@ -5,6 +5,8 @@
 #include <sstream>
 #include "../build/_deps/glad-build/include/glad/glad.h"
 #include <GLFW/glfw3.h>
+#include "glm/glm.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 #define INFO_LOG_SIZE 1024
 
@@ -29,4 +31,7 @@ public:
   void use();
   std::string getError();
   unsigned int getID();
+
+  void bindUniformMat4f(const char *name, const glm::mat4 &mat);
+  void bindUniformVec4f(const char *name, const glm::vec4 &mat);
 };

@@ -11,12 +11,12 @@ void Camera::lookAt(glm::vec3 eye, glm::vec3 target, glm::vec3 up) {
   view = glm::lookAt(eye, target, up);
 }
 
-const float *Camera::getViewMatrixPtr() {
-  return glm::value_ptr(view);
+const glm::mat4 &Camera::getViewMat() {
+  return view;
 }
 
-const float *Camera::getProjectionMatrixPtr() {
-  return glm::value_ptr(projection);
+const glm::mat4 &Camera::getProjectionMat() {
+  return projection;
 }
 
 float Camera::getAspectRatio() {

@@ -2,6 +2,7 @@
 #include "glm/detail/func_trigonometric.hpp"
 #include "glm/detail/type_vec.hpp"
 #include "glm/gtc/quaternion.hpp"
+#include "model.h"
 #include "shader.h"
 #include <GLFW/glfw3.h>
 #include <iostream>
@@ -32,87 +33,72 @@ void Window::init() {
 }
 
 void Window::runLoop() {
-  Shader shader;
+  renderer.setCamera(&camera);
   if(!shader.load("tmpshader1.vshad", "tmpshader1.fshad")) {
     std::cout << "Could not load shaders\n";
     std::cout << shader.getError() << "\n";
     return;
   }
+  renderer.setShader(&shader);
 
-  float vertices[] = {
-    -0.5f, -0.5f, -0.5f, 0.2f,
-    0.5f, -0.5f, -0.5f, 0.2f,
-    0.5f,  0.5f, -0.5f, 0.2f,
-    0.5f,  0.5f, -0.5f, 0.2f,
-    -0.5f,  0.5f, -0.5f, 0.2f,
-    -0.5f, -0.5f, -0.5f, 0.2f,
+  std::vector<float> vertices = {
+    -0.5f, -0.5f, -0.5f,
+    0.5f, -0.5f, -0.5f,
+    0.5f,  0.5f, -0.5f,
+    0.5f,  0.5f, -0.5f,
+    -0.5f,  0.5f, -0.5f,
+    -0.5f, -0.5f, -0.5f,
 
-    -0.5f, -0.5f,  0.5f, 0.4f,
-    0.5f, -0.5f,  0.5f, 0.4f,
-    0.5f,  0.5f,  0.5f, 0.4f,
-    0.5f,  0.5f,  0.5f, 0.4f,
-    -0.5f,  0.5f,  0.5f, 0.4f,
-    -0.5f, -0.5f,  0.5f, 0.4f,
+    -0.5f, -0.5f,  0.5f,
+    0.5f, -0.5f,  0.5f,
+    0.5f,  0.5f,  0.5f,
+    0.5f,  0.5f,  0.5f,
+    -0.5f,  0.5f,  0.5f,
+    -0.5f, -0.5f,  0.5f,
 
-    -0.5f,  0.5f,  0.5f, 0.6f,
-    -0.5f,  0.5f, -0.5f, 0.6f,
-    -0.5f, -0.5f, -0.5f, 0.6f,
-    -0.5f, -0.5f, -0.5f, 0.6f,
-    -0.5f, -0.5f,  0.5f, 0.6f,
-    -0.5f,  0.5f,  0.5f, 0.6f,
+    -0.5f,  0.5f,  0.5f,
+    -0.5f,  0.5f, -0.5f,
+    -0.5f, -0.5f, -0.5f,
+    -0.5f, -0.5f, -0.5f,
+    -0.5f, -0.5f,  0.5f,
+    -0.5f,  0.5f,  0.5f,
 
-    0.5f,  0.5f,  0.5f, 0.8f,
-    0.5f,  0.5f, -0.5f, 0.8f,
-    0.5f, -0.5f, -0.5f, 0.8f,
-    0.5f, -0.5f, -0.5f, 0.8f,
-    0.5f, -0.5f,  0.5f, 0.8f,
-    0.5f,  0.5f,  0.5f, 0.8f,
+    0.5f,  0.5f,  0.5f,
+    0.5f,  0.5f, -0.5f,
+    0.5f, -0.5f, -0.5f,
+    0.5f, -0.5f, -0.5f,
+    0.5f, -0.5f,  0.5f,
+    0.5f,  0.5f,  0.5f,
 
-    -0.5f, -0.5f, -0.5f, 1.0f,
-    0.5f, -0.5f, -0.5f, 1.0f,
-    0.5f, -0.5f,  0.5f, 1.0f,
-     0.5f, -0.5f,  0.5f, 1.0f,
-     -0.5f, -0.5f,  0.5f, 1.0f,
-     -0.5f, -0.5f, -0.5f, 1.0f,
+    -0.5f, -0.5f, -0.5f,
+    0.5f, -0.5f, -0.5f,
+    0.5f, -0.5f,  0.5f,
+     0.5f, -0.5f,  0.5f,
+     -0.5f, -0.5f,  0.5f,
+     -0.5f, -0.5f, -0.5f,
 
-     -0.5f,  0.5f, -0.5f, 0.3f,
-     0.5f,  0.5f, -0.5f, 0.3f,
-     0.5f,  0.5f,  0.5f, 0.3f,
-     0.5f,  0.5f,  0.5f, 0.3f,
-     -0.5f,  0.5f,  0.5f, 0.3f,
-     -0.5f,  0.5f, -0.5f, 0.3f,
+     -0.5f,  0.5f, -0.5f,
+     0.5f,  0.5f, -0.5f,
+     0.5f,  0.5f,  0.5f,
+     0.5f,  0.5f,  0.5f,
+     -0.5f,  0.5f,  0.5f,
+     -0.5f,  0.5f, -0.5f,
   };
+
   glm::mat4 cubes[4] = {
     glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, -1.0f, 0.0f)),
     glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, -1.0f, 0.0f)),
     glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, 1.0f, 0.0f)),
     glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 0.0f))
   };
-  // creating
-  unsigned int VAO, VBO, EBO;
-  glGenVertexArrays(1, &VAO);
-  glGenBuffers(1, &VBO);
-  // glGenBuffers(1, &EBO);
-  // binding
-  glBindVertexArray(VAO);
-  // setting data for VBO
-  glBindBuffer(GL_ARRAY_BUFFER, VBO);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-  // setting data for EBO
-  // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-  // glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-  // setting data for shader
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void *)0);
-  glEnableVertexAttribArray(0);
-  glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void *)(3 * sizeof(float)));
-  glEnableVertexAttribArray(1);
-  // unbinding
-  glBindBuffer(GL_ARRAY_BUFFER, 0);
-  glBindVertexArray(0);
+
+  Model model(vertices);
 
   float lastTime;
   float time = glfwGetTime();
+  int frames;
   while(!glfwWindowShouldClose(glWindow)) {
+    frames++;
     lastTime = time;
     float time = glfwGetTime();
     float dt = lastTime - time;
@@ -122,43 +108,17 @@ void Window::runLoop() {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
-    glBindVertexArray(VAO);
-    shader.use();
-    unsigned int shaderID = shader.getID();
-    glm::mat4 model = glm::mat4(1.0f);
-    float angle = glm::radians(glfwGetTime() * 180.0f);
-    model = glm::rotate(model, angle, glm::vec3(1.0f, 1.0f, 1.0f));
-    unsigned int viewLoc = glGetUniformLocation(shaderID, "view");
-    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, camera.getViewMatrixPtr());
-    unsigned int projLoc = glGetUniformLocation(shaderID, "projection");
-    glUniformMatrix4fv(projLoc, 1, GL_FALSE, camera.getProjectionMatrixPtr());
-    unsigned int modelLoc = glGetUniformLocation(shaderID, "model");
-
-    // camera
-    float k = time;
-    float r = 10.0f;
-    glm::vec3 cameraPos = glm::vec3(sin(k)*r, 0.0f, cos(k) * r);
-    glm::vec3 target = glm::vec3(0.0f, 0.0f, 0.0f);
-    glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
-    camera.lookAt(cameraPos, target, up);
-
-
     for(int i = 0; i < 4; i++ ) {
       if(isMoving)
         cubes[i] = glm::rotate(cubes[i], glm::radians((float)i*5.0f / 3.0f), glm::vec3(1.0f, 1.0f, 0.0f));
-      glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(cubes[i]));
+      renderer.render(&model, cubes[i]);
       glDrawArrays(GL_TRIANGLES, 0, 36);
     }
-    glBindVertexArray(0);
 
     glfwSwapBuffers(glWindow);
     glfwPollEvents();
   }
-
-  glDeleteVertexArrays(1, &VAO);
-  glDeleteBuffers(1, &VBO);
-  glDeleteBuffers(1, &EBO);
+  std::cout << (float)frames/glfwGetTime() << std::endl;
 }
 
 void Window::initGLFW() {
@@ -201,6 +161,8 @@ void Window::setUpGLFW() {
 }
 
 void Window::processInput(float dt) {
+  if(glfwGetKey(glWindow, GLFW_KEY_Q) == GLFW_PRESS)
+    glfwSetWindowShouldClose(glWindow, GLFW_TRUE);
   if(glfwGetKey(glWindow, GLFW_KEY_W) == GLFW_PRESS)
     cameraPos -= cameraDirection * cameraSpeed * dt;
   else if (glfwGetKey(glWindow, GLFW_KEY_S) == GLFW_PRESS)

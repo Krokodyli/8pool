@@ -47,14 +47,20 @@ endif()
 
 project(TrainSceneOpenGL)
 set(CMAKE_BUILD_TYPE Debug)
-add_executable(game
+add_executable(
+  game
 	src/main.cpp
-  	src/window.cpp
+  src/window.cpp
 	src/shader.cpp
-  	src/camera.cpp
-	)
+  src/camera.cpp
+  src/model.cpp
+  src/renderer.cpp
+)
+
+get_filename_component(ROOT_DIR ${CMAKE_BINARY_DIR} DIRECTORY)
+file(MAKE_DIRECTORY ${ROOT_DIR}/bin)
+message(STATUS "path to root dir: ${ROOT_DIR}")
 
 configure_file(src/tmpshader1.vshad . COPYONLY)
 configure_file(src/tmpshader1.fshad . COPYONLY)
-
 target_link_libraries(game glfw linmath glad)

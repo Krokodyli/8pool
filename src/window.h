@@ -5,6 +5,8 @@
 #include <stdexcept>
 #include "camera.h"
 #include "../build/_deps/glad-build/include/glad/glad.h"
+#include "renderer.h"
+#include "shader.h"
 #include <GLFW/glfw3.h>
 
 class Window {
@@ -14,6 +16,9 @@ private:
   GLFWwindow *glWindow;
 
   Camera camera;
+  Shader shader;
+  Renderer renderer;
+
   double mouseX, mouseY;
   float cameraSpeed = 0.05f;
   glm::vec3 cameraPos;

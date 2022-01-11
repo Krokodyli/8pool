@@ -1,5 +1,6 @@
 #include "shader.h"
 #include "glm/glm.hpp"
+#include "glm/gtc/type_ptr.hpp"
 #include <stdexcept>
 
 Shader::Shader() {
@@ -56,6 +57,16 @@ std::string Shader::getError() {
 
 unsigned int Shader::getID() {
   return id;
+}
+
+void Shader::bindUniformMat4f(const char *name, const glm::mat4 &mat) {
+  unsigned int location = glGetUniformLocation(id, name);
+  glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat));
+}
+
+void Shader::bindUniformVec4f(const char *name, const glm::vec4 &vec) {
+  unsigned int location = glGetUniformLocation(id, name);
+  glUniform4f(location, vec.x, vec.y, vec.z, vec.w);
 }
 
 bool Shader::linkShaders(unsigned int vertexShader, unsigned int fragmentShader,

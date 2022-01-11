@@ -19,9 +19,9 @@ public:
 
   void lookAt(glm::vec3 eye, glm::vec3 target, glm::vec3 up);
 
-  const float *getViewMatrixPtr();
+  const glm::mat4 &getViewMat();
 
-  const float *getProjectionMatrixPtr();
+  const glm::mat4 &getProjectionMat();
 
   float getAspectRatio();
   void setAspectRatio(float newAspectRatio);
