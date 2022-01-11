@@ -9,6 +9,7 @@ Shader::Shader() {
 }
 
 Shader::~Shader() {
+  glUseProgram(0);
   if(isLoaded)
     glDeleteProgram(id);
 }
@@ -62,6 +63,11 @@ unsigned int Shader::getID() {
 void Shader::bindUniformMat4f(const char *name, const glm::mat4 &mat) {
   unsigned int location = glGetUniformLocation(id, name);
   glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat));
+}
+
+void Shader::bindUniformVec3f(const char *name, const glm::vec3 &vec) {
+  unsigned int location = glGetUniformLocation(id, name);
+  glUniform3f(location, vec.x, vec.y, vec.z);
 }
 
 void Shader::bindUniformVec4f(const char *name, const glm::vec4 &vec) {

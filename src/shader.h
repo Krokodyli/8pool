@@ -33,5 +33,6 @@ public:
   unsigned int getID();
 
   void bindUniformMat4f(const char *name, const glm::mat4 &mat);
+  void bindUniformVec3f(const char *name, const glm::vec3 &mat);
   void bindUniformVec4f(const char *name, const glm::vec4 &mat);
 };

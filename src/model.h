@@ -6,12 +6,14 @@
 
 class Model {
 private:
-  unsigned int vaoID, vboID, eboID;
+  unsigned int vaoID, vbo1ID, vbo2ID;
   unsigned int triangleCount;
 
-  void createVAO(const std::vector<float> &vertices);
+  void createVAO(const std::vector<float> &vertices,
+                 const std::vector<float> &normals);
 public:
-  Model(const std::vector<float> &vertices);
+  Model(const std::vector<float> &vertices,
+        const std::vector<float> &normals);
   ~Model();
 
   void bind();

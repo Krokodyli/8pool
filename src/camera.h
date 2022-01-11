@@ -13,6 +13,7 @@ private:
   float aspectRatio;
   glm::mat4 view;
   glm::mat4 projection;
+  glm::vec3 position;
 
 public:
   Camera(float fov, float aspectRatio);
@@ -25,4 +26,6 @@ public:
 
   float getAspectRatio();
   void setAspectRatio(float newAspectRatio);
+
+  const glm::vec3 &getPosition();
 };
