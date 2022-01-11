@@ -5,12 +5,15 @@
 #include <stdexcept>
 #include "camera.h"
 #include "../build/_deps/glad-build/include/glad/glad.h"
+#include "glfwInstance.h"
 #include "renderer.h"
 #include "shader.h"
 #include <GLFW/glfw3.h>
 
 class Window {
 private:
+  GLFWInstance glfwInstance;
+
   int width, height;
   std::string title;
   GLFWwindow *glWindow;
@@ -26,7 +29,6 @@ private:
   float yaw, pitch;
   bool isMoving = true, wasPressed = false;
 
-  void initGLFW();
   void createWindow();
   void loadGlad();
   void setUpGLFW();
@@ -34,7 +36,7 @@ private:
   void processInput(float dt);
 public:
   Window(int width, int height, std::string title);
-  ~Window();
+
   void init();
   void runLoop();
 };

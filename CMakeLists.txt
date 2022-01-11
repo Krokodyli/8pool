@@ -55,6 +55,7 @@ add_executable(
   src/camera.cpp
   src/model.cpp
   src/renderer.cpp
+  src/glfwInstance.cpp
 )
 
 get_filename_component(ROOT_DIR ${CMAKE_BINARY_DIR} DIRECTORY)

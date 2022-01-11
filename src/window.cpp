@@ -20,12 +20,7 @@ Window::Window(int width, int height, std::string title)
   pitch = 0.0f;
 }
 
-Window::~Window() {
-  glfwTerminate();
-}
-
 void Window::init() {
-  initGLFW();
   createWindow();
   loadGlad();
   setUpOpenGL();
@@ -126,11 +121,6 @@ void Window::runLoop() {
     glfwPollEvents();
   }
   std::cout << (float)frames/glfwGetTime() << std::endl;
-}
-
-void Window::initGLFW() {
-  if(!glfwInit())
-    throw std::runtime_error("Could not init GLFW");
 }
 
 void Window::createWindow() {
