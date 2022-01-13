@@ -1,4 +1,5 @@
 #include "model.h"
+#include <GL/glext.h>
 
 Model::Model(const std::vector<float> &vertices,
              const std::vector<float> &normals) {
@@ -7,23 +8,23 @@ Model::Model(const std::vector<float> &vertices,
 }
 
 Model::~Model() {
-  glDeleteVertexArrays(1, &vaoID);
-  glDeleteBuffers(1, &vbo1ID);
-  glDeleteBuffers(1, &vbo2ID);
+  glDeleteVertexArrays(1, &modelVAO);
+  glDeleteBuffers(1, &verticesVBO);
+  glDeleteBuffers(1, &normalsVBO);
 }
 
 void Model::bind() {
-  glBindVertexArray(vaoID);
+  glBindVertexArray(modelVAO);
 }
 
 void Model::createVAO(const std::vector<float> &vertices,
                       const std::vector<float> &normals) {
   // generate and bind new VAO
-  glGenVertexArrays(1, &vaoID);
-  glBindVertexArray(vaoID);
+  glGenVertexArrays(1, &modelVAO);
+  glBindVertexArray(modelVAO);
   // generate and bind new VBO for vertices
-  glGenBuffers(1, &vbo1ID);
-  glBindBuffer(GL_ARRAY_BUFFER, vbo1ID);
+  glGenBuffers(1, &verticesVBO);
+  glBindBuffer(GL_ARRAY_BUFFER, verticesVBO);
   // load data to the vertices VBO
   glBufferData(GL_ARRAY_BUFFER, vertices.size()*sizeof(float),
                &vertices[0], GL_STATIC_DRAW);
@@ -32,9 +33,9 @@ void Model::createVAO(const std::vector<float> &vertices,
                         (void*)0);
   glEnableVertexAttribArray(0);
   // generate and bind new VBO for normals
-  glGenBuffers(1, &vbo2ID);
+  glGenBuffers(1, &normalsVBO);
   // load data to the normals VBO
-  glBindBuffer(GL_ARRAY_BUFFER, vbo2ID);
+  glBindBuffer(GL_ARRAY_BUFFER, normalsVBO);
   glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(float), &normals[0],
                GL_STATIC_DRAW);
   // setting VAO normals attribute

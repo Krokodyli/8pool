@@ -6,7 +6,11 @@
 
 class Model {
 private:
-  unsigned int vaoID, vbo1ID, vbo2ID;
+  unsigned int modelVAO;
+  unsigned int verticesVBO;
+  unsigned int normalsVBO;
+  unsigned int indicesEBO;
+
   unsigned int triangleCount;
 
   void createVAO(const std::vector<float> &vertices,

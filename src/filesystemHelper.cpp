@@ -7,11 +7,11 @@ std::filesystem::path FilesystemHelper::fullPathToResourceDir = "";
 
 void FilesystemHelper::init(char *argv0) {
   std::filesystem::path execPath = argv0;
-  std::filesystem::path cwd = std::filesystem::current_path();
-  cwd /= execPath.parent_path();
-  cwd = std::filesystem::weakly_canonical(cwd);
-  fullPathToResourceDir = cwd / resourcesPath;
-  shadersPath = fullPathToResourceDir / shadersPath;
+  std::filesystem::path path = std::filesystem::current_path();
+  path /= execPath.parent_path();
+  path = std::filesystem::weakly_canonical(path);
+  fullPathToResourceDir = path / resourcesPath;
+  shadersPath = path / shadersPath;
 }
 
 std::string FilesystemHelper::getResourcePath(ResourceType type,

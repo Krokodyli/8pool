@@ -55,7 +55,7 @@ project(TrainSceneOpenGL)
 get_filename_component(ROOT_DIR ${CMAKE_BINARY_DIR} DIRECTORY)
 file(MAKE_DIRECTORY ${ROOT_DIR}/bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${ROOT_DIR}/bin)
-add_custom_target(resources ALL COMMAND ${CMAKE_COMMAND} -E create_symlink ${ROOT_DIR}/resources ${ROOT_DIR}/bin/resources)
+add_custom_target(resources ALL COMMAND ${CMAKE_COMMAND} -E create_symlink ${ROOT_DIR}/src/shaders ${ROOT_DIR}/bin/shaders)
 
 set(CMAKE_BUILD_TYPE Debug)
 add_executable(
