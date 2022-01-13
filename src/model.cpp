@@ -1,5 +1,4 @@
 #include "model.h"
-#include <GL/glext.h>
 
 Model::Model(const std::vector<float> &vertices,
              const std::vector<float> &normals) {

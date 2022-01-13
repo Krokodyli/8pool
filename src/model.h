@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../build/_deps/glad-build/include/glad/glad.h"
-#include <GLFW/glfw3.h>
+#include "glad.h"
+#include "glfw.h"
 #include <vector>
 
 class Model {

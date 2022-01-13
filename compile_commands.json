@@ -1,0 +1,22 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-Wall",
+      "-Werror",
+    ],
+    "directory": "/home/krokodyli/Programs/Cpp/TriangularMeshHoleFilling",
+    "file": "src/*.h"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-Wall",
+      "-Werror"
+    ],
+    "directory": "/home/krokodyli/Programs/Cpp/TriangularMeshHoleFilling",
+    "file": "src/*.cpp"
+  },
+]

@@ -1,6 +1,6 @@
 #include "renderer.h"
-#include "glm/gtc/matrix_transform.hpp"
 #include <cstdint>
+#include <iostream>
 
 Renderer::Renderer() {
   boundModel = nullptr;
@@ -9,15 +9,37 @@ Renderer::Renderer() {
 }
 
 void Renderer::render(Model *model, const glm::mat4 &transformation) {
+  float time = glfwGetTime();
+  glm::mat4 lightTrans =
+    glm::translate(glm::mat4(1.0f), glm::vec3(3*cos(time), 0.0f, 3*sin(time)));
+
   bindModelIfNecessary(model);
   shader->bindUniformMat4f("model", transformation);
   shader->bindUniformMat4f("view", camera->getViewMat());
   shader->bindUniformMat4f("projection", camera->getProjectionMat());
-  shader->bindUniformVec3f("color", glm::vec3(0.0f, 0.5f, 0.5f));
+  shader->bindUniformVec3f("color", glm::vec3(1.0f, 1.0f, 1.0f));
   shader->bindUniformVec3f("viewPos", camera->getPosition());
-  glm::mat4 translate = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 2.0f, 0.0f));
-  glm::vec3 lightPos = glm::vec3(translate * glm::vec4(camera->getPosition(), 3.0f));
-  shader->bindUniformVec3f("lightPos", glm::vec3(3.0f, 0.0f, 0.0f));
+
+  glm::vec3 lightPos = glm::vec3(lightTrans * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+  shader->bindUniformVec3f("lightPos", lightPos);
+
+  glDrawArrays(GL_TRIANGLES, 0, model->getTriangleCount());
+}
+
+void Renderer::renderLight(Model *model) {
+  float time = glfwGetTime();
+  glm::mat4 lightTrans = glm::translate(
+      glm::mat4(1.0f), glm::vec3(3 * cos(time), 0.0f, 3 * sin(time)));
+  lightTrans = glm::scale(lightTrans, glm::vec3(0.5f, 0.5f, 0.5f));
+
+  bindModelIfNecessary(model);
+  shader->bindUniformMat4f("model", lightTrans);
+  shader->bindUniformMat4f("view", camera->getViewMat());
+  shader->bindUniformMat4f("projection", camera->getProjectionMat());
+  shader->bindUniformVec3f("color", glm::vec3(1.0f, 1.0f, 0.3f));
+  shader->bindUniformVec3f("viewPos", camera->getPosition());
+  shader->bindUniformVec3f("lightPos", glm::vec3(-1.0f, 0.0f, 0.0f));
+
   glDrawArrays(GL_TRIANGLES, 0, model->getTriangleCount());
 }
 

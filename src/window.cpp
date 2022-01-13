@@ -1,16 +1,4 @@
 #include "window.h"
-#include "glm/detail/func_trigonometric.hpp"
-#include "glm/detail/type_vec.hpp"
-#include "glm/gtc/quaternion.hpp"
-#include "model.h"
-#include "shader.h"
-#include <GLFW/glfw3.h>
-#include <iostream>
-#include <ostream>
-#include <stdexcept>
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
-#include "glm/gtc/type_ptr.hpp"
 
 Window::Window(int width, int height, std::string title)
     : width(width), height(height), title(title),
@@ -99,7 +87,7 @@ void Window::runLoop() {
 
   float lastTime;
   float time = glfwGetTime();
-  int frames;
+  int frames = 0;
   while(!glfwWindowShouldClose(glWindow)) {
     frames++;
     lastTime = time;
@@ -116,6 +104,8 @@ void Window::runLoop() {
         cubes[i] = glm::rotate(cubes[i], glm::radians((float)i*5.0f / 3.0f), glm::vec3(1.0f, 1.0f, 0.0f));
       renderer.render(&model, cubes[i]);
     }
+
+    renderer.renderLight(&model);
 
     glfwSwapBuffers(glWindow);
     glfwPollEvents();

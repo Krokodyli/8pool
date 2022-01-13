@@ -4,11 +4,13 @@
 #include <exception>
 #include <stdexcept>
 #include "camera.h"
-#include "../build/_deps/glad-build/include/glad/glad.h"
+#include "glad.h"
 #include "glfwInstance.h"
 #include "renderer.h"
 #include "shader.h"
-#include <GLFW/glfw3.h>
+#include "glfw.h"
+#include <iostream>
+#include <filesystem>
 
 class Window {
 private:

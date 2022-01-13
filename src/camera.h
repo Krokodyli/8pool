@@ -1,9 +1,6 @@
 #pragma once
 
-#include "glm/detail/func_trigonometric.hpp"
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
-#include "glm/gtc/type_ptr.hpp"
+#include "glm.h"
 
 class Camera {
 private:

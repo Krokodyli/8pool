@@ -1,7 +1,4 @@
 #include "shader.h"
-#include "glm/glm.hpp"
-#include "glm/gtc/type_ptr.hpp"
-#include <stdexcept>
 
 Shader::Shader() {
   errorLog[0] = 0;

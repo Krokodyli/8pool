@@ -1,6 +1,7 @@
 #pragma once
 
-#include <GLFW/glfw3.h>
+#include "glfw.h"
+#include <stdexcept>
 
 // class that handles GLFW initialization/cleanup
 class GLFWInstance {

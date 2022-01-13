@@ -1,6 +1,4 @@
 #include "glfwInstance.h"
-#include <GLFW/glfw3.h>
-#include <stdexcept>
 
 GLFWInstance::GLFWInstance() {
   if (!glfwInit())
