@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.11)
 
+##### Fetch needed libraries ##################################################
+
 include(FetchContent)
 
 FetchContent_Declare(
@@ -45,7 +47,16 @@ if(NOT glad_POPULATED)
   add_subdirectory(${glad_SOURCE_DIR} ${glad_BINARY_DIR})
 endif()
 
+###############################################################################
+
 project(TrainSceneOpenGL)
+
+# set binary file output and create symlink to resources
+get_filename_component(ROOT_DIR ${CMAKE_BINARY_DIR} DIRECTORY)
+file(MAKE_DIRECTORY ${ROOT_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${ROOT_DIR}/bin)
+add_custom_target(resources ALL COMMAND ${CMAKE_COMMAND} -E create_symlink ${ROOT_DIR}/resources ${ROOT_DIR}/bin/resources)
+
 set(CMAKE_BUILD_TYPE Debug)
 add_executable(
   game
@@ -56,12 +67,8 @@ add_executable(
   src/model.cpp
   src/renderer.cpp
   src/glfwInstance.cpp
+  src/filesystemHelper.cpp
 )
 
-get_filename_component(ROOT_DIR ${CMAKE_BINARY_DIR} DIRECTORY)
-file(MAKE_DIRECTORY ${ROOT_DIR}/bin)
-
-configure_file(src/tmpshader1.vshad . COPYONLY)
-configure_file(src/tmpshader1.fshad . COPYONLY)
 target_link_libraries(game glfw glm glad)
 target_include_directories(game INTERFACE ${glm_SOURCE_DIR})

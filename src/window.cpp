@@ -1,4 +1,5 @@
 #include "window.h"
+#include "filesystemHelper.h"
 
 Window::Window(int width, int height, std::string title)
     : width(width), height(height), title(title),
@@ -17,7 +18,13 @@ void Window::init() {
 
 void Window::runLoop() {
   renderer.setCamera(&camera);
-  if(!shader.load("tmpshader1.vshad", "tmpshader1.fshad")) {
+  auto vshadPath = FilesystemHelper::getResourcePath(ResourceType::shader,
+                                                     "tmpshader1.vshad");
+  auto fshadPath = FilesystemHelper::getResourcePath(ResourceType::shader,
+                                                     "tmpshader1.fshad");
+  std::cout << vshadPath << "\n";
+  std::cout << fshadPath << "\n";
+  if(!shader.load(vshadPath, fshadPath)) {
     std::cout << "Could not load shaders\n";
     std::cout << shader.getError() << "\n";
     return;

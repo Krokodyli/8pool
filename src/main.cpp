@@ -1,9 +1,11 @@
 #include <iostream>
 #include <exception>
 #include <stdexcept>
+#include "filesystemHelper.h"
 #include "window.h"
 
-int main() {
+int main(int argc, char** argv) {
+  FilesystemHelper::init(argv[0]);
   Window window(800, 600, "My window");
   try {
   window.init();
