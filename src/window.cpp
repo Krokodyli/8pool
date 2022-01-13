@@ -18,18 +18,7 @@ void Window::init() {
 
 void Window::runLoop() {
   renderer.setCamera(&camera);
-  auto vshadPath = FilesystemHelper::getResourcePath(ResourceType::shader,
-                                                     "tmpshader1.vshad");
-  auto fshadPath = FilesystemHelper::getResourcePath(ResourceType::shader,
-                                                     "tmpshader1.fshad");
-  std::cout << vshadPath << "\n";
-  std::cout << fshadPath << "\n";
-  if(!shader.load(vshadPath, fshadPath)) {
-    std::cout << "Could not load shaders\n";
-    std::cout << shader.getError() << "\n";
-    return;
-  }
-  renderer.setShader(&shader);
+  shaderManager.load({"basic","basic2"}, renderer);
 
   float cubeModelData[] = {
         -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
@@ -167,6 +156,9 @@ void Window::processInput(float dt) {
     cameraPos -= glm::normalize(
                      glm::cross(cameraDirection, glm::vec3(0.0f, 1.0f, 0.0f))) *
       cameraSpeed * dt / 2.0f;
+
+  if(glfwGetKey(glWindow, GLFW_KEY_F) == GLFW_PRESS)
+    shaderManager.toggleShader(renderer);
 
   if(glfwGetKey(glWindow, GLFW_KEY_SPACE)) {
     if(!wasPressed) {

@@ -68,6 +68,8 @@ add_executable(
   src/renderer.cpp
   src/glfwInstance.cpp
   src/filesystemHelper.cpp
+  src/logger/logger.cpp
+  src/shaderManager.cpp
 )
 
 target_link_libraries(game glfw glm glad)

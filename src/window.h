@@ -9,8 +9,8 @@
 #include "renderer.h"
 #include "shader.h"
 #include "glfw.h"
+#include "shaderManager.h"
 #include <iostream>
-#include <filesystem>
 
 class Window {
 private:
@@ -21,7 +21,7 @@ private:
   GLFWwindow *glWindow;
 
   Camera camera;
-  Shader shader;
+  ShaderManager shaderManager;
   Renderer renderer;
 
   double mouseX, mouseY;
