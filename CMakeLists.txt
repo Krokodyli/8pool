@@ -71,6 +71,7 @@ add_executable(
   src/logger/logger.cpp
   src/shaderManager.cpp
   src/inputManager.cpp
+  src/meshes/cuboidMesh.cpp
 )
 
 target_link_libraries(game glfw glm glad)

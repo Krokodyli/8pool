@@ -3,12 +3,12 @@
 #include <iostream>
 
 Renderer::Renderer() {
-  boundModel = nullptr;
+  boundModel = -1;
   camera = nullptr;
   shader = nullptr;
 }
 
-void Renderer::render(Model *model, const glm::mat4 &transformation) {
+void Renderer::render(Model &model, const glm::mat4 &transformation) {
   float time = glfwGetTime();
   glm::mat4 lightTrans =
     glm::translate(glm::mat4(1.0f), glm::vec3(3*cos(time), 0.0f, 3*sin(time)));
@@ -23,14 +23,14 @@ void Renderer::render(Model *model, const glm::mat4 &transformation) {
   glm::vec3 lightPos = glm::vec3(lightTrans * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
   shader->bindUniformVec3f("lightPos", lightPos);
 
-  if(model->hasIndexedVertices())
-    glDrawElements(GL_TRIANGLES, model->getTriangleCount() * 3,
+  if(model.hasIndexedVertices())
+    glDrawElements(GL_TRIANGLES, model.getTriangleCount() * 3,
                    GL_UNSIGNED_INT, 0);
   else
-      glDrawArrays(GL_TRIANGLES, 0, model->getTriangleCount());
+      glDrawArrays(GL_TRIANGLES, 0, model.getTriangleCount());
 }
 
-void Renderer::renderLight(Model *model) {
+void Renderer::renderLight(Model &model) {
   float time = glfwGetTime();
   glm::mat4 lightTrans = glm::translate(
       glm::mat4(1.0f), glm::vec3(3 * cos(time), 0.0f, 3 * sin(time)));
@@ -44,7 +44,7 @@ void Renderer::renderLight(Model *model) {
   shader->bindUniformVec3f("viewPos", camera->getPosition());
   shader->bindUniformVec3f("lightPos", glm::vec3(-1.0f, 0.0f, 0.0f));
 
-  glDrawArrays(GL_TRIANGLES, 0, model->getTriangleCount());
+  glDrawArrays(GL_TRIANGLES, 0, model.getTriangleCount());
 }
 
 Shader *Renderer::getShader() { return shader; }
@@ -62,9 +62,10 @@ Camera *Renderer::getCamera() {
   return camera;
 }
 
-void Renderer::bindModelIfNecessary(Model *model) {
-  if (boundModel != model) {
-    boundModel = model;
-    boundModel->bind();
+void Renderer::bindModelIfNecessary(Model &model) {
+  unsigned int modelID = model.getID();
+  if (boundModel != modelID) {
+    boundModel = modelID;
+    model.bind();
   }
 }

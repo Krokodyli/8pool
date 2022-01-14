@@ -2,6 +2,7 @@
 
 #include "camera.h"
 #include "glad.h"
+#include "meshes/cuboidMesh.h"
 #include "glfw.h"
 #include "glfwInstance.h"
 #include "inputManager.h"

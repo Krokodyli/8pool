@@ -1,18 +1,16 @@
 #include "model.h"
 #include <GL/glext.h>
 
-Model::Model(const std::vector<float> &vertices,
-             const std::vector<float> &normals) {
+Model::Model(std::vector<float> &vertices, std::vector<float> &normals) {
   triangleCount = vertices.size() / 3;
-  indicesEBO = -1;
+  areVerticesIndexed = false;
   createVAO(vertices, normals);
 }
 
-Model::Model(const std::vector<float> &vertices,
-             const std::vector<float> &normals,
-             const std::vector<unsigned int> &indices) {
+Model::Model(std::vector<float> &vertices, std::vector<float> &normals,
+             std::vector<unsigned int> &indices) {
   triangleCount = vertices.size() / 3;
-  indicesEBO = -1;
+  areVerticesIndexed = true;
   createIndexedVAO(vertices, normals, indices);
 }
 
@@ -20,24 +18,25 @@ Model::~Model() {
   glDeleteVertexArrays(1, &modelVAO);
   glDeleteBuffers(1, &verticesVBO);
   glDeleteBuffers(1, &normalsVBO);
-  if (indicesEBO >= 0)
+  if (areVerticesIndexed)
     glDeleteBuffers(1, &indicesEBO);
 }
 
+unsigned int Model::getID() { return modelVAO; }
 void Model::bind() { glBindVertexArray(modelVAO); }
 void Model::unbind() { glBindVertexArray(0); }
 
-void Model::createVAO(const std::vector<float> &vertices,
-                      const std::vector<float> &normals) {
+void Model::createVAO(std::vector<float> &vertices,
+                      std::vector<float> &normals) {
   generateAndBindVertexArray();
   generateAndBindVertexBuffer(vertices);
   generateAndBindNormalsBuffer(normals);
   unbind();
 }
 
-void Model::createIndexedVAO(const std::vector<float> &vertices,
-                             const std::vector<float> &normals,
-                             const std::vector<unsigned int> &indices) {
+void Model::createIndexedVAO(std::vector<float> &vertices,
+                             std::vector<float> &normals,
+                             std::vector<unsigned int> &indices) {
   generateAndBindVertexArray();
   generateAndBindVertexBuffer(vertices);
   generateAndBindNormalsBuffer(normals);
@@ -46,14 +45,14 @@ void Model::createIndexedVAO(const std::vector<float> &vertices,
 }
 
 unsigned int Model::getTriangleCount() { return triangleCount; }
-bool Model::hasIndexedVertices() { return indicesEBO >= 0; }
+bool Model::hasIndexedVertices() { return areVerticesIndexed; }
 
 void Model::generateAndBindVertexArray() {
   glGenVertexArrays(1, &modelVAO);
   glBindVertexArray(modelVAO);
 }
 
-void Model::generateAndBindVertexBuffer(const std::vector<float> &vertices) {
+void Model::generateAndBindVertexBuffer(std::vector<float> &vertices) {
   // generate and bind
   glGenBuffers(1, &verticesVBO);
   glBindBuffer(GL_ARRAY_BUFFER, verticesVBO);
@@ -65,7 +64,7 @@ void Model::generateAndBindVertexBuffer(const std::vector<float> &vertices) {
   glEnableVertexAttribArray(0);
 }
 
-void Model::generateAndBindNormalsBuffer(const std::vector<float> &normals) {
+void Model::generateAndBindNormalsBuffer(std::vector<float> &normals) {
   // generate and bind
   glGenBuffers(1, &normalsVBO);
   glBindBuffer(GL_ARRAY_BUFFER, normalsVBO);
@@ -77,8 +76,7 @@ void Model::generateAndBindNormalsBuffer(const std::vector<float> &normals) {
   glEnableVertexAttribArray(1);
 }
 
-void Model::generateAndBindIndicesBuffer(
-    const std::vector<unsigned int> &indices) {
+void Model::generateAndBindIndicesBuffer(std::vector<unsigned int> &indices) {
   // generate and bind
   glGenBuffers(1, &indicesEBO);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesEBO);

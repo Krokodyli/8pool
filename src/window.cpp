@@ -20,84 +20,6 @@ void Window::runLoop() {
   renderer.setCamera(&camera);
   shaderManager.load({"basic", "basic2"}, renderer);
   registerKeys();
-  /*
-  float cubeModelData[] = {
-        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-         0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-
-        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-         0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-
-        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-
-         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-         0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-
-        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-         0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-
-        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
-  }; */
-
-  float verticesData[] = {
-      -0.5f, 0.5f,  -0.5f, 0.0f, 0.0f, 0.0f, // Point A 0
-      -0.5f, 0.5f,  0.5f,  0.0f, 0.0f, 1.0f, // Point B 1
-      0.5f,  0.5f,  -0.5f, 0.0f, 1.0f, 0.0f, // Point C 2
-      0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 1.0f, // Point D 3
-
-      -0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, // Point E 4
-      -0.5f, -0.5f, 0.5f,  1.0f, 0.0f, 1.0f, // Point F 5
-      0.5f,  -0.5f, -0.5f, 1.0f, 1.0f, 0.0f, // Point G 6
-      0.5f,  -0.5f, 0.5f,  1.0f, 1.0f, 1.0f  // Point H 7
-  };
-
-  std::vector<unsigned int> indices = {/*Above ABC,BCD*/
-                                       0, 1, 2, 1, 2, 3,
-                                       /*Following EFG,FGH*/
-                                       4, 5, 6, 5, 6, 7,
-                                       /*Left ABF,AEF*/
-                                       0, 1, 5, 0, 4, 5,
-                                       /*Right side CDH,CGH*/
-                                       2, 3, 7, 2, 6, 7,
-                                       /*ACG,AEG*/
-                                       0, 2, 6, 0, 4, 6,
-                                       /*Behind BFH,BDH*/
-                                       1, 5, 7, 1, 3, 7};
-
-  std::vector<float> vertices, normals;
-
-  for (int i = 0; i < sizeof(verticesData) / sizeof(float); i++) {
-    if ((i % 6) < 3)
-      vertices.push_back(verticesData[i]);
-    else
-      normals.push_back(verticesData[i]);
-  }
 
   glm::mat4 cubes[4] = {
       glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, -1.0f, 0.0f)),
@@ -105,7 +27,8 @@ void Window::runLoop() {
       glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, 1.0f, 0.0f)),
       glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 0.0f))};
 
-  Model model(vertices, normals, indices);
+  CuboidMesh cubeMesh(1.0f, 1.0f, 1.0f);
+  Model model = cubeMesh.generateModel();
 
   float lastTime;
   float time = glfwGetTime();
@@ -122,19 +45,14 @@ void Window::runLoop() {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // draw room
-    glm::mat4 roomTransform = glm::mat4(1.0f);
-    roomTransform = glm::scale(roomTransform, glm::vec3(10.0f, 10.0f, 10.0f));
-    renderer.render(&model, roomTransform);
-
     for (int i = 0; i < 4; i++) {
       if (isMoving)
         cubes[i] = glm::rotate(cubes[i], glm::radians((float)i * 5.0f / 3.0f),
                                glm::vec3(1.0f, 1.0f, 0.0f));
-      renderer.render(&model, cubes[i]);
+      renderer.render(model, cubes[i]);
     }
 
-    renderer.renderLight(&model);
+    renderer.renderLight(model);
 
     glfwSwapBuffers(glWindow);
     glfwPollEvents();

@@ -9,14 +9,14 @@ private:
   Camera *camera;
   Shader *shader;
 
-  Model *boundModel;
+  unsigned int boundModel;
 
-  void bindModelIfNecessary(Model *model);
+  void bindModelIfNecessary(Model &model);
 public:
   Renderer();
 
-  void render(Model *model, const glm::mat4 &transformation);
-  void renderLight(Model *model);
+  void render(Model &model, const glm::mat4 &transformation);
+  void renderLight(Model &model);
 
   Shader *getShader();
   void setShader(Shader *newShader);
