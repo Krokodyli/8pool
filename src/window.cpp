@@ -27,8 +27,16 @@ void Window::runLoop() {
       glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, 1.0f, 0.0f)),
       glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 0.0f))};
 
-  CuboidMesh cubeMesh(1.0f, 1.0f, 1.0f);
-  Model model = cubeMesh.generateModel();
+  //CuboidMesh cubeMesh(1.0f, 1.0f, 1.0f);
+  //Model model = cubeMesh.generateModel();
+  auto start = std::chrono::high_resolution_clock::now();
+  SphereMesh sphereMesh(1.0f, 5);
+  auto stop = std::chrono::high_resolution_clock::now();
+  double duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start).count();
+  Logger::log("Mesh generation duration: " + std::to_string(duration / 1000000.0));
+  Model model = sphereMesh.generateModel();
+  Logger::log("Model triangle count: " + std::to_string(model.getTriangleCount()));
+  //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
   float lastTime;
   float time = glfwGetTime();

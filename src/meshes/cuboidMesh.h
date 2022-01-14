@@ -38,7 +38,9 @@ private:
       0.0f,  1.0f,  0.0f,  -0.5f, 0.5f,  -0.5f, 0.0f,  1.0f,  0.0f};
 
   float xSize, ySize, zSize;
+  std::vector<float> vertices, normals;
 
+  void generateMesh();
 public:
   CuboidMesh(float xSize, float ySize, float zSize);
   Model generateModel();

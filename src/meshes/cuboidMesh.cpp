@@ -1,10 +1,15 @@
 #include "cuboidMesh.h"
 
 CuboidMesh::CuboidMesh(float xSize, float ySize, float zSize)
-    : xSize(xSize), ySize(ySize), zSize(zSize) {}
+    : xSize(xSize), ySize(ySize), zSize(zSize) {
+  generateMesh();
+}
 
 Model CuboidMesh::generateModel() {
-  std::vector<float> vertices, normals;
+  return Model(vertices, normals);
+}
+
+void CuboidMesh::generateMesh() {
   vertices.reserve(cubeModelDataLen / 2);
   normals.reserve(cubeModelDataLen / 2);
 
@@ -20,6 +25,4 @@ Model CuboidMesh::generateModel() {
     normals.push_back(cubeModelData[i + 4]);
     normals.push_back(cubeModelData[i + 5]);
   }
-
-  return Model(vertices, normals);
 }

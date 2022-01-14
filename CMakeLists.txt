@@ -72,6 +72,7 @@ add_executable(
   src/shaderManager.cpp
   src/inputManager.cpp
   src/meshes/cuboidMesh.cpp
+  src/meshes/sphereMesh.cpp
 )
 
 target_link_libraries(game glfw glm glad)

@@ -9,7 +9,7 @@ Model::Model(std::vector<float> &vertices, std::vector<float> &normals) {
 
 Model::Model(std::vector<float> &vertices, std::vector<float> &normals,
              std::vector<unsigned int> &indices) {
-  triangleCount = vertices.size() / 3;
+  triangleCount = indices.size() / 3;
   areVerticesIndexed = true;
   createIndexedVAO(vertices, normals, indices);
 }
@@ -81,6 +81,6 @@ void Model::generateAndBindIndicesBuffer(std::vector<unsigned int> &indices) {
   glGenBuffers(1, &indicesEBO);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesEBO);
   // load data
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int),
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indices.size(),
                &indices[0], GL_STATIC_DRAW);
 }
