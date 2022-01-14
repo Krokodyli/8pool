@@ -19,6 +19,7 @@ void Window::init() {
 void Window::runLoop() {
   renderer.setCamera(&camera);
   shaderManager.load({"basic","basic2"}, renderer);
+  registerKeys();
 
   float cubeModelData[] = {
         -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
@@ -87,9 +88,10 @@ void Window::runLoop() {
   while(!glfwWindowShouldClose(glWindow)) {
     frames++;
     lastTime = time;
-    float time = glfwGetTime();
-    float dt = lastTime - time;
+    time = glfwGetTime();
+    float dt = time - lastTime;
 
+    inputManager.update(glWindow);
     processInput(dt);
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -143,37 +145,43 @@ void Window::setUpGLFW() {
   glfwSetInputMode(glWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
+void Window::registerKeys() {
+  inputManager.registerKey(GLFW_KEY_Q, KEY_QUIT);
+  inputManager.registerKey(GLFW_KEY_W, KEY_FORWARD);
+  inputManager.registerKey(GLFW_KEY_S, KEY_BACKWARD);
+  inputManager.registerKey(GLFW_KEY_A, KEY_LEFT);
+  inputManager.registerKey(GLFW_KEY_D, KEY_RIGHT);
+  inputManager.registerKey(GLFW_KEY_SPACE, KEY_ACTION1);
+  inputManager.registerKey(GLFW_KEY_F, KEY_ACTION2);
+  inputManager.init(glWindow);
+}
+
 void Window::processInput(float dt) {
-  if(glfwGetKey(glWindow, GLFW_KEY_Q) == GLFW_PRESS)
+  if(inputManager.isKeyPressed(KEY_QUIT))
     glfwSetWindowShouldClose(glWindow, GLFW_TRUE);
-  if(glfwGetKey(glWindow, GLFW_KEY_W) == GLFW_PRESS)
-    cameraPos -= cameraDirection * cameraSpeed * dt;
-  else if (glfwGetKey(glWindow, GLFW_KEY_S) == GLFW_PRESS)
+  if(inputManager.isKeyDown(KEY_FORWARD))
     cameraPos += cameraDirection * cameraSpeed * dt;
-  else if (glfwGetKey(glWindow, GLFW_KEY_A) == GLFW_PRESS)
-    cameraPos += glm::normalize(glm::cross(cameraDirection, glm::vec3(0.0f, 1.0f, 0.0f))) * cameraSpeed * dt / 2.0f;
-  else if (glfwGetKey(glWindow, GLFW_KEY_D) == GLFW_PRESS)
-    cameraPos -= glm::normalize(
+  else if (inputManager.isKeyDown(KEY_BACKWARD))
+    cameraPos -= cameraDirection * cameraSpeed * dt;
+  else if (inputManager.isKeyDown(KEY_LEFT))
+    cameraPos -= glm::normalize(glm::cross(cameraDirection, glm::vec3(0.0f, 1.0f, 0.0f))) * cameraSpeed * dt / 2.0f;
+  else if (inputManager.isKeyDown(KEY_RIGHT))
+    cameraPos += glm::normalize(
                      glm::cross(cameraDirection, glm::vec3(0.0f, 1.0f, 0.0f))) *
       cameraSpeed * dt / 2.0f;
 
-  if(glfwGetKey(glWindow, GLFW_KEY_F) == GLFW_PRESS)
+  if(inputManager.isKeyPressed(KEY_ACTION2))
     shaderManager.toggleShader(renderer);
 
-  if(glfwGetKey(glWindow, GLFW_KEY_SPACE)) {
-    if(!wasPressed) {
+  if(inputManager.isKeyPressed(KEY_ACTION1))
       isMoving = !isMoving;
-      wasPressed = true;
-    }
-  } else {
-    wasPressed = false;
-  }
-  double newMouseX, newMouseY;
-  glfwGetCursorPos(glWindow, &newMouseX, &newMouseY);
 
-  float sensivity = 0.05f;
-  float deltaX = (newMouseX - mouseX) * sensivity;
-  float deltaY = -(newMouseY - mouseY) * sensivity;
+  double sensivity = 0.1;
+  double deltaX;
+  double deltaY;
+  inputManager.getMouseDelta(deltaX, deltaY);
+  deltaX *= sensivity;
+  deltaY *= -sensivity;
 
   yaw += deltaX;
   pitch += deltaY;
@@ -185,9 +193,6 @@ void Window::processInput(float dt) {
   cameraDirection.y = sin(glm::radians(pitch));
   cameraDirection.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
   cameraDirection = glm::normalize(cameraDirection);
-
-  mouseX = newMouseX;
-  mouseY = newMouseY;
 
   camera.lookAt(cameraPos, cameraPos+cameraDirection, glm::vec3(0.0f, 1.0f, 0.0f));
 }

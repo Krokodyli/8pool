@@ -70,6 +70,7 @@ add_executable(
   src/filesystemHelper.cpp
   src/logger/logger.cpp
   src/shaderManager.cpp
+  src/inputManager.cpp
 )
 
 target_link_libraries(game glfw glm glad)
