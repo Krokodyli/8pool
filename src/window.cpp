@@ -3,8 +3,8 @@
 
 Window::Window(int width, int height, std::string title)
     : width(width), height(height), title(title),
-      camera(glm::radians(45.0f), (float)width/(float)height),
-      cameraPos(0.0f, 0.0f, -3.0f), cameraDirection(0.0f, 1.0f, 0.0f){
+      camera(glm::radians(45.0f), (float)width / (float)height),
+      cameraPos(0.0f, 0.0f, -3.0f), cameraDirection(0.0f, 1.0f, 0.0f) {
   yaw = 90.0f;
   pitch = 0.0f;
 }
@@ -18,9 +18,9 @@ void Window::init() {
 
 void Window::runLoop() {
   renderer.setCamera(&camera);
-  shaderManager.load({"basic","basic2"}, renderer);
+  shaderManager.load({"basic", "basic2"}, renderer);
   registerKeys();
-
+  /*
   float cubeModelData[] = {
         -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
          0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
@@ -63,29 +63,54 @@ void Window::runLoop() {
          0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
         -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
         -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
-    };
+  }; */
+
+  float verticesData[] = {
+      -0.5f, 0.5f,  -0.5f, 0.0f, 0.0f, 0.0f, // Point A 0
+      -0.5f, 0.5f,  0.5f,  0.0f, 0.0f, 1.0f, // Point B 1
+      0.5f,  0.5f,  -0.5f, 0.0f, 1.0f, 0.0f, // Point C 2
+      0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 1.0f, // Point D 3
+
+      -0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, // Point E 4
+      -0.5f, -0.5f, 0.5f,  1.0f, 0.0f, 1.0f, // Point F 5
+      0.5f,  -0.5f, -0.5f, 1.0f, 1.0f, 0.0f, // Point G 6
+      0.5f,  -0.5f, 0.5f,  1.0f, 1.0f, 1.0f  // Point H 7
+  };
+
+  std::vector<unsigned int> indices = {/*Above ABC,BCD*/
+                                       0, 1, 2, 1, 2, 3,
+                                       /*Following EFG,FGH*/
+                                       4, 5, 6, 5, 6, 7,
+                                       /*Left ABF,AEF*/
+                                       0, 1, 5, 0, 4, 5,
+                                       /*Right side CDH,CGH*/
+                                       2, 3, 7, 2, 6, 7,
+                                       /*ACG,AEG*/
+                                       0, 2, 6, 0, 4, 6,
+                                       /*Behind BFH,BDH*/
+                                       1, 5, 7, 1, 3, 7};
 
   std::vector<float> vertices, normals;
-  for(int i = 0; i < sizeof(cubeModelData)/sizeof(float); i++) {
-    if((i%6) < 3)
-      vertices.push_back(cubeModelData[i]);
+
+  for (int i = 0; i < sizeof(verticesData) / sizeof(float); i++) {
+    if ((i % 6) < 3)
+      vertices.push_back(verticesData[i]);
     else
-      normals.push_back(cubeModelData[i]);
+      normals.push_back(verticesData[i]);
   }
 
   glm::mat4 cubes[4] = {
-    glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, -1.0f, 0.0f)),
-    glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, -1.0f, 0.0f)),
-    glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, 1.0f, 0.0f)),
-    glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 0.0f))
-  };
+      glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, -1.0f, 0.0f)),
+      glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, -1.0f, 0.0f)),
+      glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, 1.0f, 0.0f)),
+      glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 0.0f))};
 
-  Model model(vertices, normals);
+  Model model(vertices, normals, indices);
 
   float lastTime;
   float time = glfwGetTime();
   int frames = 0;
-  while(!glfwWindowShouldClose(glWindow)) {
+  while (!glfwWindowShouldClose(glWindow)) {
     frames++;
     lastTime = time;
     time = glfwGetTime();
@@ -102,9 +127,10 @@ void Window::runLoop() {
     roomTransform = glm::scale(roomTransform, glm::vec3(10.0f, 10.0f, 10.0f));
     renderer.render(&model, roomTransform);
 
-    for(int i = 0; i < 4; i++ ) {
-      if(isMoving)
-        cubes[i] = glm::rotate(cubes[i], glm::radians((float)i*5.0f / 3.0f), glm::vec3(1.0f, 1.0f, 0.0f));
+    for (int i = 0; i < 4; i++) {
+      if (isMoving)
+        cubes[i] = glm::rotate(cubes[i], glm::radians((float)i * 5.0f / 3.0f),
+                               glm::vec3(1.0f, 1.0f, 0.0f));
       renderer.render(&model, cubes[i]);
     }
 
@@ -113,38 +139,36 @@ void Window::runLoop() {
     glfwSwapBuffers(glWindow);
     glfwPollEvents();
   }
-  std::cout << (float)frames/glfwGetTime() << std::endl;
+  std::cout << (float)frames / glfwGetTime() << std::endl;
 }
 
 void Window::createWindow() {
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-  #ifdef __APPLE__
+#ifdef __APPLE__
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-  #endif
+#endif
 
   glWindow = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
-  if(glWindow == NULL) {
+  if (glWindow == NULL) {
     throw std::runtime_error("Could not create a window");
   }
 
   glfwMakeContextCurrent(glWindow);
 
-  glfwSetFramebufferSizeCallback(glWindow,
-    [](GLFWwindow *window, int newWidth, int newHeight) {
-      glViewport(0, 0, newWidth, newHeight);
-  });
+  glfwSetFramebufferSizeCallback(
+      glWindow, [](GLFWwindow *window, int newWidth, int newHeight) {
+        glViewport(0, 0, newWidth, newHeight);
+      });
 }
 
 void Window::loadGlad() {
-  if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     throw std::runtime_error("Could not load GLAD");
 }
 
-void Window::setUpOpenGL() {
-  glEnable(GL_DEPTH_TEST);
-}
+void Window::setUpOpenGL() { glEnable(GL_DEPTH_TEST); }
 
 void Window::setUpGLFW() {
   glfwSetInputMode(glWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -162,24 +186,26 @@ void Window::registerKeys() {
 }
 
 void Window::processInput(float dt) {
-  if(inputManager.isKeyPressed(KEY_QUIT))
+  if (inputManager.isKeyPressed(KEY_QUIT))
     glfwSetWindowShouldClose(glWindow, GLFW_TRUE);
-  if(inputManager.isKeyDown(KEY_FORWARD))
+  if (inputManager.isKeyDown(KEY_FORWARD))
     cameraPos += cameraDirection * cameraSpeed * dt;
   else if (inputManager.isKeyDown(KEY_BACKWARD))
     cameraPos -= cameraDirection * cameraSpeed * dt;
   else if (inputManager.isKeyDown(KEY_LEFT))
-    cameraPos -= glm::normalize(glm::cross(cameraDirection, glm::vec3(0.0f, 1.0f, 0.0f))) * cameraSpeed * dt / 2.0f;
+    cameraPos -= glm::normalize(
+                     glm::cross(cameraDirection, glm::vec3(0.0f, 1.0f, 0.0f))) *
+                 cameraSpeed * dt / 2.0f;
   else if (inputManager.isKeyDown(KEY_RIGHT))
     cameraPos += glm::normalize(
                      glm::cross(cameraDirection, glm::vec3(0.0f, 1.0f, 0.0f))) *
-      cameraSpeed * dt / 2.0f;
+                 cameraSpeed * dt / 2.0f;
 
-  if(inputManager.isKeyPressed(KEY_ACTION2))
+  if (inputManager.isKeyPressed(KEY_ACTION2))
     shaderManager.toggleShader(renderer);
 
-  if(inputManager.isKeyPressed(KEY_ACTION1))
-      isMoving = !isMoving;
+  if (inputManager.isKeyPressed(KEY_ACTION1))
+    isMoving = !isMoving;
 
   double sensivity = 0.1;
   double deltaX;
@@ -190,7 +216,8 @@ void Window::processInput(float dt) {
 
   yaw += deltaX;
   pitch += deltaY;
-  if(pitch > 89.0f) pitch = 89.0f;
+  if (pitch > 89.0f)
+    pitch = 89.0f;
   if (pitch < -89.0f)
     pitch = -89.0f;
 
@@ -199,5 +226,6 @@ void Window::processInput(float dt) {
   cameraDirection.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
   cameraDirection = glm::normalize(cameraDirection);
 
-  camera.lookAt(cameraPos, cameraPos+cameraDirection, glm::vec3(0.0f, 1.0f, 0.0f));
+  camera.lookAt(cameraPos, cameraPos + cameraDirection,
+                glm::vec3(0.0f, 1.0f, 0.0f));
 }

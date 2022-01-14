@@ -1,18 +1,18 @@
 #pragma once
 
-#include <string>
-#include <exception>
-#include "keys.h"
-#include <stdexcept>
 #include "camera.h"
 #include "glad.h"
+#include "glfw.h"
 #include "glfwInstance.h"
 #include "inputManager.h"
+#include "keys.h"
 #include "renderer.h"
 #include "shader.h"
-#include "glfw.h"
 #include "shaderManager.h"
+#include <exception>
 #include <iostream>
+#include <stdexcept>
+#include <string>
 
 class Window {
 private:
@@ -39,6 +39,7 @@ private:
   void setUpOpenGL();
   void registerKeys();
   void processInput(float dt);
+
 public:
   Window(int width, int height, std::string title);
 

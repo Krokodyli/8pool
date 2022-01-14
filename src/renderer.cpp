@@ -23,7 +23,11 @@ void Renderer::render(Model *model, const glm::mat4 &transformation) {
   glm::vec3 lightPos = glm::vec3(lightTrans * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
   shader->bindUniformVec3f("lightPos", lightPos);
 
-  glDrawArrays(GL_TRIANGLES, 0, model->getTriangleCount());
+  if(model->hasIndexedVertices())
+    glDrawElements(GL_TRIANGLES, model->getTriangleCount() * 3,
+                   GL_UNSIGNED_INT, 0);
+  else
+      glDrawArrays(GL_TRIANGLES, 0, model->getTriangleCount());
 }
 
 void Renderer::renderLight(Model *model) {
