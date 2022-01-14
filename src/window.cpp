@@ -97,6 +97,11 @@ void Window::runLoop() {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    // draw room
+    glm::mat4 roomTransform = glm::mat4(1.0f);
+    roomTransform = glm::scale(roomTransform, glm::vec3(10.0f, 10.0f, 10.0f));
+    renderer.render(&model, roomTransform);
+
     for(int i = 0; i < 4; i++ ) {
       if(isMoving)
         cubes[i] = glm::rotate(cubes[i], glm::radians((float)i*5.0f / 3.0f), glm::vec3(1.0f, 1.0f, 0.0f));
