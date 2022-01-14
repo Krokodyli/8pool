@@ -11,6 +11,7 @@ FetchContent_Declare(
 
 FetchContent_GetProperties(glfw)
 if(NOT glfw_POPULATED)
+  MESSAGE(STATUS "Downloading glfw library")
   FetchContent_Populate(glfw)
 
   set(GLFW_BUILD_EXAMPLES OFF CACHE INTERNAL "Build the GLFW example programs")
@@ -28,6 +29,7 @@ FetchContent_Declare(
 
 FetchContent_GetProperties(glm)
 if(NOT glm_POPULATED)
+  MESSAGE(STATUS "Downloading glm library")
   FetchContent_Populate(glm)
   add_subdirectory(${glm_SOURCE_DIR} ${glm_BINARY_DIR})
 endif()
@@ -40,11 +42,24 @@ FetchContent_Declare(
 
 FetchContent_GetProperties(glad)
 if(NOT glad_POPULATED)
+  MESSAGE(STATUS "Downloading glad library")
   FetchContent_Populate(glad)
   set(GLAD_PROFILE "core" CACHE STRING "OpenGL profile")
   set(GLAD_API "gl=" CACHE STRING "API type/version pairs, like \"gl=3.3,gles=\", no version means latest")
   set(GLAD_GENERATOR "c" CACHE STRING "Language to generate the binding for")
   add_subdirectory(${glad_SOURCE_DIR} ${glad_BINARY_DIR})
+endif()
+
+set(STB_DIRECTORY ${CMAKE_BINARY_DIR}/_deps/stb)
+set(STB_LIB_PATH ${STB_DIRECTORY}/stb_image.h)
+if(NOT EXISTS ${STB_LIB_PATH})
+  file(MAKE_DIRECTORY ${STB_DIRECTORY})
+  file(
+    DOWNLOAD
+    https://raw.githubusercontent.com/nothings/stb/master/stb_image.h
+    ${STB_LIB_PATH}
+    SHOW_PROGRESS
+  )
 endif()
 
 ###############################################################################
@@ -73,6 +88,7 @@ add_executable(
   src/inputManager.cpp
   src/meshes/cuboidMesh.cpp
   src/meshes/sphereMesh.cpp
+  src/textureLoader.cpp
 )
 
 target_link_libraries(game glfw glm glad)

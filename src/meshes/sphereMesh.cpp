@@ -6,7 +6,7 @@ SphereMesh::SphereMesh(float radius, unsigned int precision)
 }
 
 Model SphereMesh::generateModel() {
-  return Model(verticesF, normalsF, indices);
+  return Model(vertexData, indexData);
 }
 
 void SphereMesh::generateMesh() {
@@ -14,12 +14,11 @@ void SphereMesh::generateMesh() {
   generateInitialMesh(vertices);
   for (int i = 0; i < precision; i++) {
     unsigned int triangleOffset = 0;
-    unsigned int oldIndicesListSize = indices.size();
-    for (; triangleOffset < oldIndicesListSize; triangleOffset += 3)
+    unsigned int oldIndexDataSize = indexData.size();
+    for (; triangleOffset < oldIndexDataSize; triangleOffset += 3)
       divideTriangle(vertices, triangleOffset);
   }
-  generateFloatVertices(vertices);
-  generateFloatNormals(vertices);
+  generateVertexData(vertices);
 }
 
 void SphereMesh::generateInitialMesh(std::vector<glm::vec3> &vertices) {
@@ -34,9 +33,9 @@ void SphereMesh::generateInitialMesh(std::vector<glm::vec3> &vertices) {
   for (int i = 0; i < 4; i++) {
     int j = (i + 1) % 4;
     for (int top = 0; top < 2; top++) {
-      indices.push_back(i + 2);
-      indices.push_back(j + 2);
-      indices.push_back(top);
+      indexData.push_back(i + 2);
+      indexData.push_back(j + 2);
+      indexData.push_back(top);
     }
   }
 }
@@ -54,9 +53,9 @@ void SphereMesh::divideTriangle(std::vector<glm::vec3> &vertices,
       /   \  /   \
      c-----cb-----b
   */
-  unsigned int aPos = indices[indicesOffset];
-  unsigned int bPos = indices[indicesOffset + 1];
-  unsigned int cPos = indices[indicesOffset + 2];
+  unsigned int aPos = indexData[indicesOffset];
+  unsigned int bPos = indexData[indicesOffset + 1];
+  unsigned int cPos = indexData[indicesOffset + 2];
   glm::vec3 a = vertices[aPos];
   glm::vec3 b = vertices[bPos];
   glm::vec3 c = vertices[cPos];
@@ -68,37 +67,36 @@ void SphereMesh::divideTriangle(std::vector<glm::vec3> &vertices,
   vertices.push_back(ab);
   vertices.push_back(bc);
   vertices.push_back(ac);
-  indices[indicesOffset + 1] = abPos;
-  indices[indicesOffset + 2] = acPos;
+  indexData[indicesOffset + 1] = abPos;
+  indexData[indicesOffset + 2] = acPos;
 
-  indices.push_back(acPos);
-  indices.push_back(bcPos);
-  indices.push_back(cPos);
+  indexData.push_back(acPos);
+  indexData.push_back(bcPos);
+  indexData.push_back(cPos);
 
-  indices.push_back(acPos);
-  indices.push_back(abPos);
-  indices.push_back(bcPos);
+  indexData.push_back(acPos);
+  indexData.push_back(abPos);
+  indexData.push_back(bcPos);
 
-  indices.push_back(abPos);
-  indices.push_back(bPos);
-  indices.push_back(bcPos);
+  indexData.push_back(abPos);
+  indexData.push_back(bPos);
+  indexData.push_back(bcPos);
 }
 
-void SphereMesh::generateFloatVertices(std::vector<glm::vec3> &vertices) {
-  verticesF.reserve(vertices.size() * 3);
+void SphereMesh::generateVertexData(std::vector<glm::vec3> &vertices) {
+  vertexData.reserve(vertices.size() * 3);
   for (auto &vertex : vertices) {
-    verticesF.push_back(vertex.x);
-    verticesF.push_back(vertex.y);
-    verticesF.push_back(vertex.z);
-  }
-}
-
-void SphereMesh::generateFloatNormals(std::vector<glm::vec3> &vertices) {
-  normalsF.reserve(vertices.size() * 3);
-  for (auto &vertex : vertices) {
+    // vertex position
+    vertexData.push_back(vertex.x);
+    vertexData.push_back(vertex.y);
+    vertexData.push_back(vertex.z);
+    // vertex normal
     auto normalized = glm::normalize(vertex);
-    normalsF.push_back(normalized.x);
-    normalsF.push_back(normalized.y);
-    normalsF.push_back(normalized.z);
+    vertexData.push_back(normalized.x);
+    vertexData.push_back(normalized.y);
+    vertexData.push_back(normalized.z);
+    // vertex texture coords
+    vertexData.push_back(0.0f);
+    vertexData.push_back(0.0f);
   }
 }

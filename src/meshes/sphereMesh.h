@@ -6,9 +6,8 @@
 
 class SphereMesh : public Mesh {
 private:
-  std::vector<float> verticesF;
-  std::vector<float> normalsF;
-  std::vector<unsigned int> indices;
+  std::vector<float> vertexData;
+  std::vector<unsigned int> indexData;
 
   float radius;
   unsigned int precision;
@@ -20,8 +19,7 @@ private:
   void divideTriangle(std::vector<glm::vec3> &vertices,
                       unsigned int indicesOffset);
 
-  void generateFloatVertices(std::vector<glm::vec3> &vertices);
-  void generateFloatNormals(std::vector<glm::vec3> &vertices);
+  void generateVertexData(std::vector<glm::vec3> &vertices);
 
 public:
   SphereMesh(float radius, unsigned int precision = 4);

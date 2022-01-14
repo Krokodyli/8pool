@@ -6,29 +6,29 @@
 
 class Model {
 private:
-  unsigned int modelVAO;
-  unsigned int verticesVBO;
-  unsigned int normalsVBO;
-  unsigned int indicesEBO;
+  unsigned int vao;
+  unsigned int vbo;
+
   bool areVerticesIndexed;
+  unsigned int ebo;
 
   unsigned int triangleCount;
 
+  void createVAO(std::vector<float> &vertexData);
+  void createIndexedVAO(std::vector<float> &vertexData,
+                        std::vector<unsigned int> &indexData);
+
   void generateAndBindVertexArray();
-  void generateAndBindVertexBuffer(std::vector<float> &vertices);
-  void generateAndBindNormalsBuffer(std::vector<float> &normals);
-  void generateAndBindIndicesBuffer(std::vector<unsigned int> &indices);
+  void generateAndBindVertexBuffer();
+  void loadVertexData(std::vector<float> &vertexData);
+  void setUpVertexAttributes();
 
-  void createVAO(std::vector<float> &vertices, std::vector<float> &normals);
-
-  void createIndexedVAO(std::vector<float> &vertices,
-                        std::vector<float> &normals,
-                        std::vector<unsigned int> &indices);
+  void generateAndBindElementArray();
+  void loadIndexData(std::vector<unsigned int> &indexData);
 
 public:
-  Model(std::vector<float> &vertices, std::vector<float> &normals);
-  Model(std::vector<float> &vertices, std::vector<float> &normals,
-        std::vector<unsigned int> &indices);
+  Model(std::vector<float> &vertexData);
+  Model(std::vector<float> &vertexData, std::vector<unsigned int> &indexData);
   ~Model();
 
   unsigned int getID();

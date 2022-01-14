@@ -21,22 +21,43 @@ void Window::runLoop() {
   shaderManager.load({"basic", "basic2"}, renderer);
   registerKeys();
 
-  glm::mat4 cubes[4] = {
+  constexpr int cubesCount = 16;
+  glm::mat4 cubes[cubesCount] = {
       glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, -1.0f, 0.0f)),
       glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, -1.0f, 0.0f)),
       glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, 1.0f, 0.0f)),
-      glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 0.0f))};
+      glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 0.0f)),
 
-  //CuboidMesh cubeMesh(1.0f, 1.0f, 1.0f);
-  //Model model = cubeMesh.generateModel();
-  auto start = std::chrono::high_resolution_clock::now();
-  SphereMesh sphereMesh(1.0f, 5);
-  auto stop = std::chrono::high_resolution_clock::now();
-  double duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start).count();
-  Logger::log("Mesh generation duration: " + std::to_string(duration / 1000000.0));
-  Model model = sphereMesh.generateModel();
-  Logger::log("Model triangle count: " + std::to_string(model.getTriangleCount()));
-  //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+      glm::translate(glm::mat4(1.0f), glm::vec3(2.0f, 1.0f, 0.0f)),
+      glm::translate(glm::mat4(1.0f), glm::vec3(4.0f, 1.0f, 0.0f)),
+      glm::translate(glm::mat4(1.0f), glm::vec3(6.0f, 1.0f, 0.0f)),
+      glm::translate(glm::mat4(1.0f), glm::vec3(8.0f, 1.0f, 0.0f)),
+      glm::translate(glm::mat4(1.0f), glm::vec3(10.0f, 1.0f, 0.0f)),
+      glm::translate(glm::mat4(1.0f), glm::vec3(12.0f, 1.0f, 0.0f)),
+      glm::translate(glm::mat4(1.0f), glm::vec3(14.0f, 1.0f, 0.0f)),
+      glm::translate(glm::mat4(1.0f), glm::vec3(16.0f, 1.0f, 0.0f)),
+      glm::translate(glm::mat4(1.0f), glm::vec3(24.0f, 1.0f, 0.0f)),
+      glm::translate(glm::mat4(1.0f), glm::vec3(18.0f, 1.0f, 0.0f)),
+      glm::translate(glm::mat4(1.0f), glm::vec3(20.0f, 1.0f, 0.0f)),
+      glm::translate(glm::mat4(1.0f), glm::vec3(22.0f, 1.0f, 0.0f))};
+
+  // for(int i = 0; i < cubesCount; i++) {
+  //   cubes[i] = glm::scale(cubes[i], glm::vec3(0.0572, 0.0572, 0.0572));
+  // }
+   CuboidMesh cubeMesh(1.0f, 1.0f, 1.0f);
+   Model model = cubeMesh.generateModel();
+  // auto start = std::chrono::high_resolution_clock::now();
+  // SphereMesh sphereMesh(1.0f, 5);
+  // auto stop = std::chrono::high_resolution_clock::now();
+  // double duration =
+  //     std::chrono::duration_cast<std::chrono::microseconds>(stop - start)
+  //         .count();
+  // Logger::log("Mesh generation duration: " +
+  //             std::to_string(duration / 1000000.0));
+  // Model model = sphereMesh.generateModel();
+  // Logger::log("Model triangle count: " +
+  //             std::to_string(model.getTriangleCount()));
+  // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
   float lastTime;
   float time = glfwGetTime();
@@ -53,7 +74,7 @@ void Window::runLoop() {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < cubesCount; i++) {
       if (isMoving)
         cubes[i] = glm::rotate(cubes[i], glm::radians((float)i * 5.0f / 3.0f),
                                glm::vec3(1.0f, 1.0f, 0.0f));
