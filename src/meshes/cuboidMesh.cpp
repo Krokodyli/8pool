@@ -1,6 +1,4 @@
 #include "cuboidMesh.h"
-#include <string>
-#include "../logger/logger.h"
 
 CuboidMesh::CuboidMesh(float xSize, float ySize, float zSize) {
   generateMesh(xSize, ySize, zSize);

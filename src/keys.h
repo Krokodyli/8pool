@@ -7,5 +7,6 @@ enum Keys {
   KEY_LEFT = 3,
   KEY_RIGHT = 4,
   KEY_ACTION1 = 5,
-  KEY_ACTION2 = 6
+  KEY_ACTION2 = 6,
+  KEY_ACTION3 = 7
 };

@@ -5,9 +5,7 @@ SphereMesh::SphereMesh(float radius, unsigned int precision)
   generateMesh();
 }
 
-Model SphereMesh::generateModel() {
-  return Model(vertexData, indexData);
-}
+Model SphereMesh::generateModel() { return Model(vertexData, indexData); }
 
 void SphereMesh::generateMesh() {
   std::vector<glm::vec3> vertices;
@@ -24,19 +22,18 @@ void SphereMesh::generateMesh() {
 void SphereMesh::generateInitialMesh(std::vector<glm::vec3> &vertices) {
   float r = radius;
   float r2 = radius * sqrt(2.0f) / 2.0f;
+  // generating upper pyramid vertices
   vertices.push_back({0.0f, r, 0.0f});
-  vertices.push_back({0.0f, -r, 0.0f});
   vertices.push_back({r2, 0.0f, -r2});
   vertices.push_back({r2, 0.0f, r2});
   vertices.push_back({-r2, 0.0f, r2});
   vertices.push_back({-r2, 0.0f, -r2});
+  // generating triangles
   for (int i = 0; i < 4; i++) {
     int j = (i + 1) % 4;
-    for (int top = 0; top < 2; top++) {
-      indexData.push_back(i + 2);
-      indexData.push_back(j + 2);
-      indexData.push_back(top);
-    }
+    indexData.push_back(i + 1);
+    indexData.push_back(j + 1);
+    indexData.push_back(0);
   }
 }
 
@@ -84,19 +81,36 @@ void SphereMesh::divideTriangle(std::vector<glm::vec3> &vertices,
 }
 
 void SphereMesh::generateVertexData(std::vector<glm::vec3> &vertices) {
-  vertexData.reserve(vertices.size() * 3);
-  for (auto &vertex : vertices) {
-    // vertex position
-    vertexData.push_back(vertex.x);
-    vertexData.push_back(vertex.y);
-    vertexData.push_back(vertex.z);
-    // vertex normal
-    auto normalized = glm::normalize(vertex);
-    vertexData.push_back(normalized.x);
-    vertexData.push_back(normalized.y);
-    vertexData.push_back(normalized.z);
-    // vertex texture coords
-    vertexData.push_back(0.0f);
-    vertexData.push_back(0.0f);
+  vertexData.reserve(vertices.size() * 8 * 2);
+  indexData.reserve(indexData.size() * 2);
+
+  for (auto vertex : vertices)
+    addVertexToVertexData(vertex, false);
+
+  // generate lower hemisphere
+  for (auto vertex : vertices) {
+    vertex.y *= -1;
+    addVertexToVertexData(vertex, true);
   }
+  int oldIndexDataSize = indexData.size();
+  for(int i = 0; i < oldIndexDataSize; i++)
+    indexData.push_back(indexData[i] + vertices.size());
+}
+
+void SphereMesh::addVertexToVertexData(glm::vec3 vertex, bool offsetTexture) {
+  // vertex position
+  vertexData.push_back(vertex.x);
+  vertexData.push_back(vertex.y);
+  vertexData.push_back(vertex.z);
+  // vertex normal
+  auto normal = glm::normalize(vertex);
+  vertexData.push_back(normal.x);
+  vertexData.push_back(normal.y);
+  vertexData.push_back(normal.z);
+  // vertex texture coords
+  auto xTexPos = (normal.x / 2.0f + 0.5f) / 2.0f;
+  if(offsetTexture) xTexPos += 0.5f;
+  auto yTexPos = normal.z / 2.0f + 0.5f;
+  vertexData.push_back(xTexPos);
+  vertexData.push_back(yTexPos);
 }

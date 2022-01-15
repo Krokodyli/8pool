@@ -13,6 +13,8 @@ void Renderer::render(Model &model, const glm::mat4 &transformation) {
   glm::mat4 lightTrans = glm::translate(
       glm::mat4(1.0f), glm::vec3(3 * cos(time), 0.0f, 3 * sin(time)));
 
+  lightTrans = glm::mat4(1.0f);
+  lightTrans = glm::translate(lightTrans, glm::vec3(-3.0f, 0.0f, -2.0f));
   bindModelIfNecessary(model);
   shader->bindUniformMat4f("model", transformation);
   shader->bindUniformMat4f("view", camera->getViewMat());
@@ -33,8 +35,10 @@ void Renderer::render(Model &model, const glm::mat4 &transformation) {
 
 void Renderer::renderLight(Model &model) {
   float time = glfwGetTime();
-  glm::mat4 lightTrans = glm::translate(
-      glm::mat4(1.0f), glm::vec3(3 * cos(time), 0.0f, 3 * sin(time)));
+  // glm::mat4 lightTrans = glm::translate(
+      // glm::mat4(1.0f), glm::vec3(3 * cos(time), 0.0f, 3 * sin(time)));
+  glm::mat4 lightTrans = glm::mat4(1.0f);
+  lightTrans = glm::translate(lightTrans, glm::vec3(-3.0f, 0.0f, -2.0f));
   lightTrans = glm::scale(lightTrans, glm::vec3(0.5f, 0.5f, 0.5f));
 
   bindModelIfNecessary(model);

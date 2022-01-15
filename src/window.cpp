@@ -42,13 +42,24 @@ void Window::runLoop() {
       glm::translate(glm::mat4(1.0f), glm::vec3(20.0f, 1.0f, 0.0f)),
       glm::translate(glm::mat4(1.0f), glm::vec3(22.0f, 1.0f, 0.0f))};
 
+  std::string choice = "sphere";
+  Mesh *mesh;
   Texture texture1;
-  if(!texture1.load("cube.png"))
-    Logger::logCriticalError("Could not load texture");
-  texture1.bind();
+  if(choice == "sphere") {
+    mesh = new SphereMesh(1.0f, 4);
 
-   CuboidMesh cubeMesh(1.0f, 1.0f, 1.0f);
-   Model model = cubeMesh.generateModel();
+    if (!texture1.load("sphere.png"))
+      Logger::logCriticalError("Could not load texture");
+  }
+  else {
+    mesh = new CuboidMesh(1.0f, 1.0f, 1.0f);
+
+    if (!texture1.load("cube.png"))
+      Logger::logCriticalError("Could not load texture");
+  }
+  Model model = mesh->generateModel();
+  delete mesh; // dangerous TODO delete
+  texture1.bind();
 
   float lastTime;
   float time = glfwGetTime();
@@ -120,6 +131,7 @@ void Window::registerKeys() {
   inputManager.registerKey(GLFW_KEY_D, KEY_RIGHT);
   inputManager.registerKey(GLFW_KEY_SPACE, KEY_ACTION1);
   inputManager.registerKey(GLFW_KEY_F, KEY_ACTION2);
+  inputManager.registerKey(GLFW_KEY_E, KEY_ACTION3);
   inputManager.init(glWindow);
 }
 

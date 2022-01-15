@@ -4,5 +4,5 @@
 
 class Mesh {
 public:
-  Model generateModel();
+  virtual Model generateModel() = 0;
 };

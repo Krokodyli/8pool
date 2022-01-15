@@ -20,6 +20,7 @@ private:
                       unsigned int indicesOffset);
 
   void generateVertexData(std::vector<glm::vec3> &vertices);
+  void addVertexToVertexData(glm::vec3 vertex, bool offsetTexture);
 
 public:
   SphereMesh(float radius, unsigned int precision = 4);

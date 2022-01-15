@@ -17,7 +17,7 @@ bool Texture::load(std::string textureName) {
   generateAndBindTexture();
   setTextureParameters();
   loadData(imageBytes, width, height);
-  //createMipmaps();
+  createMipmaps();
   return true;
 }
 
@@ -34,8 +34,9 @@ void Texture::generateAndBindTexture() {
 void Texture::setTextureParameters() {
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-                  GL_LINEAR);
+                  GL_LINEAR_MIPMAP_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
