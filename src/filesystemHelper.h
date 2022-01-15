@@ -15,5 +15,5 @@ private:
 
 public:
   static void init(char *argv0);
-  static std::string getResourcePath(ResourceType type, std::string resource);
+  static std::string getResourcePath(ResourceType type, std::string& resource);
 };

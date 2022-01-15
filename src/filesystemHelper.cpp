@@ -15,7 +15,7 @@ void FilesystemHelper::init(char *argv0) {
 }
 
 std::string FilesystemHelper::getResourcePath(ResourceType type,
-                                              std::string resource) {
+                                              std::string& resource) {
   if (!initialized)
     throw std::runtime_error("Filesystem helper was not initialized");
 

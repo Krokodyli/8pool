@@ -91,6 +91,7 @@ add_executable(
   src/meshes/sphereMesh.cpp
   src/textureLoader.cpp
   src/texture.cpp
+  src/textureManager.cpp
 )
 
 target_link_libraries(game glfw glm glad)

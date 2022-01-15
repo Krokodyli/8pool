@@ -29,6 +29,7 @@ private:
 public:
   Model(std::vector<float> &vertexData);
   Model(std::vector<float> &vertexData, std::vector<unsigned int> &indexData);
+  Model(const Model &r) = delete;
   ~Model();
 
   unsigned int getID();

@@ -1,7 +1,7 @@
 #include "shaderManager.h"
 
 void ShaderManager::load(std::vector<std::string> shadersToLoad) {
-  for(const auto& shaderName : shadersToLoad)
+  for(auto& shaderName : shadersToLoad)
     loadShader(shaderName);
 }
 
@@ -33,7 +33,7 @@ void ShaderManager::toggleShader(Renderer &renderer) {
   renderer.setShader(shader->second.get());
 }
 
-void ShaderManager::loadShader(const std::string &shaderName) {
+void ShaderManager::loadShader(std::string &shaderName) {
   auto newShader = std::make_unique<Shader>();
   auto vertexShaderPath = shaderName + vertexShaderPostfix;
   auto fragmentShaderPath = shaderName + fragmentShaderPostfix;
@@ -51,6 +51,6 @@ void ShaderManager::loadShader(const std::string &shaderName) {
     return;
   }
 
-  Logger::log("Shader \"" + shaderName + "\" loaded");
   shaders[shaderName] = std::unique_ptr<Shader>(std::move(newShader));
+  Logger::log("Shader \"" + shaderName + "\" loaded");
 }

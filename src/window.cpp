@@ -20,6 +20,7 @@ void Window::runLoop() {
   renderer.setCamera(&camera);
   shaderManager.load({"basic", "basic2"});
   shaderManager.useShader(renderer, "basic");
+  textureManager.load({"sphere.png", "cube.png"});
   registerKeys();
 
   constexpr int cubesCount = 16;
@@ -44,22 +45,18 @@ void Window::runLoop() {
 
   std::string choice = "sphere";
   Mesh *mesh;
-  Texture texture1;
+  int textureID;
   if(choice == "sphere") {
     mesh = new SphereMesh(1.0f, 4);
-
-    if (!texture1.load("sphere.png"))
-      Logger::logCriticalError("Could not load texture");
+    textureID = textureManager.getTextureID("sphere.png");
   }
   else {
     mesh = new CuboidMesh(1.0f, 1.0f, 1.0f);
-
-    if (!texture1.load("cube.png"))
-      Logger::logCriticalError("Could not load texture");
+    textureID = textureManager.getTextureID("cube.png");
   }
   Model model = mesh->generateModel();
   delete mesh; // dangerous TODO delete
-  texture1.bind();
+  textureManager.getTexture(textureID)->bind();
 
   float lastTime;
   float time = glfwGetTime();

@@ -13,6 +13,7 @@
 #include "renderer.h"
 #include "shader.h"
 #include "shaderManager.h"
+#include "textureManager.h"
 #include <exception>
 #include <iostream>
 #include <stdexcept>
@@ -28,6 +29,7 @@ private:
 
   Camera camera;
   ShaderManager shaderManager;
+  TextureManager textureManager;
   Renderer renderer;
   InputManager inputManager;
 

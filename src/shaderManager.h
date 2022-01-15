@@ -16,7 +16,7 @@ private:
   std::unordered_map<std::string, std::unique_ptr<Shader>> shaders;
   std::string currentShader;
 
-  void loadShader(const std::string &shaderName);
+  void loadShader(std::string &shaderName);
 public:
   void load(std::vector<std::string> shadersToLoad);
 
