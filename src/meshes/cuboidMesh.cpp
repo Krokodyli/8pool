@@ -1,4 +1,6 @@
 #include "cuboidMesh.h"
+#include <string>
+#include "../logger/logger.h"
 
 CuboidMesh::CuboidMesh(float xSize, float ySize, float zSize) {
   generateMesh(xSize, ySize, zSize);
@@ -25,7 +27,7 @@ void CuboidMesh::generateMesh(float xSize, float ySize, float zSize) {
          vertices[1][coord] == vertices[2][coord]) {
         constCoord = coord;
         changingCoord1 = (coord+1)%3;
-        changingCoord2 = (coord + 1) % 3;
+        changingCoord2 = (coord + 2) % 3;
       }
     }
 
@@ -42,11 +44,13 @@ void CuboidMesh::generateMesh(float xSize, float ySize, float zSize) {
       for(int i = 0; i < 3; i++)
         vertexData.push_back(normal[i]);
       // push texture coordinates
-      float xOffset = 0.25f * (side % 3), yOffset = 0.5f * side / 3.0f;
+      float xOffset = 1.0f / 3.0f * (side % 3);
+      int ySide = (side / 3);
+      float yOffset = 0.50f * ySide;
       auto xCoord = data[offset + vertex * 3 + changingCoord1];
       auto yCoord = data[offset + vertex * 3 + changingCoord2];
-      xCoord = (xCoord + 0.5f) / 4.0f;
-      yCoord = (yCoord + 0.5f) / 4.0f;
+      xCoord = (xCoord + 0.5f) / 3.0f;
+      yCoord = (yCoord + 0.5f) / 2.0f;
       vertexData.push_back(xCoord + xOffset);
       vertexData.push_back(yCoord + yOffset);
     }

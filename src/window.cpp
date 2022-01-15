@@ -19,6 +19,7 @@ void Window::init() {
 void Window::runLoop() {
   renderer.setCamera(&camera);
   shaderManager.load({"basic", "basic2"}, renderer);
+  shaderManager.useShader(renderer, "basic");
   registerKeys();
 
   constexpr int cubesCount = 16;
@@ -41,23 +42,13 @@ void Window::runLoop() {
       glm::translate(glm::mat4(1.0f), glm::vec3(20.0f, 1.0f, 0.0f)),
       glm::translate(glm::mat4(1.0f), glm::vec3(22.0f, 1.0f, 0.0f))};
 
-  // for(int i = 0; i < cubesCount; i++) {
-  //   cubes[i] = glm::scale(cubes[i], glm::vec3(0.0572, 0.0572, 0.0572));
-  // }
+  Texture texture1;
+  if(!texture1.load("cube.png"))
+    Logger::logCriticalError("Could not load texture");
+  texture1.bind();
+
    CuboidMesh cubeMesh(1.0f, 1.0f, 1.0f);
    Model model = cubeMesh.generateModel();
-  // auto start = std::chrono::high_resolution_clock::now();
-  // SphereMesh sphereMesh(1.0f, 5);
-  // auto stop = std::chrono::high_resolution_clock::now();
-  // double duration =
-  //     std::chrono::duration_cast<std::chrono::microseconds>(stop - start)
-  //         .count();
-  // Logger::log("Mesh generation duration: " +
-  //             std::to_string(duration / 1000000.0));
-  // Model model = sphereMesh.generateModel();
-  // Logger::log("Model triangle count: " +
-  //             std::to_string(model.getTriangleCount()));
-  // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
   float lastTime;
   float time = glfwGetTime();

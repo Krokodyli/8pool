@@ -60,9 +60,9 @@ void ShaderManager::loadShader(const std::string &shaderName) {
   bool isShaderLoaded = newShader->load(vertexShaderPath, fragmentShaderPath);
 
   if (!isShaderLoaded) {
+    Logger::logError("Shader \"" + shaderName + "\" could not be loaded");
+    Logger::logError(newShader->getError());
     delete newShader;
-    Logger::log("Shader \"" + shaderName + "\" could not be loaded",
-                LogType::error);
     return;
   }
 

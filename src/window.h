@@ -2,6 +2,7 @@
 
 #include "camera.h"
 #include "glad.h"
+#include "texture.h"
 #include "meshes/cuboidMesh.h"
 #include "meshes/sphereMesh.h"
 #include <chrono>

@@ -70,7 +70,8 @@ project(TrainSceneOpenGL)
 get_filename_component(ROOT_DIR ${CMAKE_BINARY_DIR} DIRECTORY)
 file(MAKE_DIRECTORY ${ROOT_DIR}/bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${ROOT_DIR}/bin)
-add_custom_target(resources ALL COMMAND ${CMAKE_COMMAND} -E create_symlink ${ROOT_DIR}/src/shaders ${ROOT_DIR}/bin/shaders)
+add_custom_target(shadersLink ALL COMMAND ${CMAKE_COMMAND} -E create_symlink ${ROOT_DIR}/src/shaders ${ROOT_DIR}/bin/shaders)
+add_custom_target(texturesLink ALL COMMAND ${CMAKE_COMMAND} -E create_symlink ${ROOT_DIR}/resources/textures ${ROOT_DIR}/bin/textures)
 
 set(CMAKE_BUILD_TYPE Debug)
 add_executable(
@@ -89,6 +90,7 @@ add_executable(
   src/meshes/cuboidMesh.cpp
   src/meshes/sphereMesh.cpp
   src/textureLoader.cpp
+  src/texture.cpp
 )
 
 target_link_libraries(game glfw glm glad)
