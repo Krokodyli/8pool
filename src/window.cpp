@@ -18,7 +18,7 @@ void Window::init() {
 
 void Window::runLoop() {
   renderer.setCamera(&camera);
-  shaderManager.load({"basic", "basic2"}, renderer);
+  shaderManager.load({"basic", "basic2"});
   shaderManager.useShader(renderer, "basic");
   registerKeys();
 

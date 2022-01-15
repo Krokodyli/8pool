@@ -1,24 +1,8 @@
 #include "shaderManager.h"
 
-ShaderManager::~ShaderManager() {
-  dispose();
-}
-
-void ShaderManager::load(std::vector<std::string> shadersToLoad,
-                         Renderer &renderer, bool logCritical) {
-  dispose();
-
+void ShaderManager::load(std::vector<std::string> shadersToLoad) {
   for(const auto& shaderName : shadersToLoad)
     loadShader(shaderName);
-
-  if(shaders.size() == 0) {
-    LogType logType = logCritical ? LogType::criticalError : LogType::error;
-    Logger::log("No shaders were loaded", logType);
-    return;
-  }
-
-  currentShader = shaders.begin()->first;
-  renderer.setShader(shaders.begin()->second);
 }
 
 void ShaderManager::useShader(Renderer &renderer, std::string shaderName) {
@@ -30,7 +14,7 @@ void ShaderManager::useShader(Renderer &renderer, std::string shaderName) {
   }
 
   currentShader = shaderName;
-  renderer.setShader(shader->second);
+  renderer.setShader(shader->second.get());
 }
 
 void ShaderManager::toggleShader(Renderer &renderer) {
@@ -45,35 +29,28 @@ void ShaderManager::toggleShader(Renderer &renderer) {
   if(shader == shaders.end())
     shader = shaders.begin();
 
-  renderer.setShader(shader->second);
   currentShader = shader->first;
+  renderer.setShader(shader->second.get());
 }
 
 void ShaderManager::loadShader(const std::string &shaderName) {
-  Shader *newShader = new Shader();
-  std::string vertexShaderPath = shaderName + vertexShaderPostfix;
-  std::string fragmentShaderPath = shaderName + fragmentShaderPostfix;
+  auto newShader = std::make_unique<Shader>();
+  auto vertexShaderPath = shaderName + vertexShaderPostfix;
+  auto fragmentShaderPath = shaderName + fragmentShaderPostfix;
+
   vertexShaderPath = FilesystemHelper::getResourcePath(ResourceType::shader,
                                                        vertexShaderPath);
   fragmentShaderPath = FilesystemHelper::getResourcePath(ResourceType::shader,
                                                          fragmentShaderPath);
-  bool isShaderLoaded = newShader->load(vertexShaderPath, fragmentShaderPath);
+
+  auto isShaderLoaded = newShader->load(vertexShaderPath, fragmentShaderPath);
 
   if (!isShaderLoaded) {
     Logger::logError("Shader \"" + shaderName + "\" could not be loaded");
     Logger::logError(newShader->getError());
-    delete newShader;
     return;
   }
 
   Logger::log("Shader \"" + shaderName + "\" loaded");
-  shaders[shaderName] = newShader;
-}
-
-void ShaderManager::dispose() {
-  for(auto &entry : shaders)
-    delete entry.second;
-
-  shaders.clear();
-  currentShader = "";
+  shaders[shaderName] = std::unique_ptr<Shader>(std::move(newShader));
 }

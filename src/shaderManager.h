@@ -13,15 +13,12 @@ private:
   std::string vertexShaderPostfix = "_vertex.glsl";
   std::string fragmentShaderPostfix = "_fragment.glsl";
 
-  std::unordered_map<std::string, Shader*> shaders;
+  std::unordered_map<std::string, std::unique_ptr<Shader>> shaders;
   std::string currentShader;
 
   void loadShader(const std::string &shaderName);
-  void dispose();
 public:
-  ~ShaderManager();
-  void load(std::vector<std::string> shadersToLoad,
-            Renderer &renderer, bool logCritical = true);
+  void load(std::vector<std::string> shadersToLoad);
 
   void useShader(Renderer &renderer, std::string shaderName);
   void toggleShader(Renderer &renderer);

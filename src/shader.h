@@ -24,6 +24,7 @@ private:
                   unsigned int &shaderProgram);
 public:
   Shader();
+  Shader(const Shader& r) = delete;
   ~Shader();
 
   bool load(std::string vertexShaderPath, std::string fragmentShaderPath);

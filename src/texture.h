@@ -17,6 +17,8 @@ private:
   void createMipmaps();
 
 public:
+  Texture();
+  Texture(const Texture &r) = delete;
   ~Texture();
 
   bool load(std::string textureName);
