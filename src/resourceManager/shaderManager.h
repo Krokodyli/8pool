@@ -3,10 +3,11 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
-#include "../renderer.h"
 #include "../shader.h"
 #include "../filesystemHelper.h"
 #include "../logger/logger.h"
+
+class Renderer;
 
 class ShaderManager {
 private:

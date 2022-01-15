@@ -93,6 +93,11 @@ add_executable(
   src/resourceManager/textureManager.cpp
   src/resourceManager/shaderManager.cpp
   src/resourceManager/resourceManager.cpp
+  src/resourceManager/modelManager.cpp
+  src/ball.cpp
+  src/physicalObject.cpp
+  src/drawable.cpp
+  src/poolTable.cpp
 )
 
 target_link_libraries(game glfw glm glad)

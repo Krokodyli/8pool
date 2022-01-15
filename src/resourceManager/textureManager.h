@@ -16,5 +16,5 @@ public:
   void load(std::vector<std::string> &texturesToLoad);
 
   int getTextureID(std::string textureName);
-  Texture *getTexture(int resourceID);
+  Texture &getTexture(int resourceID);
 };

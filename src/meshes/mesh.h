@@ -1,8 +1,9 @@
 #pragma once
 
 #include "../model.h"
+#include <memory>
 
 class Mesh {
 public:
-  virtual Model generateModel() = 0;
+  virtual std::unique_ptr<Model> generateModel() = 0;
 };

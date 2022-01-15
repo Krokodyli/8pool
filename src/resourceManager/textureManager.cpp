@@ -35,12 +35,9 @@ int TextureManager::getTextureID(std::string textureName) {
   }
 }
 
-Texture *TextureManager::getTexture(int resourceID) {
-  if(resourceID < 0 || resourceID >= textures.size()) {
+Texture &TextureManager::getTexture(int resourceID) {
+  if(resourceID < 0 || resourceID >= textures.size())
     Logger::logCriticalError("Could not get texture. Invalid resource ID");
-    return nullptr;
-  }
-  else {
-    return textures[resourceID].get();
-  }
+
+  return *textures[resourceID];
 }

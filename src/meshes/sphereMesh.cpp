@@ -5,7 +5,9 @@ SphereMesh::SphereMesh(float radius, unsigned int precision)
   generateMesh();
 }
 
-Model SphereMesh::generateModel() { return Model(vertexData, indexData); }
+std::unique_ptr<Model> SphereMesh::generateModel() {
+  return std::make_unique<Model>(vertexData, indexData);
+}
 
 void SphereMesh::generateMesh() {
   std::vector<glm::vec3> vertices;
@@ -93,7 +95,7 @@ void SphereMesh::generateVertexData(std::vector<glm::vec3> &vertices) {
     addVertexToVertexData(vertex, true);
   }
   int oldIndexDataSize = indexData.size();
-  for(int i = 0; i < oldIndexDataSize; i++)
+  for (int i = 0; i < oldIndexDataSize; i++)
     indexData.push_back(indexData[i] + vertices.size());
 }
 
@@ -109,7 +111,8 @@ void SphereMesh::addVertexToVertexData(glm::vec3 vertex, bool offsetTexture) {
   vertexData.push_back(normal.z);
   // vertex texture coords
   auto xTexPos = (normal.x / 2.0f + 0.5f) / 2.0f;
-  if(offsetTexture) xTexPos += 0.5f;
+  if (offsetTexture)
+    xTexPos += 0.5f;
   auto yTexPos = normal.z / 2.0f + 0.5f;
   vertexData.push_back(xTexPos);
   vertexData.push_back(yTexPos);

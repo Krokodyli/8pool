@@ -3,6 +3,7 @@
 #include "../glm.h"
 #include "mesh.h"
 #include <math.h>
+#include <memory>
 
 class SphereMesh : public Mesh {
 private:
@@ -25,5 +26,5 @@ private:
 public:
   SphereMesh(float radius, unsigned int precision = 4);
 
-  Model generateModel();
+  std::unique_ptr<Model> generateModel();
 };

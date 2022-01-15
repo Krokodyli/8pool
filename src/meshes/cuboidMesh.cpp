@@ -4,8 +4,8 @@ CuboidMesh::CuboidMesh(float xSize, float ySize, float zSize) {
   generateMesh(xSize, ySize, zSize);
 }
 
-Model CuboidMesh::generateModel() {
-  return Model(vertexData);
+std::unique_ptr<Model> CuboidMesh::generateModel() {
+  return std::make_unique<Model>(vertexData);
 }
 
 void CuboidMesh::generateMesh(float xSize, float ySize, float zSize) {

@@ -2,6 +2,7 @@
 
 #include "mesh.h"
 #include "../glm.h"
+#include <memory>
 #include <vector>
 
 class CuboidMesh : public Mesh {
@@ -58,5 +59,5 @@ private:
 
 public:
   CuboidMesh(float xSize, float ySize, float zSize);
-  Model generateModel();
+  std::unique_ptr<Model> generateModel();
 };

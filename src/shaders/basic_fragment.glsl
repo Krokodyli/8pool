@@ -16,7 +16,7 @@ void main()
     vec3 objectColor2 = vec3(texture(ourTexture, texCoords));
     if(lightPos.x != -1.0) {
       // constants
-      vec3 lightColor = vec3(1.0f, 1.0f, 0.3f);
+      vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);
 
       // ambient
       float ambientStrength = 0.1;

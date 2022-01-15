@@ -1,7 +1,9 @@
 #pragma once
 
 #include "camera.h"
+#include "drawable.h"
 #include "model.h"
+#include "resourceManager/resourceManager.h"
 #include "shader.h"
 
 class Renderer {
@@ -15,8 +17,7 @@ private:
 public:
   Renderer();
 
-  void render(Model &model, const glm::mat4 &transformation);
-  void renderLight(Model &model);
+  void render(Drawable &drawable, ResourceManager &resourceManager);
 
   Shader *getShader();
   void setShader(Shader *newShader);

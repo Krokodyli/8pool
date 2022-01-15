@@ -1,5 +1,7 @@
 #include "window.h"
+#include "ball.h"
 #include "filesystemHelper.h"
+#include "poolTable.h"
 
 Window::Window(int width, int height, std::string title)
     : width(width), height(height), title(title),
@@ -17,48 +19,46 @@ void Window::init() {
 }
 
 void Window::runLoop() {
+  // load and init
   renderer.setCamera(&camera);
-  std::vector<std::string> shaders = { "basic", "basic2" };
-  std::vector<std::string> textures = {"sphere.png", "cube.png"};
-  resourceManager.loadShaders(shaders);
-  resourceManager.loadTextures(textures);
-  resourceManager.useShader(renderer, "basic");
+  // shaders
+  {
+    std::vector<std::string> shaders = {"basic", "basic2"};
+    resourceManager.loadShaders(shaders);
+    resourceManager.useShader(renderer, "basic2");
+  }
+  // textures
+  {
+    std::vector<std::string> textures = {"sphere.png", "cube.png",
+                                         "poolTable.png"};
+    resourceManager.loadTextures(textures);
+  }
+  // models
+  std::unordered_map<std::string, std::unique_ptr<Model>> models;
+  {
+    CuboidMesh cubeMesh(1.0f, 1.0f, 1.0f);
+    CuboidMesh tableMesh(1.12f, 0.10f, 2.24f);
+    SphereMesh ballMesh(0.0285f, 4);
+
+    models["ball"] = ballMesh.generateModel();
+    models["poolTable"] = tableMesh.generateModel();
+    models["cube"] = cubeMesh.generateModel();
+  }
+  resourceManager.addModels(models);
+
+  // key bindings
   registerKeys();
 
-  constexpr int cubesCount = 16;
-  glm::mat4 cubes[cubesCount] = {
-      glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, -1.0f, 0.0f)),
-      glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, -1.0f, 0.0f)),
-      glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, 1.0f, 0.0f)),
-      glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 0.0f)),
-
-      glm::translate(glm::mat4(1.0f), glm::vec3(2.0f, 1.0f, 0.0f)),
-      glm::translate(glm::mat4(1.0f), glm::vec3(4.0f, 1.0f, 0.0f)),
-      glm::translate(glm::mat4(1.0f), glm::vec3(6.0f, 1.0f, 0.0f)),
-      glm::translate(glm::mat4(1.0f), glm::vec3(8.0f, 1.0f, 0.0f)),
-      glm::translate(glm::mat4(1.0f), glm::vec3(10.0f, 1.0f, 0.0f)),
-      glm::translate(glm::mat4(1.0f), glm::vec3(12.0f, 1.0f, 0.0f)),
-      glm::translate(glm::mat4(1.0f), glm::vec3(14.0f, 1.0f, 0.0f)),
-      glm::translate(glm::mat4(1.0f), glm::vec3(16.0f, 1.0f, 0.0f)),
-      glm::translate(glm::mat4(1.0f), glm::vec3(24.0f, 1.0f, 0.0f)),
-      glm::translate(glm::mat4(1.0f), glm::vec3(18.0f, 1.0f, 0.0f)),
-      glm::translate(glm::mat4(1.0f), glm::vec3(20.0f, 1.0f, 0.0f)),
-      glm::translate(glm::mat4(1.0f), glm::vec3(22.0f, 1.0f, 0.0f))};
-
-  std::string choice = "sphere";
-  Mesh *mesh;
-  int textureID;
-  if(choice == "sphere") {
-    mesh = new SphereMesh(1.0f, 4);
-    textureID = resourceManager.getTextureID("sphere.png");
+  PoolTable table(resourceManager, glm::vec3(0.0f, -0.05f, 0.0f));
+  std::vector<Ball> balls;
+  for(int i = 0; i < 10; i++) {
+    auto pos = glm::vec3(0.0f, Ball::ballRadius, 0.0f);
+    balls.push_back(Ball(resourceManager, pos));
+    float xSpeed = (rand() % 3 - 1) * 0.01f;
+    float zSpeed = (rand() % 3 - 1) * 0.01f;
+    balls[balls.size()-1].setVelocity(glm::vec3(xSpeed, 0.0f,
+                                                zSpeed));
   }
-  else {
-    mesh = new CuboidMesh(1.0f, 1.0f, 1.0f);
-    textureID = resourceManager.getTextureID("cube.png");
-  }
-  Model model = mesh->generateModel();
-  delete mesh; // dangerous TODO delete
-  resourceManager.getTexture(textureID)->bind();
 
   float lastTime;
   float time = glfwGetTime();
@@ -72,17 +72,15 @@ void Window::runLoop() {
     inputManager.update(glWindow);
     processInput(dt);
 
+    for (auto &ball : balls)
+      ball.update(dt);
+
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    for (int i = 0; i < cubesCount; i++) {
-      if (isMoving)
-        cubes[i] = glm::rotate(cubes[i], glm::radians((float)i * 5.0f / 3.0f),
-                               glm::vec3(1.0f, 1.0f, 0.0f));
-      renderer.render(model, cubes[i]);
-    }
-
-    renderer.renderLight(model);
+    for (auto &ball : balls)
+      renderer.render(ball, resourceManager);
+    renderer.render(table, resourceManager);
 
     glfwSwapBuffers(glWindow);
     glfwPollEvents();

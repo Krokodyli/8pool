@@ -1,5 +1,18 @@
 #include "resourceManager.h"
 
+void ResourceManager::addModels(
+    std::unordered_map<std::string, std::unique_ptr<Model>> &modelsToStore) {
+  modelManager.add(modelsToStore);
+}
+
+int ResourceManager::getModelID(std::string modelName) {
+  return modelManager.getModelID(modelName);
+}
+
+Model &ResourceManager::getModel(int resourceID) {
+  return modelManager.getModel(resourceID);
+}
+
 void ResourceManager::loadTextures(std::vector<std::string> &textureNames) {
   textureManager.load(textureNames);
 }
@@ -12,7 +25,7 @@ int ResourceManager::getTextureID(std::string textureName) {
   return textureManager.getTextureID(textureName);
 }
 
-Texture *ResourceManager::getTexture(int textureID) {
+Texture &ResourceManager::getTexture(int textureID) {
   return textureManager.getTexture(textureID);
 }
 
