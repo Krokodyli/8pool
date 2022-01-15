@@ -85,13 +85,14 @@ add_executable(
   src/glfwInstance.cpp
   src/filesystemHelper.cpp
   src/logger/logger.cpp
-  src/shaderManager.cpp
   src/inputManager.cpp
   src/meshes/cuboidMesh.cpp
   src/meshes/sphereMesh.cpp
-  src/textureLoader.cpp
   src/texture.cpp
-  src/textureManager.cpp
+  src/textureLoader.cpp
+  src/resourceManager/textureManager.cpp
+  src/resourceManager/shaderManager.cpp
+  src/resourceManager/resourceManager.cpp
 )
 
 target_link_libraries(game glfw glm glad)

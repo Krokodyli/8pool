@@ -1,6 +1,6 @@
 #include "shaderManager.h"
 
-void ShaderManager::load(std::vector<std::string> shadersToLoad) {
+void ShaderManager::load(std::vector<std::string> &shadersToLoad) {
   for(auto& shaderName : shadersToLoad)
     loadShader(shaderName);
 }

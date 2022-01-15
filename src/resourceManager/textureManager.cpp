@@ -1,6 +1,6 @@
 #include "textureManager.h"
 
-void TextureManager::load(std::vector<std::string> texturesToLoad) {
+void TextureManager::load(std::vector<std::string> &texturesToLoad) {
   for(auto &textureName : texturesToLoad)
     loadTexture(textureName);
 

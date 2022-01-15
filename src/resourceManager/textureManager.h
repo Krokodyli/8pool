@@ -2,9 +2,9 @@
 
 #include <unordered_map>
 #include <vector>
-#include "filesystemHelper.h"
-#include "logger/logger.h"
-#include "texture.h"
+#include "../filesystemHelper.h"
+#include "../logger/logger.h"
+#include "../texture.h"
 
 class TextureManager {
 private:
@@ -13,7 +13,7 @@ private:
 
   void loadTexture(std::string &textureName);
 public:
-  void load(std::vector<std::string> texturesToLoad);
+  void load(std::vector<std::string> &texturesToLoad);
 
   int getTextureID(std::string textureName);
   Texture *getTexture(int resourceID);

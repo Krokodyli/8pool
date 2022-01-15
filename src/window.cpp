@@ -18,9 +18,11 @@ void Window::init() {
 
 void Window::runLoop() {
   renderer.setCamera(&camera);
-  shaderManager.load({"basic", "basic2"});
-  shaderManager.useShader(renderer, "basic");
-  textureManager.load({"sphere.png", "cube.png"});
+  std::vector<std::string> shaders = { "basic", "basic2" };
+  std::vector<std::string> textures = {"sphere.png", "cube.png"};
+  resourceManager.loadShaders(shaders);
+  resourceManager.loadTextures(textures);
+  resourceManager.useShader(renderer, "basic");
   registerKeys();
 
   constexpr int cubesCount = 16;
@@ -48,15 +50,15 @@ void Window::runLoop() {
   int textureID;
   if(choice == "sphere") {
     mesh = new SphereMesh(1.0f, 4);
-    textureID = textureManager.getTextureID("sphere.png");
+    textureID = resourceManager.getTextureID("sphere.png");
   }
   else {
     mesh = new CuboidMesh(1.0f, 1.0f, 1.0f);
-    textureID = textureManager.getTextureID("cube.png");
+    textureID = resourceManager.getTextureID("cube.png");
   }
   Model model = mesh->generateModel();
   delete mesh; // dangerous TODO delete
-  textureManager.getTexture(textureID)->bind();
+  resourceManager.getTexture(textureID)->bind();
 
   float lastTime;
   float time = glfwGetTime();
@@ -149,7 +151,7 @@ void Window::processInput(float dt) {
                  cameraSpeed * dt / 2.0f;
 
   if (inputManager.isKeyPressed(KEY_ACTION2))
-    shaderManager.toggleShader(renderer);
+    resourceManager.toggleShader(renderer);
 
   if (inputManager.isKeyPressed(KEY_ACTION1))
     isMoving = !isMoving;

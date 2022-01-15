@@ -2,6 +2,7 @@
 
 #include "camera.h"
 #include "glad.h"
+#include "resourceManager/resourceManager.h"
 #include "texture.h"
 #include "meshes/cuboidMesh.h"
 #include "meshes/sphereMesh.h"
@@ -12,8 +13,6 @@
 #include "keys.h"
 #include "renderer.h"
 #include "shader.h"
-#include "shaderManager.h"
-#include "textureManager.h"
 #include <exception>
 #include <iostream>
 #include <stdexcept>
@@ -28,8 +27,7 @@ private:
   GLFWwindow *glWindow;
 
   Camera camera;
-  ShaderManager shaderManager;
-  TextureManager textureManager;
+  ResourceManager resourceManager;
   Renderer renderer;
   InputManager inputManager;
 
