@@ -51,13 +51,17 @@ void Window::runLoop() {
 
   PoolTable table(resourceManager, glm::vec3(0.0f, -0.05f, 0.0f));
   std::vector<Ball> balls;
-  for(int i = 0; i < 10; i++) {
+  srand(time(0));
+  for (int i = 0; i < 10; i++) {
     auto pos = glm::vec3(0.0f, Ball::ballRadius, 0.0f);
+    pos.x = (rand() % 100 / 100.0f) * PoolTable::poolTableWidth -
+      PoolTable::poolTableWidth / 2.0f;
+    pos.z = (rand() % 100 / 100.0f) * PoolTable::poolTableLength -
+      PoolTable::poolTableLength / 2.0f;
+    float xSpeed = (rand()% 5 - 2) * 0.2f;
+    float zSpeed = (rand() % 5 - 2) * 0.2f;
     balls.push_back(Ball(resourceManager, pos));
-    float xSpeed = (rand() % 3 - 1) * 0.01f;
-    float zSpeed = (rand() % 3 - 1) * 0.01f;
-    balls[balls.size()-1].setVelocity(glm::vec3(xSpeed, 0.0f,
-                                                zSpeed));
+    balls[balls.size() - 1].setVelocity(glm::vec3(xSpeed, 0.0f, zSpeed));
   }
 
   float lastTime;
@@ -114,7 +118,10 @@ void Window::loadGlad() {
     throw std::runtime_error("Could not load GLAD");
 }
 
-void Window::setUpOpenGL() { glEnable(GL_DEPTH_TEST); }
+void Window::setUpOpenGL() {
+  glEnable(GL_DEPTH_TEST);
+  glProvokingVertex(GL_FIRST_VERTEX_CONVENTION);
+}
 
 void Window::setUpGLFW() {
   glfwSetInputMode(glWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);

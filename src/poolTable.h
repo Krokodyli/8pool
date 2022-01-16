@@ -6,10 +6,10 @@
 
 class PoolTable : public Drawable, public PhysicalObject {
 private:
+public:
   static constexpr float poolTableWidth = 1.12f;
   static constexpr float poolTableLength = 2.24f;
 
-public:
   PoolTable(ResourceManager &resourceManager, glm::vec3 initialPos);
 
   void load(ResourceManager &resourceManager);

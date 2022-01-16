@@ -4,3 +4,4 @@
 #include "../build/_deps/glm-src/glm/gtc/type_ptr.hpp"
 #include "../build/_deps/glm-src/glm/trigonometric.hpp"
 #include "../build/_deps/glm-src/glm/gtc/matrix_transform.hpp"
+#include "../build/_deps/glm-src/glm/gtx/quaternion.hpp"
