@@ -1,15 +1,15 @@
 #include "renderer.h"
 
 Renderer::Renderer() {
-  boundModel = -1;
+  boundMesh = -1;
   camera = nullptr;
   shader = nullptr;
 }
 
 void Renderer::render(Drawable &drawable, ResourceManager &resourceManager) {
-  Model &model = resourceManager.getModel(drawable.getModelID());
+  Mesh &mesh = resourceManager.getMesh(drawable.getMeshID());
   resourceManager.getTexture(drawable.getTextureID()).bind();
-  bindModelIfNecessary(model);
+  bindMeshIfNecessary(mesh);
 
   shader->bindUniformMat4f("model", drawable.getTransformation());
   shader->bindUniformMat4f("view", camera->getViewMat());
@@ -25,11 +25,11 @@ void Renderer::render(Drawable &drawable, ResourceManager &resourceManager) {
       glm::vec3(lightTrans * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
   shader->bindUniformVec3f("lightPos", lightPos);
 
-  if (model.hasIndexedVertices())
-    glDrawElements(GL_TRIANGLES, model.getTriangleCount() * 3, GL_UNSIGNED_INT,
+  if (mesh.hasIndexedVertices())
+    glDrawElements(GL_TRIANGLES, mesh.getTriangleCount() * 3, GL_UNSIGNED_INT,
                    0);
   else
-    glDrawArrays(GL_TRIANGLES, 0, model.getTriangleCount());
+    glDrawArrays(GL_TRIANGLES, 0, mesh.getTriangleCount());
 }
 
 Shader *Renderer::getShader() { return shader; }
@@ -43,10 +43,10 @@ void Renderer::setShader(Shader *newShader) {
 
 Camera *Renderer::getCamera() { return camera; }
 
-void Renderer::bindModelIfNecessary(Model &model) {
-  unsigned int modelID = model.getID();
-  if (boundModel != modelID) {
-    boundModel = modelID;
-    model.bind();
+void Renderer::bindMeshIfNecessary(Mesh &mesh) {
+  unsigned int meshID = mesh.getID();
+  if (boundMesh != meshID) {
+    boundMesh = meshID;
+    mesh.bind();
   }
 }

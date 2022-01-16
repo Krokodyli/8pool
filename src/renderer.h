@@ -2,7 +2,7 @@
 
 #include "camera.h"
 #include "drawable.h"
-#include "model.h"
+#include "model/mesh/mesh.h"
 #include "resourceManager/resourceManager.h"
 #include "shader.h"
 
@@ -11,9 +11,9 @@ private:
   Camera *camera;
   Shader *shader;
 
-  unsigned int boundModel;
+  unsigned int boundMesh;
 
-  void bindModelIfNecessary(Model &model);
+  void bindMeshIfNecessary(Mesh &mesh);
 public:
   Renderer();
 

@@ -1,13 +1,13 @@
 #pragma once
 
 #include "camera.h"
-#include "glad.h"
+#include "includes/glad.h"
 #include "resourceManager/resourceManager.h"
-#include "texture.h"
-#include "meshes/cuboidMesh.h"
-#include "meshes/sphereMesh.h"
+#include "model/texture/texture.h"
+#include "model/mesh/cuboidMeshGen.h"
+#include "model/mesh/sphereMeshGen.h"
 #include <chrono>
-#include "glfw.h"
+#include "includes/glfw.h"
 #include "glfwInstance.h"
 #include "inputManager.h"
 #include "keys.h"

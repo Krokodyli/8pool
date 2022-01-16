@@ -33,18 +33,18 @@ void Window::runLoop() {
                                          "poolTable.png"};
     resourceManager.loadTextures(textures);
   }
-  // models
-  std::unordered_map<std::string, std::unique_ptr<Model>> models;
+  // meshes
+  std::unordered_map<std::string, std::unique_ptr<Mesh>> meshes;
   {
-    CuboidMesh cubeMesh(1.0f, 1.0f, 1.0f);
-    CuboidMesh tableMesh(1.12f, 0.10f, 2.24f);
-    SphereMesh ballMesh(0.0285f, 4);
+    CuboidMeshGenerator cubeMesh;
+    CuboidMeshGenerator tableMesh(1.12f, 0.10f, 2.24f);
+    SphereMeshGenerator ballMesh(0.0285f, 4);
 
-    models["ball"] = ballMesh.generateModel();
-    models["poolTable"] = tableMesh.generateModel();
-    models["cube"] = cubeMesh.generateModel();
+    meshes["ball"] = ballMesh.getMesh();
+    meshes["poolTable"] = tableMesh.getMesh();
+    meshes["cube"] = cubeMesh.getMesh();
   }
-  resourceManager.addModels(models);
+  resourceManager.addMeshes(meshes);
 
   // key bindings
   registerKeys();

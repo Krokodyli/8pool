@@ -1,16 +1,16 @@
 #include "resourceManager.h"
 
-void ResourceManager::addModels(
-    std::unordered_map<std::string, std::unique_ptr<Model>> &modelsToStore) {
-  modelManager.add(modelsToStore);
+void ResourceManager::addMeshes(
+    std::unordered_map<std::string, std::unique_ptr<Mesh>> &meshesToStore) {
+  meshManager.add(meshesToStore);
 }
 
-int ResourceManager::getModelID(std::string modelName) {
-  return modelManager.getModelID(modelName);
+int ResourceManager::getMeshID(std::string meshName) {
+  return meshManager.getMeshID(meshName);
 }
 
-Model &ResourceManager::getModel(int resourceID) {
-  return modelManager.getModel(resourceID);
+Mesh &ResourceManager::getMesh(int resourceID) {
+  return meshManager.getMesh(resourceID);
 }
 
 void ResourceManager::loadTextures(std::vector<std::string> &textureNames) {

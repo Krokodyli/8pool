@@ -1,10 +1,10 @@
 #pragma once
 
-#include "glad.h"
-#include "glfw.h"
+#include "../../includes/glad.h"
+#include "../../includes/glfw.h"
 #include <vector>
 
-class Model {
+class Mesh {
 private:
   unsigned int vao;
   unsigned int vbo;
@@ -27,10 +27,10 @@ private:
   void loadIndexData(std::vector<unsigned int> &indexData);
 
 public:
-  Model(std::vector<float> &vertexData);
-  Model(std::vector<float> &vertexData, std::vector<unsigned int> &indexData);
-  Model(const Model &r) = delete;
-  ~Model();
+  Mesh(std::vector<float> &vertexData);
+  Mesh(std::vector<float> &vertexData, std::vector<unsigned int> &indexData);
+  Mesh(const Mesh &r) = delete;
+  ~Mesh();
 
   unsigned int getID();
   void bind();

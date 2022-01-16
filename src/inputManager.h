@@ -1,6 +1,6 @@
 #pragma once
 
-#include "glfw.h"
+#include "includes/glfw.h"
 #include <unordered_map>
 
 class InputManager {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "modelManager.h"
+#include "meshManager.h"
 #include "shaderManager.h"
 #include "textureManager.h"
 #include <string>
@@ -10,14 +10,14 @@ class ResourceManager {
 private:
   TextureManager textureManager;
   ShaderManager shaderManager;
-  ModelManager modelManager;
+  MeshManager meshManager;
 
 public:
-  void addModels(
-      std::unordered_map<std::string, std::unique_ptr<Model>> &modelsToStore);
+  void addMeshes(
+      std::unordered_map<std::string, std::unique_ptr<Mesh>> &meshesToStore);
 
-  int getModelID(std::string modelName);
-  Model &getModel(int resourceID);
+  int getMeshID(std::string meshName);
+  Mesh &getMesh(int resourceID);
 
   void loadTextures(std::vector<std::string> &textureNames);
   void loadShaders(std::vector<std::string> &shaderNames);

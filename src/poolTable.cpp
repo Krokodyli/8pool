@@ -7,7 +7,7 @@ PoolTable::PoolTable(ResourceManager &resourceManager, glm::vec3 initialPos) {
 }
 
 void PoolTable::load(ResourceManager &resourceManager) {
-  modelID = resourceManager.getModelID("poolTable");
+  meshID = resourceManager.getMeshID("poolTable");
   textureID = resourceManager.getTextureID("poolTable.png");
 }
 

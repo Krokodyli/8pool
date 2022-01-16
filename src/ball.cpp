@@ -6,7 +6,7 @@ Ball::Ball(ResourceManager &resourceManager, glm::vec3 initialPos) {
 }
 
 void Ball::loadResources(ResourceManager &resourceManager) {
-  modelID = resourceManager.getModelID("ball");
+  meshID = resourceManager.getMeshID("ball");
   textureID = resourceManager.getTextureID("sphere.png");
 }
 

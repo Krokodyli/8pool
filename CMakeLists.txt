@@ -76,28 +76,28 @@ add_custom_target(texturesLink ALL COMMAND ${CMAKE_COMMAND} -E create_symlink ${
 set(CMAKE_BUILD_TYPE Debug)
 add_executable(
   game
-  src/main.cpp
-  src/window.cpp
-  src/shader.cpp
-  src/camera.cpp
-  src/model.cpp
-  src/renderer.cpp
-  src/glfwInstance.cpp
-  src/filesystemHelper.cpp
   src/logger/logger.cpp
-  src/inputManager.cpp
-  src/meshes/cuboidMesh.cpp
-  src/meshes/sphereMesh.cpp
-  src/texture.cpp
-  src/textureLoader.cpp
+  src/poolTable.cpp
+  src/camera.cpp
+  src/physicalObject.cpp
+  src/resourceManager/resourceManager.cpp
   src/resourceManager/textureManager.cpp
   src/resourceManager/shaderManager.cpp
-  src/resourceManager/resourceManager.cpp
-  src/resourceManager/modelManager.cpp
+  src/resourceManager/meshManager.cpp
+  src/renderer.cpp
+  src/window.cpp
+  src/filesystemHelper.cpp
+  src/main.cpp
+  src/shader.cpp
   src/ball.cpp
-  src/physicalObject.cpp
   src/drawable.cpp
-  src/poolTable.cpp
+  src/glfwInstance.cpp
+  src/model/mesh/sphereMeshGen.cpp
+  src/model/mesh/mesh.cpp
+  src/model/mesh/cuboidMeshGen.cpp
+  src/model/texture/textureLoader.cpp
+  src/model/texture/texture.cpp
+  src/inputManager.cpp
 )
 
 target_link_libraries(game glfw glm glad)

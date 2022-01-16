@@ -1,8 +1,8 @@
 #pragma once
 
-#include "filesystemHelper.h"
-#include "glad.h"
-#include "glfw.h"
+#include "../../filesystemHelper.h"
+#include "../../includes/glad.h"
+#include "../../includes/glfw.h"
 #include "textureLoader.h"
 #include <string>
 

@@ -1,11 +1,11 @@
 #pragma once
 
-#include "../glm.h"
-#include "mesh.h"
+#include "../../includes/glm.h"
+#include "meshGenerator.h"
 #include <math.h>
 #include <memory>
 
-class SphereMesh : public Mesh {
+class SphereMeshGenerator : public MeshGenerator {
 private:
   std::vector<float> vertexData;
   std::vector<unsigned int> indexData;
@@ -24,7 +24,7 @@ private:
   void addVertexToVertexData(glm::vec3 vertex, bool offsetTexture);
 
 public:
-  SphereMesh(float radius, unsigned int precision = 4);
+  SphereMeshGenerator(float radius, unsigned int precision = 4);
 
-  std::unique_ptr<Model> generateModel();
+  std::unique_ptr<Mesh> getMesh();
 };

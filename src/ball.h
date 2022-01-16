@@ -1,6 +1,6 @@
 #pragma once
 
-#include "glm.h"
+#include "includes/glm.h"
 #include "resourceManager/resourceManager.h"
 #include "physicalObject.h"
 #include "drawable.h"

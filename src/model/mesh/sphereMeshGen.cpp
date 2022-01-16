@@ -1,15 +1,15 @@
-#include "sphereMesh.h"
+#include "sphereMeshGen.h"
 
-SphereMesh::SphereMesh(float radius, unsigned int precision)
+SphereMeshGenerator::SphereMeshGenerator(float radius, unsigned int precision)
     : radius(radius), precision(precision) {
   generateMesh();
 }
 
-std::unique_ptr<Model> SphereMesh::generateModel() {
-  return std::make_unique<Model>(vertexData, indexData);
+std::unique_ptr<Mesh> SphereMeshGenerator::getMesh() {
+  return std::make_unique<Mesh>(vertexData, indexData);
 }
 
-void SphereMesh::generateMesh() {
+void SphereMeshGenerator::generateMesh() {
   std::vector<glm::vec3> vertices;
   generateInitialMesh(vertices);
   for (int i = 0; i < precision; i++) {
@@ -21,7 +21,8 @@ void SphereMesh::generateMesh() {
   generateVertexData(vertices);
 }
 
-void SphereMesh::generateInitialMesh(std::vector<glm::vec3> &vertices) {
+void SphereMeshGenerator::generateInitialMesh(
+    std::vector<glm::vec3> &vertices) {
   float r = radius;
   float r2 = radius * sqrt(2.0f) / 2.0f;
   // generating upper pyramid vertices
@@ -39,8 +40,8 @@ void SphereMesh::generateInitialMesh(std::vector<glm::vec3> &vertices) {
   }
 }
 
-void SphereMesh::divideTriangle(std::vector<glm::vec3> &vertices,
-                                unsigned int indicesOffset) {
+void SphereMeshGenerator::divideTriangle(std::vector<glm::vec3> &vertices,
+                                         unsigned int indicesOffset) {
   /*
     triangle division
 
@@ -82,7 +83,7 @@ void SphereMesh::divideTriangle(std::vector<glm::vec3> &vertices,
   indexData.push_back(bcPos);
 }
 
-void SphereMesh::generateVertexData(std::vector<glm::vec3> &vertices) {
+void SphereMeshGenerator::generateVertexData(std::vector<glm::vec3> &vertices) {
   vertexData.reserve(vertices.size() * 8 * 2);
   indexData.reserve(indexData.size() * 2);
 
@@ -99,7 +100,8 @@ void SphereMesh::generateVertexData(std::vector<glm::vec3> &vertices) {
     indexData.push_back(indexData[i] + vertices.size());
 }
 
-void SphereMesh::addVertexToVertexData(glm::vec3 vertex, bool offsetTexture) {
+void SphereMeshGenerator::addVertexToVertexData(glm::vec3 vertex,
+                                                bool offsetTexture) {
   // vertex position
   vertexData.push_back(vertex.x);
   vertexData.push_back(vertex.y);

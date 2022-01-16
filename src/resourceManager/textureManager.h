@@ -4,7 +4,7 @@
 #include <vector>
 #include "../filesystemHelper.h"
 #include "../logger/logger.h"
-#include "../texture.h"
+#include "../model/texture/texture.h"
 
 class TextureManager {
 private:

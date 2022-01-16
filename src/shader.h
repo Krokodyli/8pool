@@ -5,7 +5,7 @@
 #include <sstream>
 #include "../build/_deps/glad-build/include/glad/glad.h"
 #include <GLFW/glfw3.h>
-#include "glm.h"
+#include "includes/glm.h"
 
 #define INFO_LOG_SIZE 1024
 

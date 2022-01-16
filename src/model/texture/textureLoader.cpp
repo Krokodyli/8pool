@@ -1,7 +1,7 @@
 #include "textureLoader.h"
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "../build/_deps/stb/stb_image.h"
+#include "../../includes/stb.h"
 
 TextureLoader::~TextureLoader() { dispose(); }
 
