@@ -64,7 +64,7 @@ endif()
 
 ###############################################################################
 
-project(TrainSceneOpenGL)
+project(8pool)
 
 # set binary file output and create symlink to resources
 get_filename_component(ROOT_DIR ${CMAKE_BINARY_DIR} DIRECTORY)
