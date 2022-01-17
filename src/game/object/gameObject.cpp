@@ -1,6 +1,6 @@
 #include "gameObject.h"
 
-void GameObject::update(float dt, InputManager &inputManager) { }
+void GameObject::update(float dt, InputManager &inputManager) {}
 
 glm::mat4 GameObject::getTransformation() {
   glm::mat4 rotationMat = glm::toMat4(rotation);
@@ -8,10 +8,11 @@ glm::mat4 GameObject::getTransformation() {
   return translationMat * rotationMat;
 }
 
-Model &GameObject::getModel() {
-  return model;
+bool GameObject::isVisible() { return false; }
+Model &GameObject::getModel() { return model; }
+
+Light *GameObject::getObjectLight() {
+  return nullptr;
 }
 
-bool GameObject::shouldCleanUp() {
-  return cleanUpFlag;
-}
+bool GameObject::shouldCleanUp() { return cleanUpFlag; }

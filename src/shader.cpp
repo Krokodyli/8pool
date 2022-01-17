@@ -62,6 +62,11 @@ void Shader::bindUniformMat4f(const char *name, const glm::mat4 &mat) {
   glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat));
 }
 
+void Shader::bindUniformVec2f(const char *name, const glm::vec2 &vec) {
+  unsigned int location = glGetUniformLocation(id, name);
+  glUniform2f(location, vec.x, vec.y);
+}
+
 void Shader::bindUniformVec3f(const char *name, const glm::vec3 &vec) {
   unsigned int location = glGetUniformLocation(id, name);
   glUniform3f(location, vec.x, vec.y, vec.z);
@@ -77,11 +82,44 @@ void Shader::bindUniformFloat(const char *name, float value) {
   glUniform1f(location, value);
 }
 
+void Shader::bindUniformUint(const char *name, unsigned int value) {
+  unsigned int location = glGetUniformLocation(id, name);
+  glUniform1ui(location, value);
+}
+
 void Shader::bindMaterial(ModelMaterial &material) {
   bindUniformVec3f("material.ambient", material.ambient);
   bindUniformVec3f("material.diffuse", material.diffuse);
   bindUniformVec3f("material.specular", material.specular);
   bindUniformFloat("material.shininess", material.shininess);
+}
+
+void Shader::bindLights(std::vector<Light *> &lights) {
+  int i;
+  for(i = 0; i < lights.size() && i < maxLightSources; i++) {
+    auto lightLabel = "lights[" + std::to_string(i) + "]";
+    auto typeLabel = lightLabel + ".type";
+    bindUniformUint(typeLabel.c_str(), (unsigned int)lights[i]->lightType);
+    auto posLabel = lightLabel + ".position";
+    bindUniformVec3f(posLabel.c_str(), lights[i]->position);
+    auto dirLabel = lightLabel + ".direction";
+    bindUniformVec3f(posLabel.c_str(), lights[i]->direction);
+    auto cutOffLabel = lightLabel + ".cutOff";
+    bindUniformVec2f(cutOffLabel.c_str(), lights[i]->cutOff);
+    auto attenuationLabel = lightLabel + ".attenuation";
+    bindUniformVec3f(posLabel.c_str(), lights[i]->attenuation);
+    auto ambient = lightLabel + ".ambient";
+    bindUniformVec3f(posLabel.c_str(), lights[i]->attenuation);
+    auto diffuse = lightLabel + ".diffuse";
+    bindUniformVec3f(posLabel.c_str(), lights[i]->diffuse);
+    auto specular = lightLabel + ".specular";
+    bindUniformVec3f(posLabel.c_str(), lights[i]->specular);
+  }
+  for(; i < maxLightSources; i++) {
+    auto lightLabel = "lights[" + std::to_string(i) + "]";
+    auto typeLabel = lightLabel + ".type";
+    bindUniformUint(typeLabel.c_str(), 0);
+  }
 }
 
 bool Shader::linkShaders(unsigned int vertexShader, unsigned int fragmentShader,

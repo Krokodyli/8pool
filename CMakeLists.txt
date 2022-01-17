@@ -85,7 +85,9 @@ add_executable(
   src/game/object/poolTable.cpp
   src/game/object/physicalObject.cpp
   src/game/object/gameObject.cpp
+  src/game/object/lamp.cpp
   src/game/object/ball.cpp
+  src/scene/mainScene.cpp
   src/resourceManager/resourceManager.cpp
   src/resourceManager/textureManager.cpp
   src/resourceManager/shaderManager.cpp
@@ -104,7 +106,6 @@ add_executable(
   src/model/texture/texture.cpp
   src/model/model.cpp
   src/inputManager.cpp
-  src/scene/mainScene.cpp
 )
 
 target_link_libraries(game glfw glm glad)

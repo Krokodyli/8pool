@@ -16,9 +16,9 @@ void MainScene::init() {
   renderer.setCamera(&camera);
   // shaders
   {
-    std::vector<std::string> shaders = {"basic", "basic2"};
+    std::vector<std::string> shaders = {"noshading"};
     resourceManager.loadShaders(shaders);
-    resourceManager.useShader(renderer, "basic2");
+    resourceManager.useShader(renderer, "noshading");
   }
   // textures
   {
@@ -47,6 +47,10 @@ void MainScene::init() {
                   resourceManager.getTextureID("sphere.png"),
                   ModelMaterials::gold);
 
+  Model lampModel(resourceManager.getMeshID("ball"),
+                  glm::vec3(1.0f, 0.0f, 0.0f),
+                  ModelMaterials::gold);
+
   PoolTable table(tableModel, glm::vec3(0.0f, -0.05f, 0.0f));
   srand(time(0));
   for (int i = 0; i < 10; i++) {
@@ -62,6 +66,7 @@ void MainScene::init() {
         glm::vec3(xSpeed, 0.0f, zSpeed));
   }
   gameObjects.push_back(std::make_unique<PoolTable>(tableModel, glm::vec3(0.0f, -0.05f, 0.0f)));
+  gameObjects.push_back(std::make_unique<Lamp>(lampModel, glm::vec3(0.0, 3.0f, 0.0f)));
 }
 
 void MainScene::update(float dt) {
@@ -71,6 +76,14 @@ void MainScene::update(float dt) {
 }
 
 void MainScene::render() {
+  std::vector<Light*> lights;
+  for(auto &gameObject : gameObjects) {
+    auto light = gameObject->getObjectLight();
+    if(light != nullptr)
+      lights.push_back(light);
+  }
+  renderer.registerLights(lights);
+
   for (auto &gameObject : gameObjects)
     renderer.render(*gameObject, resourceManager);
 }

@@ -17,6 +17,7 @@ private:
 public:
   Renderer();
 
+  void registerLights(std::vector<Light*> &lights);
   void render(GameObject &object, ResourceManager &resourceManager);
 
   Shader *getShader();

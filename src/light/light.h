@@ -2,13 +2,15 @@
 
 #include "../includes/glm.h"
 
-enum LightSourceType {
-  point,
-  directional,
-  spotlight
+enum class LightType {
+  point = 1,
+  directional = 2,
+  spotlight = 3
 };
 
-struct LightSource {
+struct Light {
+  LightType lightType;
+
   glm::vec3 position;
   glm::vec3 direction;
 

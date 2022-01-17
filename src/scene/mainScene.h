@@ -2,10 +2,11 @@
 
 #include "../camera.h"
 #include "../game/object/ball.h"
+#include "../game/object/poolTable.h"
+#include "../game/object/lamp.h"
 #include "../keys.h"
 #include "../renderer.h"
 #include "../resourceManager/resourceManager.h"
-#include "../game/object/poolTable.h"
 #include "scene.h"
 
 class MainScene : public Scene {
@@ -14,7 +15,6 @@ private:
   Camera camera;
   Renderer renderer;
   std::unique_ptr<InputManager> inputManager;
-
 
   float yaw, pitch;
   float cameraSpeed = 6.00f;
