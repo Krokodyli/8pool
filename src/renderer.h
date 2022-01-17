@@ -1,7 +1,7 @@
 #pragma once
 
 #include "camera.h"
-#include "drawable.h"
+#include "game/object/gameObject.h"
 #include "model/mesh/mesh.h"
 #include "resourceManager/resourceManager.h"
 #include "shader.h"
@@ -17,7 +17,7 @@ private:
 public:
   Renderer();
 
-  void render(Drawable &drawable, ResourceManager &resourceManager);
+  void render(GameObject &object, ResourceManager &resourceManager);
 
   Shader *getShader();
   void setShader(Shader *newShader);

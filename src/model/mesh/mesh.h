@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../../includes/glad.h"
-#include "../../includes/glfw.h"
 #include <vector>
 
 class Mesh {

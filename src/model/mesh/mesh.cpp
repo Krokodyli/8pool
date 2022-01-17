@@ -1,4 +1,5 @@
 #include "mesh.h"
+#include "../../includes/glad.h"
 
 Mesh::Mesh(std::vector<float> &vertexData) {
   triangleCount = vertexData.size() / 8;

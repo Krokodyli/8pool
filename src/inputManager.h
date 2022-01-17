@@ -1,7 +1,7 @@
 #pragma once
 
-#include "includes/glfw.h"
 #include <unordered_map>
+#include "includes/glfw.h"
 
 class InputManager {
 private:

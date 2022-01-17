@@ -4,6 +4,10 @@ cmake_minimum_required(VERSION 3.11)
 
 include(FetchContent)
 
+if(EXISTS ${CMAKE_BINARY_DIR}/_deps)
+  set(FETCHCONTENT_FULLY_DISCONNECTED 1)
+endif()
+
 FetchContent_Declare(
       glfw
       GIT_REPOSITORY https://github.com/glfw/glfw
@@ -77,9 +81,11 @@ set(CMAKE_BUILD_TYPE Debug)
 add_executable(
   game
   src/logger/logger.cpp
-  src/poolTable.cpp
   src/camera.cpp
-  src/physicalObject.cpp
+  src/game/object/poolTable.cpp
+  src/game/object/physicalObject.cpp
+  src/game/object/gameObject.cpp
+  src/game/object/ball.cpp
   src/resourceManager/resourceManager.cpp
   src/resourceManager/textureManager.cpp
   src/resourceManager/shaderManager.cpp
@@ -89,14 +95,14 @@ add_executable(
   src/filesystemHelper.cpp
   src/main.cpp
   src/shader.cpp
-  src/ball.cpp
-  src/drawable.cpp
   src/glfwInstance.cpp
   src/model/mesh/sphereMeshGen.cpp
   src/model/mesh/mesh.cpp
   src/model/mesh/cuboidMeshGen.cpp
+  src/model/modelMaterial.cpp
   src/model/texture/textureLoader.cpp
   src/model/texture/texture.cpp
+  src/model/model.cpp
   src/inputManager.cpp
 )
 

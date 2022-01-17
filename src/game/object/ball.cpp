@@ -1,16 +1,11 @@
 #include "ball.h"
 
-Ball::Ball(ResourceManager &resourceManager, glm::vec3 initialPos) {
+Ball::Ball(Model model, glm::vec3 initialPos) {
+  this->model = model;
   initPhysicalObject(initialPos, ballMass);
-  loadResources(resourceManager);
 }
 
-void Ball::loadResources(ResourceManager &resourceManager) {
-  meshID = resourceManager.getMeshID("ball");
-  textureID = resourceManager.getTextureID("sphere.png");
-}
-
-void Ball::update(float dt) {
+void Ball::update(float dt, InputManager &inputManager) {
   angularVelocity = velocity / ballRadius;
   updatePhysicalObject(dt);
   auto tableBounds = glm::vec2(1.12f, 2.24f);

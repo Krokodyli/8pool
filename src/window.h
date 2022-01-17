@@ -7,12 +7,14 @@
 #include "model/mesh/cuboidMeshGen.h"
 #include "model/mesh/sphereMeshGen.h"
 #include <chrono>
-#include "includes/glfw.h"
+#include "model/modelMaterial.h"
 #include "glfwInstance.h"
 #include "inputManager.h"
 #include "keys.h"
 #include "renderer.h"
 #include "shader.h"
+#include "game/object/ball.h"
+#include "game/object/poolTable.h"
 #include <exception>
 #include <iostream>
 #include <stdexcept>

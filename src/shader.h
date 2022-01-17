@@ -1,11 +1,11 @@
 #pragma once
 
-#include <string>
+#include "includes/glad.h"
+#include "includes/glm.h"
+#include "model/modelMaterial.h"
 #include <fstream>
 #include <sstream>
-#include "../build/_deps/glad-build/include/glad/glad.h"
-#include <GLFW/glfw3.h>
-#include "includes/glm.h"
+#include <string>
 
 #define INFO_LOG_SIZE 1024
 
@@ -35,4 +35,7 @@ public:
   void bindUniformMat4f(const char *name, const glm::mat4 &mat);
   void bindUniformVec3f(const char *name, const glm::vec3 &mat);
   void bindUniformVec4f(const char *name, const glm::vec4 &mat);
+  void bindUniformFloat(const char *name, float value);
+
+  void bindMaterial(ModelMaterial &material);
 };

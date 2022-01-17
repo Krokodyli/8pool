@@ -6,24 +6,29 @@ Renderer::Renderer() {
   shader = nullptr;
 }
 
-void Renderer::render(Drawable &drawable, ResourceManager &resourceManager) {
-  Mesh &mesh = resourceManager.getMesh(drawable.getMeshID());
-  resourceManager.getTexture(drawable.getTextureID()).bind();
+void Renderer::render(GameObject &object, ResourceManager &resourceManager) {
+  auto &model = object.getModel();
+
+  auto &mesh = resourceManager.getMesh(model.getMeshID());
   bindMeshIfNecessary(mesh);
 
-  shader->bindUniformMat4f("model", drawable.getTransformation());
+  if(model.isTextured()) {
+    auto &texture = resourceManager.getTexture(model.getTextureID());
+    texture.bind();
+  }
+  else {
+    shader->bindUniformVec3f("color", model.getColor());
+  }
+
+  auto material = model.getMaterial();
+  shader->bindMaterial(material);
+
+  shader->bindUniformMat4f("model", object.getTransformation());
+
   shader->bindUniformMat4f("view", camera->getViewMat());
   shader->bindUniformMat4f("projection", camera->getProjectionMat());
 
-  shader->bindUniformVec3f("color", glm::vec3(1.0f, 1.0f, 1.0f));
   shader->bindUniformVec3f("viewPos", camera->getPosition());
-
-  glm::mat4 lightTrans = glm::mat4(1.0f);
-  lightTrans = glm::translate(lightTrans, glm::vec3(-3.0f, 0.0f, -2.0f));
-  lightTrans = glm::scale(lightTrans, glm::vec3(0.5f, 0.5f, 0.5f));
-  glm::vec3 lightPos =
-      glm::vec3(lightTrans * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
-  shader->bindUniformVec3f("lightPos", lightPos);
 
   if (mesh.hasIndexedVertices())
     glDrawElements(GL_TRIANGLES, mesh.getTriangleCount() * 3, GL_UNSIGNED_INT,

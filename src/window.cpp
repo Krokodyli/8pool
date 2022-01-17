@@ -1,7 +1,5 @@
 #include "window.h"
-#include "ball.h"
 #include "filesystemHelper.h"
-#include "poolTable.h"
 
 Window::Window(int width, int height, std::string title)
     : width(width), height(height), title(title),
@@ -46,10 +44,18 @@ void Window::runLoop() {
   }
   resourceManager.addMeshes(meshes);
 
+  Model tableModel(resourceManager.getMeshID("poolTable"),
+                   resourceManager.getTextureID("poolTable.png"),
+                   ModelMaterials::gold);
+
+  Model ballModel(resourceManager.getMeshID("ball"),
+                  resourceManager.getTextureID("sphere.png"),
+                  ModelMaterials::gold);
+
   // key bindings
   registerKeys();
 
-  PoolTable table(resourceManager, glm::vec3(0.0f, -0.05f, 0.0f));
+  PoolTable table(tableModel, glm::vec3(0.0f, -0.05f, 0.0f));
   std::vector<Ball> balls;
   srand(time(0));
   for (int i = 0; i < 10; i++) {
@@ -60,7 +66,7 @@ void Window::runLoop() {
       PoolTable::poolTableLength / 2.0f;
     float xSpeed = (rand()% 5 - 2) * 0.2f;
     float zSpeed = (rand() % 5 - 2) * 0.2f;
-    balls.push_back(Ball(resourceManager, pos));
+    balls.push_back(Ball(ballModel, pos));
     balls[balls.size() - 1].setVelocity(glm::vec3(xSpeed, 0.0f, zSpeed));
   }
 
@@ -77,7 +83,7 @@ void Window::runLoop() {
     processInput(dt);
 
     for (auto &ball : balls)
-      ball.update(dt);
+      ball.update(dt, inputManager);
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

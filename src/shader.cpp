@@ -72,6 +72,18 @@ void Shader::bindUniformVec4f(const char *name, const glm::vec4 &vec) {
   glUniform4f(location, vec.x, vec.y, vec.z, vec.w);
 }
 
+void Shader::bindUniformFloat(const char *name, float value) {
+  unsigned int location = glGetUniformLocation(id, name);
+  glUniform1f(location, value);
+}
+
+void Shader::bindMaterial(ModelMaterial &material) {
+  bindUniformVec3f("material.ambient", material.ambient);
+  bindUniformVec3f("material.diffuse", material.diffuse);
+  bindUniformVec3f("material.specular", material.specular);
+  bindUniformFloat("material.shininess", material.shininess);
+}
+
 bool Shader::linkShaders(unsigned int vertexShader, unsigned int fragmentShader,
                          unsigned int &shaderProgram) {
   shaderProgram = glCreateProgram();

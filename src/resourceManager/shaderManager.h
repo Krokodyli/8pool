@@ -1,11 +1,11 @@
 #pragma once
 
-#include <string>
-#include <vector>
-#include <unordered_map>
-#include "../shader.h"
 #include "../filesystemHelper.h"
 #include "../logger/logger.h"
+#include "../shader.h"
+#include <string>
+#include <unordered_map>
+#include <vector>
 
 class Renderer;
 
@@ -18,6 +18,7 @@ private:
   std::string currentShader;
 
   void loadShader(std::string &shaderName);
+
 public:
   void load(std::vector<std::string> &shadersToLoad);
 

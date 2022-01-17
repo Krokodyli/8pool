@@ -12,7 +12,7 @@ int MeshManager::getMeshID(std::string meshName) {
   auto mesh = nameToResourceID.find(meshName);
 
   if (mesh == nameToResourceID.end()) {
-    Logger::logCriticalError("Could not get texture ID");
+    Logger::logCriticalError("Could not get mesh ID");
     return -1;
   } else {
     return mesh->second;
