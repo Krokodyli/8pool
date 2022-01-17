@@ -1,6 +1,6 @@
 #include "inputManager.h"
 
-InputManager::InputManager() {
+InputManager::InputManager(GLFWwindow *glWindow) : glWindow(glWindow) {
   for(int i = 0; i <= maxKeyCode; i++) {
     keyStatus[i] = false;
     oldKeyStatus[i] = false;
@@ -16,11 +16,11 @@ bool InputManager::registerKey(int glfwCode, int keyCode) {
   return true;
 }
 
-void InputManager::init(GLFWwindow *glWindow) {
-  update(glWindow);
+void InputManager::init() {
+  update();
 }
 
-void InputManager::update(GLFWwindow *glWindow) {
+void InputManager::update() {
   for(const auto &entry : glfwKeyCodeToKeyCode) {
     oldKeyStatus[entry.second] = keyStatus[entry.second];
     bool keyDown = (glfwGetKey(glWindow, entry.first) == GLFW_PRESS);

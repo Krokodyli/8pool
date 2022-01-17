@@ -26,9 +26,3 @@ void Ball::update(float dt, InputManager &inputManager) {
   }
   if(pyk) velocity *= -1;
 }
-
-glm::mat4 Ball::getTransformation() {
-  glm::mat4 rotationMat = glm::toMat4(rotation);
-  auto translationMat = glm::translate(glm::mat4(1.0f), position);
-  return translationMat * rotationMat;
-}

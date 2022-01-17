@@ -5,6 +5,8 @@
 
 class InputManager {
 private:
+  GLFWwindow *glWindow;
+
   const static int maxKeyCode = 256;
   std::unordered_map<int, int> glfwKeyCodeToKeyCode;
 
@@ -15,12 +17,12 @@ private:
   double oldMouseX, oldMouseY;
 
 public:
-  InputManager();
+  InputManager(GLFWwindow *window);
 
   bool registerKey(int glfwCode, int keyCode);
 
-  void init(GLFWwindow *glWindow);
-  void update(GLFWwindow *glWindow);
+  void init();
+  void update();
 
   bool isKeyDown(int keyCode);
   bool isKeyPressed(int keyCode);

@@ -1,20 +1,11 @@
 #pragma once
 
-#include "camera.h"
 #include "includes/glad.h"
-#include "resourceManager/resourceManager.h"
-#include "model/texture/texture.h"
-#include "model/mesh/cuboidMeshGen.h"
-#include "model/mesh/sphereMeshGen.h"
 #include <chrono>
-#include "model/modelMaterial.h"
 #include "glfwInstance.h"
 #include "inputManager.h"
-#include "keys.h"
-#include "renderer.h"
-#include "shader.h"
-#include "game/object/ball.h"
-#include "game/object/poolTable.h"
+#include "scene/scene.h"
+#include "scene/mainScene.h"
 #include <exception>
 #include <iostream>
 #include <stdexcept>
@@ -28,23 +19,10 @@ private:
   std::string title;
   GLFWwindow *glWindow;
 
-  Camera camera;
-  ResourceManager resourceManager;
-  Renderer renderer;
-  InputManager inputManager;
-
-  float cameraSpeed = 6.00f;
-  glm::vec3 cameraPos;
-  glm::vec3 cameraDirection;
-  float yaw, pitch;
-  bool isMoving = true, wasPressed = false;
-
   void createWindow();
   void loadGlad();
   void setUpGLFW();
   void setUpOpenGL();
-  void registerKeys();
-  void processInput(float dt);
 
 public:
   Window(int width, int height, std::string title);

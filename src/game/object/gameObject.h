@@ -3,8 +3,9 @@
 #include "../../includes/glm.h"
 #include "../../inputManager.h"
 #include "../../model/model.h"
+#include "physicalObject.h"
 
-class GameObject {
+class GameObject : public PhysicalObject {
 protected:
   Model model;
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "includes/glm.h"
+#include "../includes/glm.h"
 
 enum LightSourceType {
   point,

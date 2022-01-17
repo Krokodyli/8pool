@@ -4,7 +4,7 @@
 #include "physicalObject.h"
 #include "../../model/model.h"
 
-class PoolTable : public GameObject, public PhysicalObject {
+class PoolTable : public GameObject {
 private:
 public:
   static constexpr float poolTableWidth = 1.12f;

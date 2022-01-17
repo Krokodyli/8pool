@@ -104,6 +104,7 @@ add_executable(
   src/model/texture/texture.cpp
   src/model/model.cpp
   src/inputManager.cpp
+  src/scene/mainScene.cpp
 )
 
 target_link_libraries(game glfw glm glad)
