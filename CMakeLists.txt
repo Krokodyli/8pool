@@ -107,6 +107,7 @@ add_executable(
   src/model/model.cpp
   src/inputManager.cpp
   src/logger/timer.cpp
+  src/game/object/prop.cpp
 )
 
 target_link_libraries(game glfw glm glad)

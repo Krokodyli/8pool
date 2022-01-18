@@ -11,8 +11,12 @@ ModelMaterial::ModelMaterial(glm::vec3 ambient, glm::vec3 diffuse,
 
 const ModelMaterial ModelMaterials::plastic = {
     glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.55f, 0.55f, 0.55f),
-    glm::vec3(0.7f, 0.7f, 0.7f), 32.0f};
+    glm::vec3(0.4f, 0.4f, 0.4f), 128.0f};
 
-const ModelMaterial ModelMaterials::fabric = {glm::vec3(0.00f, 0.00f, 0.0f),
-                                            glm::vec3(0.7f, 0.7f, 0.7f),
+const ModelMaterial ModelMaterials::blackPlastic = {
+    glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.55f, 0.55f, 0.55f),
+    glm::vec3(0.8f, 0.8f, 0.8f), 128.0f};
+
+const ModelMaterial ModelMaterials::fabric = {glm::vec3(0.1f, 0.1f, 0.1f),
+                                            glm::vec3(0.5f, 0.5f, 0.5f),
                                             glm::vec3(0.0f, 0.0f, 0.0f), 128.0f};

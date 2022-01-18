@@ -15,5 +15,6 @@ struct ModelMaterial {
 
 struct ModelMaterials {
   static const ModelMaterial plastic;
+  static const ModelMaterial blackPlastic;
   static const ModelMaterial fabric;
 };

@@ -14,12 +14,17 @@ void PhysicalObject::updatePhysicalObject(float dt) {
   velocity += acceleration * dt;
   position += velocity * dt;
 
-  if(angularVelocity != glm::vec3(0.0f)) {
+  if (angularVelocity != glm::vec3(0.0f)) {
     auto axis = glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), angularVelocity);
     axis = glm::normalize(axis);
     auto angle = dt * glm::length(angularVelocity);
     rotation = rotation * glm::angleAxis(angle, axis);
   }
+}
+
+glm::vec3 PhysicalObject::getPosition() { return position; }
+void PhysicalObject::setPosition(glm::vec3 newPosition) {
+  position = newPosition;
 }
 
 glm::vec3 PhysicalObject::getVelocity() { return velocity; }

@@ -42,7 +42,7 @@ void Window::runLoop() {
 
     scene->update(dt);
 
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(0.3176f, 0.4431f, 0.8196f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     scene->render();

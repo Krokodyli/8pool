@@ -2,8 +2,9 @@
 
 #include "../camera.h"
 #include "../game/object/ball.h"
-#include "../game/object/poolTable.h"
 #include "../game/object/lamp.h"
+#include "../game/object/poolTable.h"
+#include "../game/object/prop.h"
 #include "../keys.h"
 #include "../renderer.h"
 #include "../resourceManager/resourceManager.h"
@@ -21,9 +22,12 @@ private:
   glm::vec3 cameraPos;
   glm::vec3 cameraDirection;
 
+  Lamp *lamp;
+
   std::vector<std::unique_ptr<GameObject>> gameObjects;
 
   void registerKeys();
+  void generateRoom();
   void processInput(float dt);
 
 public:

@@ -7,11 +7,12 @@ Lamp::Lamp(Model model, glm::vec3 initialPos) {
 }
 
 Light *Lamp::getObjectLight() {
+  light.position = position;
   return &light;
 }
 
 void Lamp::update(float dt, InputManager &inputManager) {
-  light.position = position;
+  updatePhysicalObject(dt);
 }
 
 void Lamp::initLight() {
