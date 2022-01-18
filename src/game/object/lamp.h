@@ -10,6 +10,7 @@ private:
 public:
   Lamp(Model model, glm::vec3 initialPos);
 
-  virtual Light *getObjectLight();
   virtual void update(float dt, InputManager &inputManager);
+
+  virtual std::vector<Light *> getModelLights();
 };

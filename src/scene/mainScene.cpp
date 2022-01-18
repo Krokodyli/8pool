@@ -16,7 +16,8 @@ void MainScene::init() {
   renderer.setCamera(&camera);
   // shaders
   {
-    std::vector<std::string> shaders = {"noshading", "phong"};
+    std::vector<std::string> shaders = {"noshading", "gourand", "phong",
+                                        "flat"};
     resourceManager.loadShaders(shaders);
     resourceManager.useShader(renderer, "phong");
   }
@@ -29,8 +30,8 @@ void MainScene::init() {
   // meshes
 
   float borderThickness = 0.05f;
-  float tableWidth = PoolTable::poolTableWidth;
-  float tableLength = PoolTable::poolTableLength;
+  float tableWidth = PoolTable::width;
+  float tableLength = PoolTable::length;
   float fabricThickness = 0.05f;
   float borderHeight = fabricThickness * 2 + 0.05f;
   float tableLegSize = 0.04f;
@@ -46,7 +47,7 @@ void MainScene::init() {
                                    tableLength + borderThickness * 2);
     CuboidMeshGenerator tableLeg(tableLegSize, tableHeight, tableLegSize);
 
-    SphereMeshGenerator ballMesh(0.0285f, 3);
+    SphereMeshGenerator ballMesh(0.0285f, 4);
 
     meshes["ball"] = ballMesh.getMesh();
     meshes["poolTable"] = tableMesh.getMesh();
@@ -57,7 +58,7 @@ void MainScene::init() {
   }
   resourceManager.addMeshes(meshes);
 
-  Model tableModel(resourceManager.getMeshID("poolTable"),
+  Model fabricModel(resourceManager.getMeshID("poolTable"),
                    resourceManager.getTextureID("poolTable.png"),
                    ModelMaterials::fabric);
 
@@ -68,66 +69,67 @@ void MainScene::init() {
   Model lampModel(resourceManager.getMeshID("ball"),
                   glm::vec3(1.0f, 1.0f, 1.0f), ModelMaterials::plastic);
 
-  Model tableSide1(resourceManager.getMeshID("tableSide1"),
+  Model tableSideXModel(resourceManager.getMeshID("tableSide1"),
                    glm::vec3(0.05f, 0.0f, 0.0f), ModelMaterials::blackPlastic);
 
-  Model tableSide2(resourceManager.getMeshID("tableSide2"),
+  Model tableSideZModel(resourceManager.getMeshID("tableSide2"),
                    glm::vec3(0.05f, 0.0f, 0.0f), ModelMaterials::blackPlastic);
 
-  Model tableSide3(resourceManager.getMeshID("tableSide3"),
+  Model tableSideYModel(resourceManager.getMeshID("tableSide3"),
                    glm::vec3(0.05f, 0.0f, 0.0f), ModelMaterials::blackPlastic);
 
-  Model tableLeg(resourceManager.getMeshID("tableLeg"),
+  Model tableLegModel(resourceManager.getMeshID("tableLeg"),
                  glm::vec3(0.05f, 0.0f, 0.0f), ModelMaterials::blackPlastic);
-
   generateRoom();
 
-  for (int i = 0; i < 4; i++) {
-    float xPos = (tableWidth + borderThickness) / 2.0f;
-    if (i % 2 == 1)
-      xPos *= -1;
-    float yPos = -tableHeight * 0.5f;
-    float zPos = (tableLength + borderThickness) / 2.0f;
+  auto table = std::make_unique<PoolTable>(fabricModel, tableSideXModel,
+                                           tableSideYModel, tableSideZModel,
+                                           tableLegModel, glm::vec3(0.0f));
+  gameObjects.push_back(std::move(table));
+  // for (int i = 0; i < 4; i++) {
+  //   float xPos = (tableWidth + borderThickness) / 2.0f;
+  //   if (i % 2 == 1)
+  //     xPos *= -1;
+  //   float yPos = -tableHeight * 0.5f;
+  //   float zPos = (tableLength + borderThickness) / 2.0f;
 
-    if (i / 2 == 1)
-      zPos *= -1;
-    gameObjects.push_back(
-        std::make_unique<Prop>(tableLeg, glm::vec3(xPos, yPos, zPos)));
-  }
+  //   if (i / 2 == 1)
+  //     zPos *= -1;
+  //   gameObjects.push_back(
+  //       std::make_unique<Prop>(tableLeg, glm::vec3(xPos, yPos, zPos)));
+  // }
 
-  gameObjects.push_back(std::make_unique<Prop>(
-      tableSide1,
-      glm::vec3(0.0f, 0.0f, (tableLength + borderThickness) * 0.5f)));
-  gameObjects.push_back(std::make_unique<Prop>(
-      tableSide1,
-      glm::vec3(0.0f, 0.0f, -(tableLength + borderThickness) * 0.5f)));
+  // gameObjects.push_back(std::make_unique<Prop>(
+  //     tableSide1,
+  //     glm::vec3(0.0f, 0.0f, (tableLength + borderThickness) * 0.5f)));
+  // gameObjects.push_back(std::make_unique<Prop>(
+  //     tableSide1,
+  //     glm::vec3(0.0f, 0.0f, -(tableLength + borderThickness) * 0.5f)));
 
-  gameObjects.push_back(std::make_unique<Prop>(
-      tableSide2,
-      glm::vec3((tableWidth + borderThickness) * 0.5f, 0.0f, 0.0f)));
-  gameObjects.push_back(std::make_unique<Prop>(
-      tableSide2,
-      glm::vec3(-(tableWidth + borderThickness) * 0.5f, 0.0f, 0.0f)));
+  // gameObjects.push_back(std::make_unique<Prop>(
+  //     tableSide2,
+  //     glm::vec3((tableWidth + borderThickness) * 0.5f, 0.0f, 0.0f)));
+  // gameObjects.push_back(std::make_unique<Prop>(
+  //     tableSide2,
+  //     glm::vec3(-(tableWidth + borderThickness) * 0.5f, 0.0f, 0.0f)));
 
-  gameObjects.push_back(std::make_unique<Prop>(
-      tableSide3, glm::vec3(0.0f, -borderThickness * 3.0f / 2.0f, 0.0f)));
+  // gameObjects.push_back(std::make_unique<Prop>(
+  //     tableSide3, glm::vec3(0.0f, -borderThickness * 3.0f / 2.0f, 0.0f)));
 
-  PoolTable table(tableModel, glm::vec3(0.0f, -0.05f, 0.0f));
+  // PoolTable table(tableModel, glm::vec3(0.0f, -0.05f, 0.0f));
   srand(time(0));
   for (int i = 0; i < 10; i++) {
     auto pos = glm::vec3(0.0f, Ball::ballRadius, 0.0f);
-    pos.x = (rand() % 100 / 100.0f) * PoolTable::poolTableWidth -
-            PoolTable::poolTableWidth / 2.0f;
-    pos.z = (rand() % 100 / 100.0f) * PoolTable::poolTableLength -
-            PoolTable::poolTableLength / 2.0f;
+    pos.x = (rand() % 100 / 100.0f) * PoolTable::width -
+            PoolTable::width / 2.0f;
+    pos.z = (rand() % 100 / 100.0f) * PoolTable::length -
+            PoolTable::length / 2.0f;
     float xSpeed = (rand() % 5 - 2) * 0.2f;
     float zSpeed = (rand() % 5 - 2) * 0.2f;
     gameObjects.push_back(std::make_unique<Ball>(ballModel, pos));
     gameObjects[gameObjects.size() - 1]->setVelocity(
         glm::vec3(xSpeed, 0.0f, zSpeed));
   }
-  gameObjects.push_back(
-      std::make_unique<PoolTable>(tableModel, glm::vec3(0.0f, -0.05f, 0.0f)));
   auto mainLamp =
       std::make_unique<Lamp>(lampModel, glm::vec3(1.0f, 2.0f, 0.0f));
   lamp = mainLamp.get();
@@ -154,8 +156,8 @@ void MainScene::render() {
   renderer.prepareView();
   std::vector<Light *> lights;
   for (auto &gameObject : gameObjects) {
-    auto light = gameObject->getObjectLight();
-    if (light != nullptr)
+    auto modelLights = gameObject->getModelLights();
+    for(auto light : modelLights)
       lights.push_back(light);
   }
   renderer.registerLights(lights);
@@ -180,8 +182,14 @@ void MainScene::processInput(float dt) {
                      glm::cross(cameraDirection, glm::vec3(0.0f, 1.0f, 0.0f))) *
                  cameraSpeed * dt / 2.0f;
 
-  if (inputManager->isKeyPressed(KEY_ACTION2))
-    resourceManager.toggleShader(renderer);
+  if (inputManager->isKeyPressed(KEY_SHADER1))
+    resourceManager.useShader(renderer, "phong");
+  else if (inputManager->isKeyPressed(KEY_SHADER2))
+    resourceManager.useShader(renderer, "gourand");
+  else if (inputManager->isKeyPressed(KEY_SHADER3))
+    resourceManager.useShader(renderer, "flat");
+  else if (inputManager->isKeyPressed(KEY_SHADER4))
+    resourceManager.useShader(renderer, "noshading");
 
   double sensivity = 0.1;
   double deltaX;
@@ -212,9 +220,10 @@ void MainScene::registerKeys() {
   inputManager->registerKey(GLFW_KEY_S, KEY_BACKWARD);
   inputManager->registerKey(GLFW_KEY_A, KEY_LEFT);
   inputManager->registerKey(GLFW_KEY_D, KEY_RIGHT);
-  inputManager->registerKey(GLFW_KEY_SPACE, KEY_ACTION1);
-  inputManager->registerKey(GLFW_KEY_F, KEY_ACTION2);
-  inputManager->registerKey(GLFW_KEY_E, KEY_ACTION3);
+  inputManager->registerKey(GLFW_KEY_1, KEY_SHADER1);
+  inputManager->registerKey(GLFW_KEY_2, KEY_SHADER2);
+  inputManager->registerKey(GLFW_KEY_3, KEY_SHADER3);
+  inputManager->registerKey(GLFW_KEY_4, KEY_SHADER4);
   inputManager->init();
 }
 

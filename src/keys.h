@@ -6,7 +6,8 @@ enum Keys {
   KEY_BACKWARD = 2,
   KEY_LEFT = 3,
   KEY_RIGHT = 4,
-  KEY_ACTION1 = 5,
-  KEY_ACTION2 = 6,
-  KEY_ACTION3 = 7
+  KEY_SHADER1 = 5,
+  KEY_SHADER2 = 6,
+  KEY_SHADER3 = 7,
+  KEY_SHADER4 = 8,
 };

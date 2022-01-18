@@ -1,14 +1,13 @@
 #include "lamp.h"
 
-Lamp::Lamp(Model model, glm::vec3 initialPos) {
-  this->model = model;
-  initPhysicalObject(initialPos, 1.0f);
+Lamp::Lamp(Model model, glm::vec3 initialPos)
+  : GameObject(model, initialPos) {
   initLight();
 }
 
-Light *Lamp::getObjectLight() {
+std::vector<Light*> Lamp::getModelLights() {
   light.position = position;
-  return &light;
+  return { &light };
 }
 
 void Lamp::update(float dt, InputManager &inputManager) {
@@ -17,8 +16,6 @@ void Lamp::update(float dt, InputManager &inputManager) {
 
 void Lamp::initLight() {
   light.lightType = LightType::point;
-
-  light.position = position;
 
   light.attenuation = glm::vec3(1.0f, 0.09f, 0.032f);
 

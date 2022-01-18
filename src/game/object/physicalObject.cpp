@@ -1,13 +1,11 @@
 #include "physicalObject.h"
 
-void PhysicalObject::initPhysicalObject(glm::vec3 initialPosition,
-                                        float initialMass) {
+void PhysicalObject::initPhysicalObject(glm::vec3 initialPosition) {
   position = initialPosition;
   velocity = glm::vec3(0.0f);
   acceleration = glm::vec3(0.0f);
   rotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
   angularVelocity = glm::vec3(0.0f);
-  mass = initialMass;
 }
 
 void PhysicalObject::updatePhysicalObject(float dt) {

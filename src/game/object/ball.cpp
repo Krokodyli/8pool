@@ -1,9 +1,7 @@
 #include "ball.h"
 
-Ball::Ball(Model model, glm::vec3 initialPos) {
-  this->model = model;
-  initPhysicalObject(initialPos, ballMass);
-}
+Ball::Ball(Model model, glm::vec3 initialPos)
+  : GameObject(model, initialPos) { }
 
 void Ball::update(float dt, InputManager &inputManager) {
   auto tableBounds = glm::vec2(1.12f, 2.24f);

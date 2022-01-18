@@ -11,8 +11,8 @@ protected:
   glm::vec3 position;
   float mass;
 public:
-  virtual void initPhysicalObject(glm::vec3 initialPos,
-                                  float initialMass);
+  virtual void initPhysicalObject(glm::vec3 initialPos);
+
   virtual void updatePhysicalObject(float dt);
 
   virtual glm::vec3 getPosition();

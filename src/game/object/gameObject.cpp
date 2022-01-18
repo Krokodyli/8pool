@@ -1,18 +1,22 @@
 #include "gameObject.h"
 
-void GameObject::update(float dt, InputManager &inputManager) {}
+GameObject::GameObject() { }
 
-glm::mat4 GameObject::getTransformation() {
+GameObject::GameObject(Model model, glm::vec3 initialPos) {
+  modelParts.push_back(model);
+  initPhysicalObject(initialPos);
+}
+
+void GameObject::update(float dt, InputManager &inputManager) {
+  updatePhysicalObject(dt);
+}
+
+std::vector<glm::mat4> GameObject::getTransformations() {
   glm::mat4 rotationMat = glm::toMat4(rotation);
   auto translationMat = glm::translate(glm::mat4(1.0f), position);
-  return translationMat * rotationMat;
+  return {translationMat * rotationMat};
 }
 
-bool GameObject::isVisible() { return false; }
-Model &GameObject::getModel() { return model; }
+std::vector<Model> &GameObject::getModelParts() { return modelParts; }
 
-Light *GameObject::getObjectLight() {
-  return nullptr;
-}
-
-bool GameObject::shouldCleanUp() { return cleanUpFlag; }
+std::vector<Light*> GameObject::getModelLights() { return { }; }

@@ -1,11 +1,18 @@
 #pragma once
 
-#include "physicalObject.h"
 #include "gameObject.h"
+#include "physicalObject.h"
 
 class Prop : public GameObject {
-public:
-  Prop(Model model, glm::vec3 initialPos);
+protected:
+  std::vector<glm::vec3> modelPartsPositions;
 
-  virtual void update(float dt, InputManager &inputManager);
+public:
+  Prop() = default;
+  Prop(Model model, glm::vec3 initialPos);
+  Prop(std::vector<Model> models, glm::vec3 positions);
+  Prop(std::vector<Model> modelParts, glm::vec3 initialPos,
+       std::vector<glm::vec3> partsRelativePositions);
+
+  virtual std::vector<glm::mat4> getTransformations();
 };

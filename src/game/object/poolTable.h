@@ -1,16 +1,23 @@
 #pragma once
 
-#include "gameObject.h"
-#include "physicalObject.h"
 #include "../../model/model.h"
+#include "prop.h"
+#include "physicalObject.h"
 
-class PoolTable : public GameObject {
+class PoolTable : public Prop {
 private:
-public:
-  static constexpr float poolTableWidth = 1.12f;
-  static constexpr float poolTableLength = 2.24f;
+  void initModels(Model fabricModel, Model tableSideX, Model tableSideY,
+                  Model tableSideZ, Model tableLeg);
 
-  PoolTable(Model model, glm::vec3 initialPos);
+public:
+  static constexpr float borderThickness = 0.05f;
+  static constexpr float width = 1.12f;
+  static constexpr float length = 2.24f;
+  static constexpr float topThickness = 0.05f;
+  static constexpr float legLength = 0.75f;
+
+  PoolTable(Model fabricModel, Model tableSideX, Model tableSideY,
+            Model tableSideZ, Model tableLeg, glm::vec3 initialPos);
 
   virtual glm::mat4 getTransformation();
 };
