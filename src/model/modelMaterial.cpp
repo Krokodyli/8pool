@@ -9,6 +9,10 @@ ModelMaterial::ModelMaterial(glm::vec3 ambient, glm::vec3 diffuse,
     : ambient(ambient), diffuse(diffuse), specular(specular),
       shininess(shininess) {}
 
-const ModelMaterial ModelMaterials::gold = {glm::vec3(1.0f, 1.0f, 1.0f),
-                                            glm::vec3(1.0f, 1.0f, 1.0f),
-                                            glm::vec3(1.0f, 1.0f, 1.0f), 1.0f};
+const ModelMaterial ModelMaterials::plastic = {
+    glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.55f, 0.55f, 0.55f),
+    glm::vec3(0.7f, 0.7f, 0.7f), 32.0f};
+
+const ModelMaterial ModelMaterials::fabric = {glm::vec3(0.00f, 0.00f, 0.0f),
+                                            glm::vec3(0.7f, 0.7f, 0.7f),
+                                            glm::vec3(0.0f, 0.0f, 0.0f), 128.0f};

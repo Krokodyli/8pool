@@ -16,9 +16,9 @@ void MainScene::init() {
   renderer.setCamera(&camera);
   // shaders
   {
-    std::vector<std::string> shaders = {"noshading"};
+    std::vector<std::string> shaders = {"noshading", "phong"};
     resourceManager.loadShaders(shaders);
-    resourceManager.useShader(renderer, "noshading");
+    resourceManager.useShader(renderer, "phong");
   }
   // textures
   {
@@ -41,15 +41,15 @@ void MainScene::init() {
 
   Model tableModel(resourceManager.getMeshID("poolTable"),
                    resourceManager.getTextureID("poolTable.png"),
-                   ModelMaterials::gold);
+                   ModelMaterials::fabric);
 
   Model ballModel(resourceManager.getMeshID("ball"),
                   resourceManager.getTextureID("sphere.png"),
-                  ModelMaterials::gold);
+                  ModelMaterials::plastic);
 
   Model lampModel(resourceManager.getMeshID("ball"),
-                  glm::vec3(1.0f, 0.0f, 0.0f),
-                  ModelMaterials::gold);
+                  glm::vec3(1.0f, 1.0f, 1.0f),
+                  ModelMaterials::plastic);
 
   PoolTable table(tableModel, glm::vec3(0.0f, -0.05f, 0.0f));
   srand(time(0));
@@ -66,7 +66,9 @@ void MainScene::init() {
         glm::vec3(xSpeed, 0.0f, zSpeed));
   }
   gameObjects.push_back(std::make_unique<PoolTable>(tableModel, glm::vec3(0.0f, -0.05f, 0.0f)));
-  gameObjects.push_back(std::make_unique<Lamp>(lampModel, glm::vec3(0.0, 3.0f, 0.0f)));
+  // gameObjects.push_back(std::make_unique<Lamp>(lampModel, glm::vec3(0.0, 2.0f, 0.0f)));
+  // gameObjects.push_back(std::make_unique<Lamp>(lampModel, glm::vec3(0.0, 1.0f, 0.0f)));
+  gameObjects.push_back(std::make_unique<Lamp>(lampModel, glm::vec3(0.0, 0.5f, 0.0f)));
 }
 
 void MainScene::update(float dt) {

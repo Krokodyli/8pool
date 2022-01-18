@@ -36,6 +36,7 @@ public:
   std::string getError();
   unsigned int getID();
 
+  void bindUniformMat3f(const char *name, const glm::mat3 &mat);
   void bindUniformMat4f(const char *name, const glm::mat4 &mat);
   void bindUniformVec2f(const char *name, const glm::vec2 &mat);
   void bindUniformVec3f(const char *name, const glm::vec3 &mat);

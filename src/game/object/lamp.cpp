@@ -15,10 +15,13 @@ void Lamp::update(float dt, InputManager &inputManager) {
 }
 
 void Lamp::initLight() {
-  light.position = position;
   light.lightType = LightType::point;
-  light.attenuation = glm::vec3(1.0, 0.7, 1.8);
-  light.ambient = glm::vec3(0.5f);
-  light.diffuse = glm::vec3(0.5f);
-  light.specular = glm::vec3(0.5f);
+
+  light.position = position;
+
+  light.attenuation = glm::vec3(1.0f, 0.00f, 0.0f);
+
+  light.ambient = glm::vec3(0.05f, 0.05f, 0.05f);
+  light.diffuse = glm::vec3(0.8f, 0.8f, 0.8f);
+  light.specular = glm::vec3(1.0f, 1.0f, 1.0f);
 }
