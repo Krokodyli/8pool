@@ -11,12 +11,14 @@ private:
   Camera *camera;
   Shader *shader;
 
-  unsigned int boundMesh;
+  int boundMesh;
+  int boundTexture;
 
   void bindMeshIfNecessary(Mesh &mesh);
 public:
   Renderer();
 
+  void prepareView();
   void registerLights(std::vector<Light*> &lights);
   void render(GameObject &object, ResourceManager &resourceManager);
 

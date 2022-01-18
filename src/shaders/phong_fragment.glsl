@@ -1,6 +1,6 @@
 #version 330 core
 
-#define NR_LIGHTS 10
+#define NR_LIGHTS 5
 
 struct Material {
   vec3 ambient;
@@ -77,13 +77,9 @@ vec3 calculatePointLight(Light light) {
   float distance = length(light.position - pos);
   float attenuation = 1.0 / (((distance * light.attenuation.z) + light.attenuation.y) * distance + light.attenuation.x);
 
-  vec3 ambient = light.ambient * uMaterial.ambient;
-  vec3 diffuse = light.diffuse * diff * uMaterial.diffuse;
-  vec3 specular = light.specular * spec * uMaterial.specular;
-
-  ambient *= attenuation;
-  diffuse *= attenuation;
-  specular *= attenuation;
+  vec3 ambient = light.ambient * uMaterial.ambient * attenuation;
+  vec3 diffuse = light.diffuse * diff * uMaterial.diffuse * attenuation;
+  vec3 specular = light.specular * spec * uMaterial.specular * attenuation;
 
   return (ambient + diffuse) * color + specular;
 }

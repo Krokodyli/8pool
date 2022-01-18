@@ -34,9 +34,9 @@ void SphereMeshGenerator::generateInitialMesh(
   // generating triangles
   for (int i = 0; i < 4; i++) {
     int j = (i + 1) % 4;
-    indexData.push_back(i + 1);
-    indexData.push_back(j + 1);
     indexData.push_back(0);
+    indexData.push_back(j + 1);
+    indexData.push_back(i + 1);
   }
 }
 
@@ -48,7 +48,7 @@ void SphereMeshGenerator::divideTriangle(std::vector<glm::vec3> &vertices,
             a
           /  \
          /    \
-        ac     bc
+        ac --- ab
        / \    / \
       /   \  /   \
      c-----cb-----b
@@ -96,8 +96,15 @@ void SphereMeshGenerator::generateVertexData(std::vector<glm::vec3> &vertices) {
     addVertexToVertexData(vertex, true);
   }
   int oldIndexDataSize = indexData.size();
-  for (int i = 0; i < oldIndexDataSize; i++)
-    indexData.push_back(indexData[i] + vertices.size());
+  for (int i = 0; i < oldIndexDataSize; i += 3) {
+    unsigned int a = indexData[i] + vertices.size();
+    unsigned int b = indexData[i+1] + vertices.size();
+    unsigned int c = indexData[i+2] + vertices.size();
+    // vertices have to be in clockwise
+    indexData.push_back(c);
+    indexData.push_back(b);
+    indexData.push_back(a);
+  }
 }
 
 void SphereMeshGenerator::addVertexToVertexData(glm::vec3 vertex,

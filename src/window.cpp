@@ -20,12 +20,25 @@ void Window::runLoop() {
   float lastTime;
   float time = glfwGetTime();
   int frames = 0;
+  int framesUnder16 = 0;
+  int framesUnder31 = 0;
+  int framesUnder46 = 0;
+  int framesUnder61 = 0;
 
   while (!glfwWindowShouldClose(glWindow)) {
     frames++;
     lastTime = time;
     time = glfwGetTime();
     float dt = time - lastTime;
+    int fps = (int)(1.0 / dt);
+    if(fps < 16)
+      framesUnder16++;
+    else if (fps < 31)
+      framesUnder31++;
+    else if (fps < 46)
+      framesUnder46++;
+    else if (fps < 61)
+      framesUnder61++;
 
     scene->update(dt);
 
@@ -38,6 +51,14 @@ void Window::runLoop() {
     glfwPollEvents();
   }
   std::cout << (float)frames / glfwGetTime() << std::endl;
+  std::cout << "frames <16: " <<  (float)framesUnder16/(float)frames << std::endl;
+  std::cout << "frames <31: " << (float)framesUnder31 / (float)frames << std::endl;
+  std::cout << "frames <46: " << (float)framesUnder46 / (float)frames
+            << std::endl;
+  std::cout << "frames <61: " << (float)framesUnder61 / (float)frames << std::endl;
+  auto rest = frames - framesUnder61 - framesUnder46 - framesUnder31 - framesUnder16;
+  std::cout << "frames >60: " << (float)rest/(float)frames
+            << std::endl;
 }
 
 void Window::createWindow() {
@@ -69,6 +90,8 @@ void Window::loadGlad() {
 void Window::setUpOpenGL() {
   glEnable(GL_DEPTH_TEST);
   glProvokingVertex(GL_FIRST_VERTEX_CONVENTION);
+  glEnable(GL_CULL_FACE);
+  glCullFace(GL_BACK);
 }
 
 void Window::setUpGLFW() {

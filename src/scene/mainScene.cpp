@@ -31,7 +31,7 @@ void MainScene::init() {
   {
     CuboidMeshGenerator cubeMesh;
     CuboidMeshGenerator tableMesh(1.12f, 0.10f, 2.24f);
-    SphereMeshGenerator ballMesh(0.0285f, 4);
+    SphereMeshGenerator ballMesh(0.0285f, 3);
 
     meshes["ball"] = ballMesh.getMesh();
     meshes["poolTable"] = tableMesh.getMesh();
@@ -42,6 +42,10 @@ void MainScene::init() {
   Model tableModel(resourceManager.getMeshID("poolTable"),
                    resourceManager.getTextureID("poolTable.png"),
                    ModelMaterials::fabric);
+
+  Model tableModel2(resourceManager.getMeshID("cube"),
+                    resourceManager.getTextureID("cube.png"),
+                    ModelMaterials::fabric);
 
   Model ballModel(resourceManager.getMeshID("ball"),
                   resourceManager.getTextureID("sphere.png"),
@@ -66,9 +70,11 @@ void MainScene::init() {
         glm::vec3(xSpeed, 0.0f, zSpeed));
   }
   gameObjects.push_back(std::make_unique<PoolTable>(tableModel, glm::vec3(0.0f, -0.05f, 0.0f)));
-  // gameObjects.push_back(std::make_unique<Lamp>(lampModel, glm::vec3(0.0, 2.0f, 0.0f)));
-  // gameObjects.push_back(std::make_unique<Lamp>(lampModel, glm::vec3(0.0, 1.0f, 0.0f)));
-  gameObjects.push_back(std::make_unique<Lamp>(lampModel, glm::vec3(0.0, 0.5f, 0.0f)));
+  gameObjects.push_back(
+      std::make_unique<PoolTable>(tableModel2, glm::vec3(0.0f, 2.0f, 0.0f)));
+  gameObjects.push_back(std::make_unique<Lamp>(lampModel, glm::vec3(0.0, 2.0f, 0.0f)));
+  gameObjects.push_back(std::make_unique<Lamp>(lampModel, glm::vec3(5.0, 1.0f, 0.0f)));
+  gameObjects.push_back(std::make_unique<Lamp>(lampModel, glm::vec3(-5.0, 0.5f, 0.0f)));
 }
 
 void MainScene::update(float dt) {
@@ -78,6 +84,7 @@ void MainScene::update(float dt) {
 }
 
 void MainScene::render() {
+  renderer.prepareView();
   std::vector<Light*> lights;
   for(auto &gameObject : gameObjects) {
     auto light = gameObject->getObjectLight();

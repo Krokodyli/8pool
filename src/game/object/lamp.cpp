@@ -19,7 +19,7 @@ void Lamp::initLight() {
 
   light.position = position;
 
-  light.attenuation = glm::vec3(1.0f, 0.00f, 0.0f);
+  light.attenuation = glm::vec3(1.0f, 0.09f, 0.032f);
 
   light.ambient = glm::vec3(0.05f, 0.05f, 0.05f);
   light.diffuse = glm::vec3(0.8f, 0.8f, 0.8f);
