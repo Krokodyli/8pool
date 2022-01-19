@@ -86,37 +86,7 @@ void MainScene::init() {
                                            tableSideYModel, tableSideZModel,
                                            tableLegModel, glm::vec3(0.0f));
   gameObjects.push_back(std::move(table));
-  // for (int i = 0; i < 4; i++) {
-  //   float xPos = (tableWidth + borderThickness) / 2.0f;
-  //   if (i % 2 == 1)
-  //     xPos *= -1;
-  //   float yPos = -tableHeight * 0.5f;
-  //   float zPos = (tableLength + borderThickness) / 2.0f;
 
-  //   if (i / 2 == 1)
-  //     zPos *= -1;
-  //   gameObjects.push_back(
-  //       std::make_unique<Prop>(tableLeg, glm::vec3(xPos, yPos, zPos)));
-  // }
-
-  // gameObjects.push_back(std::make_unique<Prop>(
-  //     tableSide1,
-  //     glm::vec3(0.0f, 0.0f, (tableLength + borderThickness) * 0.5f)));
-  // gameObjects.push_back(std::make_unique<Prop>(
-  //     tableSide1,
-  //     glm::vec3(0.0f, 0.0f, -(tableLength + borderThickness) * 0.5f)));
-
-  // gameObjects.push_back(std::make_unique<Prop>(
-  //     tableSide2,
-  //     glm::vec3((tableWidth + borderThickness) * 0.5f, 0.0f, 0.0f)));
-  // gameObjects.push_back(std::make_unique<Prop>(
-  //     tableSide2,
-  //     glm::vec3(-(tableWidth + borderThickness) * 0.5f, 0.0f, 0.0f)));
-
-  // gameObjects.push_back(std::make_unique<Prop>(
-  //     tableSide3, glm::vec3(0.0f, -borderThickness * 3.0f / 2.0f, 0.0f)));
-
-  // PoolTable table(tableModel, glm::vec3(0.0f, -0.05f, 0.0f));
   srand(time(0));
   for (int i = 0; i < 10; i++) {
     auto pos = glm::vec3(0.0f, Ball::ballRadius, 0.0f);
