@@ -2,6 +2,7 @@
 
 Lamp::Lamp(Model model, glm::vec3 initialPos)
   : GameObject(model, initialPos) {
+  this->modelParts[0].setLightSourceFlag(true);
   initLight();
 }
 
@@ -10,7 +11,7 @@ std::vector<Light*> Lamp::getModelLights() {
   return { &light };
 }
 
-void Lamp::update(float dt, InputManager &inputManager) {
+void Lamp::update(float dt) {
   updatePhysicalObject(dt);
 }
 

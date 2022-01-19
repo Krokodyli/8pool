@@ -3,7 +3,7 @@
 Ball::Ball(Model model, glm::vec3 initialPos)
   : GameObject(model, initialPos) { }
 
-void Ball::update(float dt, InputManager &inputManager) {
+void Ball::update(float dt) {
   auto tableBounds = glm::vec2(1.12f, 2.24f);
   if (position.x + ballRadius > tableBounds.x / 2.0f) {
     position.x = tableBounds.x / 2.0f - ballRadius;

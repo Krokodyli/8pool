@@ -1,30 +1,17 @@
 #include "mainScene.h"
+#include "../game/object/robot.h"
 #include "../model/mesh/cuboidMeshGen.h"
 #include "../model/mesh/sphereMeshGen.h"
 
 MainScene::MainScene(int width, int height,
                      std::unique_ptr<InputManager> &inputManager)
-    : camera(glm::radians(45.0f), (float)width / (float)height),
-      inputManager(std::move(inputManager)), cameraPos(0.0f, 0.0f, -3.0f) {
-  yaw = 90.f;
-  pitch = 0.0f;
-}
+  : controller(std::move(inputManager), (float)width/(float)height) { }
 
 void MainScene::init() {
-  registerKeys();
-
-  renderer.setCamera(&camera);
-  // shaders
-  {
-    std::vector<std::string> shaders = {"noshading", "gourand", "phong",
-                                        "flat"};
-    resourceManager.loadShaders(shaders);
-    resourceManager.useShader(renderer, "phong");
-  }
   // textures
   {
     std::vector<std::string> textures = {"sphere.png", "cube.png",
-                                         "poolTable.png"};
+                                         "poolTable.png", "robot.png"};
     resourceManager.loadTextures(textures);
   }
   // meshes
@@ -49,6 +36,13 @@ void MainScene::init() {
 
     SphereMeshGenerator ballMesh(0.0285f, 4);
 
+    CuboidMeshGenerator robotHead(Robot::headSize, Robot::headSize,
+                                  Robot::headSize);
+    CuboidMeshGenerator robotNose(Robot::noseThickness, Robot::noseThickness,
+                                  Robot::noseLength);
+
+    meshes["robotHead"] = robotHead.getMesh();
+    meshes["robotNose"] = robotNose.getMesh();
     meshes["ball"] = ballMesh.getMesh();
     meshes["poolTable"] = tableMesh.getMesh();
     meshes["tableSide1"] = tableSide1.getMesh();
@@ -58,9 +52,21 @@ void MainScene::init() {
   }
   resourceManager.addMeshes(meshes);
 
+  Model robotHeadModel(resourceManager.getMeshID("robotHead"),
+                       resourceManager.getTextureID("robot.png"),
+                       ModelMaterials::plastic);
+
+  Model robotNoseModel(resourceManager.getMeshID("robotNose"),
+                       glm::vec3(0.0f, 0.0f, 0.0f), ModelMaterials::plastic);
+
+  auto robot = std::make_unique<Robot>(robotHeadModel, robotNoseModel,
+                                       glm::vec3(3.0f, 1.0f, 0.0f));
+  controller.setRobot(robot.get());
+  gameObjects.push_back(std::move(robot));
+
   Model fabricModel(resourceManager.getMeshID("poolTable"),
-                   resourceManager.getTextureID("poolTable.png"),
-                   ModelMaterials::fabric);
+                    resourceManager.getTextureID("poolTable.png"),
+                    ModelMaterials::fabric);
 
   Model ballModel(resourceManager.getMeshID("ball"),
                   resourceManager.getTextureID("sphere.png"),
@@ -70,16 +76,20 @@ void MainScene::init() {
                   glm::vec3(1.0f, 1.0f, 1.0f), ModelMaterials::plastic);
 
   Model tableSideXModel(resourceManager.getMeshID("tableSide1"),
-                   glm::vec3(0.05f, 0.0f, 0.0f), ModelMaterials::blackPlastic);
+                        glm::vec3(0.05f, 0.0f, 0.0f),
+                        ModelMaterials::blackPlastic);
 
   Model tableSideZModel(resourceManager.getMeshID("tableSide2"),
-                   glm::vec3(0.05f, 0.0f, 0.0f), ModelMaterials::blackPlastic);
+                        glm::vec3(0.05f, 0.0f, 0.0f),
+                        ModelMaterials::blackPlastic);
 
   Model tableSideYModel(resourceManager.getMeshID("tableSide3"),
-                   glm::vec3(0.05f, 0.0f, 0.0f), ModelMaterials::blackPlastic);
+                        glm::vec3(0.05f, 0.0f, 0.0f),
+                        ModelMaterials::blackPlastic);
 
   Model tableLegModel(resourceManager.getMeshID("tableLeg"),
-                 glm::vec3(0.05f, 0.0f, 0.0f), ModelMaterials::blackPlastic);
+                      glm::vec3(0.05f, 0.0f, 0.0f),
+                      ModelMaterials::blackPlastic);
   generateRoom();
 
   auto table = std::make_unique<PoolTable>(fabricModel, tableSideXModel,
@@ -90,111 +100,48 @@ void MainScene::init() {
   srand(time(0));
   for (int i = 0; i < 10; i++) {
     auto pos = glm::vec3(0.0f, Ball::ballRadius, 0.0f);
-    pos.x = (rand() % 100 / 100.0f) * PoolTable::width -
-            PoolTable::width / 2.0f;
-    pos.z = (rand() % 100 / 100.0f) * PoolTable::length -
-            PoolTable::length / 2.0f;
-    float xSpeed = (rand() % 5 - 2) * 0.2f;
-    float zSpeed = (rand() % 5 - 2) * 0.2f;
-    gameObjects.push_back(std::make_unique<Ball>(ballModel, pos));
-    gameObjects[gameObjects.size() - 1]->setVelocity(
-        glm::vec3(xSpeed, 0.0f, zSpeed));
+    pos.x =
+        (rand() % 100 / 100.0f) * PoolTable::width - PoolTable::width / 2.0f;
+    pos.z =
+        (rand() % 100 / 100.0f) * PoolTable::length - PoolTable::length / 2.0f;
+    float xSpeed = (rand() % 3 + 1) * 0.2f * (rand()%2 == 0 ? 1 : -1);
+    float zSpeed = (rand() % 3 + 1) * 0.2f * (rand() % 2 == 0 ? 1 : -1);
+    auto ball = std::make_unique<Ball>(ballModel, pos);
+    if(i == 0)
+      controller.setFollowedBall(ball.get());
+    ball->setVelocity(glm::vec3(xSpeed, 0.0f, zSpeed));
+    gameObjects.push_back(std::move(ball));
   }
-  auto mainLamp =
-      std::make_unique<Lamp>(lampModel, glm::vec3(1.0f, 2.0f, 0.0f));
-  lamp = mainLamp.get();
-  gameObjects.push_back(std::move(mainLamp));
-  gameObjects.push_back(
-      std::make_unique<Lamp>(lampModel, glm::vec3(0.0, 2.0f, -0.5f)));
-  gameObjects.push_back(
-      std::make_unique<Lamp>(lampModel, glm::vec3(0.0, 2.0f, 0.5f)));
+
+  for(int i = 0; i < 3; i++) {
+    auto lamp = std::make_unique<Lamp>(lampModel, glm::vec3((i-1)*4.0f, 2.0f, 0.0f));
+    lamps[i] = lamp.get();
+    gameObjects.push_back(std::move(lamp));
+  }
 }
 
 void MainScene::update(float dt) {
-  processInput(dt);
+  controller.update(dt);
 
-  auto lampPos3 = lamp->getPosition();
-  auto lampPos = glm::vec2(lampPos3.x, lampPos3.z);
-  auto tangent = glm::vec2(lampPos.y, -lampPos.x);
-  lamp->setVelocity(glm::vec3(tangent.x, 0.0f, tangent.y));
+  updateLamp();
 
   for (auto &gameObject : gameObjects)
-    gameObject->update(dt, *inputManager);
+    gameObject->update(dt);
 }
 
 void MainScene::render() {
+  renderer.setCamera(controller.getCurrentCamera());
   renderer.prepareView();
   std::vector<Light *> lights;
   for (auto &gameObject : gameObjects) {
     auto modelLights = gameObject->getModelLights();
-    for(auto light : modelLights)
+    for (auto light : modelLights)
       lights.push_back(light);
   }
   renderer.registerLights(lights);
 
   for (auto &gameObject : gameObjects)
     renderer.render(*gameObject, resourceManager);
-}
-
-void MainScene::processInput(float dt) {
-  inputManager->update();
-
-  if (inputManager->isKeyDown(KEY_FORWARD))
-    cameraPos += cameraDirection * cameraSpeed * dt;
-  else if (inputManager->isKeyDown(KEY_BACKWARD))
-    cameraPos -= cameraDirection * cameraSpeed * dt;
-  else if (inputManager->isKeyDown(KEY_LEFT))
-    cameraPos -= glm::normalize(
-                     glm::cross(cameraDirection, glm::vec3(0.0f, 1.0f, 0.0f))) *
-                 cameraSpeed * dt / 2.0f;
-  else if (inputManager->isKeyDown(KEY_RIGHT))
-    cameraPos += glm::normalize(
-                     glm::cross(cameraDirection, glm::vec3(0.0f, 1.0f, 0.0f))) *
-                 cameraSpeed * dt / 2.0f;
-
-  if (inputManager->isKeyPressed(KEY_SHADER1))
-    resourceManager.useShader(renderer, "phong");
-  else if (inputManager->isKeyPressed(KEY_SHADER2))
-    resourceManager.useShader(renderer, "gourand");
-  else if (inputManager->isKeyPressed(KEY_SHADER3))
-    resourceManager.useShader(renderer, "flat");
-  else if (inputManager->isKeyPressed(KEY_SHADER4))
-    resourceManager.useShader(renderer, "noshading");
-
-  double sensivity = 0.1;
-  double deltaX;
-  double deltaY;
-  inputManager->getMouseDelta(deltaX, deltaY);
-  deltaX *= sensivity;
-  deltaY *= -sensivity;
-
-  yaw += deltaX;
-  pitch += deltaY;
-  if (pitch > 89.0f)
-    pitch = 89.0f;
-  if (pitch < -89.0f)
-    pitch = -89.0f;
-
-  cameraDirection.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-  cameraDirection.y = sin(glm::radians(pitch));
-  cameraDirection.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-  cameraDirection = glm::normalize(cameraDirection);
-
-  camera.lookAt(cameraPos, cameraPos + cameraDirection,
-                glm::vec3(0.0f, 1.0f, 0.0f));
-}
-
-void MainScene::registerKeys() {
-  inputManager->registerKey(GLFW_KEY_Q, KEY_QUIT);
-  inputManager->registerKey(GLFW_KEY_W, KEY_FORWARD);
-  inputManager->registerKey(GLFW_KEY_S, KEY_BACKWARD);
-  inputManager->registerKey(GLFW_KEY_A, KEY_LEFT);
-  inputManager->registerKey(GLFW_KEY_D, KEY_RIGHT);
-  inputManager->registerKey(GLFW_KEY_1, KEY_SHADER1);
-  inputManager->registerKey(GLFW_KEY_2, KEY_SHADER2);
-  inputManager->registerKey(GLFW_KEY_3, KEY_SHADER3);
-  inputManager->registerKey(GLFW_KEY_4, KEY_SHADER4);
-  inputManager->init();
 }
 
 void MainScene::generateRoom() {
@@ -233,4 +180,11 @@ void MainScene::generateRoom() {
       wallXM, glm::vec3(0.0f, wallYPos, -roomSize.z / 2.0f)));
   gameObjects.push_back(std::make_unique<Prop>(
       wallXM, glm::vec3(0.0f, wallYPos, roomSize.z / 2.0f)));
+}
+
+void MainScene::updateLamp() {
+  auto lampPos3 = lamps[1]->getPosition();
+  auto lampPos = glm::vec2(lampPos3.x, lampPos3.z);
+  auto tangent = glm::vec2(lampPos.y, -lampPos.x);
+  lamps[1]->setVelocity(glm::vec3(tangent.x, 0.0f, tangent.y));
 }

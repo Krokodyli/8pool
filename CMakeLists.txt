@@ -108,6 +108,9 @@ add_executable(
   src/inputManager.cpp
   src/logger/timer.cpp
   src/game/object/prop.cpp
+  src/game/object/robot.cpp
+  src/scene/mainSceneController.cpp
+  src/game/controller/robotController.cpp
 )
 
 target_link_libraries(game glfw glm glad)

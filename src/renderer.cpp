@@ -49,6 +49,8 @@ void Renderer::render(GameObject &object, ResourceManager &resourceManager) {
     } else {
       shader->bindUniformVec3f(SHAD_LOC_COLOR, model.getColor());
     }
+    if(model.isLightSource())
+      objectType += 2;
 
     auto material = model.getMaterial();
     shader->bindMaterial(material);

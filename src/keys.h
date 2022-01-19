@@ -10,4 +10,6 @@ enum Keys {
   KEY_SHADER2 = 6,
   KEY_SHADER3 = 7,
   KEY_SHADER4 = 8,
+  KEY_SWITCH = 9,
+  KEY_ACTION = 10
 };

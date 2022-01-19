@@ -4,8 +4,7 @@
 
 enum class LightType {
   point = 1,
-  directional = 2,
-  spotlight = 3
+  spotlight = 2
 };
 
 struct Light {

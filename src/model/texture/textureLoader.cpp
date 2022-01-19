@@ -9,6 +9,8 @@ bool TextureLoader::loadTexture(std::string textureName) {
   std::string path =
       FilesystemHelper::getResourcePath(ResourceType::texture, textureName);
 
+  stbi_set_flip_vertically_on_load(true);
+
   data = stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
 
   return data != nullptr;

@@ -2,7 +2,6 @@
 
 #include "../../includes/glm.h"
 #include "../../light/light.h"
-#include "../../inputManager.h"
 #include "../../model/model.h"
 #include "physicalObject.h"
 #include <stdexcept>
@@ -15,7 +14,7 @@ public:
   GameObject();
   GameObject(Model model, glm::vec3 initialPos);
 
-  virtual void update(float dt, InputManager &inputManager);
+  virtual void update(float dt);
 
   virtual std::vector<glm::mat4> getTransformations();
   virtual std::vector<Model> &getModelParts();

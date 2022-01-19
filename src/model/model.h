@@ -5,6 +5,7 @@
 class Model {
 private:
   bool loaded;
+  bool lightSourceFlag;
   unsigned int meshID;
   ModelMaterial material;
 
@@ -24,4 +25,6 @@ public:
   bool isTextured();
   unsigned int getTextureID();
   glm::vec3 getColor();
+  bool isLightSource();
+  void setLightSourceFlag(bool value);
 };

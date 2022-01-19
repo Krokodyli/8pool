@@ -11,5 +11,5 @@ public:
 
   Ball(Model model, glm::vec3 initialPos);
 
-  virtual void update(float dt, InputManager &inputManager);
+  virtual void update(float dt);
 };

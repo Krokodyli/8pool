@@ -1,21 +1,19 @@
 #version 330 core
-layout (location = 0) in vec3 lPos;
-layout (location = 1) in vec3 lNormal;
-layout (location = 2) in vec2 lTexCoords;
+layout (location = 0) in vec3 p_pos;
+layout (location = 1) in vec3 p_normal;
+layout (location = 2) in vec2 p_tex_coords;
 
-out vec2 texCoords;
-out vec3 color;
+uniform uint u_object_type;
+uniform vec3 u_color;
 
-uniform uint uObjectType;
-uniform vec3 uColor;
+uniform mat4 u_model;
+uniform mat4 u_view;
+uniform mat4 u_projection;
 
-uniform mat4 uModel;
-uniform mat4 uView;
-uniform mat4 uProjection;
+out vec2 v_tex_coords;
 
 void main()
 {
-  color = uColor;
-  texCoords = lTexCoords;
-  gl_Position = uProjection * uView * uModel * vec4(lPos, 1.0f);
+  v_tex_coords = p_tex_coords;
+  gl_Position = u_projection * u_view * u_model * vec4(p_pos, 1.0f);
 }

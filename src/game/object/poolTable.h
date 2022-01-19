@@ -18,6 +18,4 @@ public:
 
   PoolTable(Model fabricModel, Model tableSideX, Model tableSideY,
             Model tableSideZ, Model tableLeg, glm::vec3 initialPos);
-
-  virtual glm::mat4 getTransformation();
 };

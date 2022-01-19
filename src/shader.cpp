@@ -104,6 +104,8 @@ void Shader::bindLights(std::vector<Light *> &lights) {
     glUniform1ui(locations[offset + SHAD_LIGHT_TYPE], (unsigned int)lights[i]->lightType);
     glUniform3fv(locations[offset + SHAD_LIGHT_POS], 1,
                  glm::value_ptr(lights[i]->position));
+    glUniform3fv(locations[offset + SHAD_LIGHT_DIR], 1,
+                 glm::value_ptr(lights[i]->direction));
     glUniform2fv(locations[offset + SHAD_LIGHT_CUTOFF], 1,
                  glm::value_ptr(lights[i]->cutOff));
     glUniform3fv(locations[offset + SHAD_LIGHT_ATTENUATION], 1,
@@ -185,29 +187,29 @@ bool Shader::loadSourceCode(std::string filepath, std::string &sourceCode) {
 
 void Shader::generateLocations() {
   std::unordered_map<int, const char *> locationMap = {
-      {SHAD_LOC_OBJ_TYPE, "uObjectType"},
-      {SHAD_LOC_MODEL_MAT, "uModel"},
-      {SHAD_LOC_NORMAL_MAT, "uModelNormal"},
-      {SHAD_LOC_COLOR, "uColor"},
+      {SHAD_LOC_OBJ_TYPE, "u_object_type"},
+      {SHAD_LOC_MODEL_MAT, "u_model"},
+      {SHAD_LOC_NORMAL_MAT, "u_normal_transform"},
+      {SHAD_LOC_COLOR, "u_color"},
 
-      {SHAD_LOC_VIEW_MAT, "uView"},
-      {SHAD_LOC_PROJECTION_MAT, "uProjection"},
-      {SHAD_LOC_VIEW_POS, "uViewPos"},
+      {SHAD_LOC_VIEW_MAT, "u_view"},
+      {SHAD_LOC_PROJECTION_MAT, "u_projection"},
+      {SHAD_LOC_VIEW_POS, "u_view_pos"},
 
-      {SHAD_LOC_MAT_AMBIENT, "uMaterial.ambient"},
-      {SHAD_LOC_MAT_DIFFUSE, "uMaterial.diffuse"},
-      {SHAD_LOC_MAT_SPECULAR, "uMaterial.specular"},
-      {SHAD_LOC_MAT_SHININESS, "uMaterial.shininess"}};
+      {SHAD_LOC_MAT_AMBIENT, "u_material.ambient"},
+      {SHAD_LOC_MAT_DIFFUSE, "u_material.diffuse"},
+      {SHAD_LOC_MAT_SPECULAR, "u_material.specular"},
+      {SHAD_LOC_MAT_SHININESS, "u_material.shininess"}};
 
   for (auto &entry : locationMap)
     locations[entry.first] = glGetUniformLocation(id, entry.second);
 
-  std::string lightsArrName = "uLights";
+  std::string lightsArrName = "u_lights";
   std::unordered_map<int, std::string> lightLocationMap = {
       {SHAD_LIGHT_TYPE, "type"},
       {SHAD_LIGHT_POS, "position"},
       {SHAD_LIGHT_DIR, "direction"},
-      {SHAD_LIGHT_CUTOFF, "cutOff"},
+      {SHAD_LIGHT_CUTOFF, "cut_off"},
       {SHAD_LIGHT_ATTENUATION, "attenuation"},
       {SHAD_LIGHT_AMBIENT, "ambient"},
       {SHAD_LIGHT_DIFFUSE, "diffuse"},

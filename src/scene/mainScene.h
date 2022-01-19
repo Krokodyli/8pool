@@ -8,28 +8,21 @@
 #include "../keys.h"
 #include "../renderer.h"
 #include "../resourceManager/resourceManager.h"
+#include "mainSceneController.h"
 #include "scene.h"
 
 class MainScene : public Scene {
 private:
   ResourceManager resourceManager;
-  Camera camera;
   Renderer renderer;
-  std::unique_ptr<InputManager> inputManager;
+  MainSceneController controller;
 
-  float yaw, pitch;
-  float cameraSpeed = 6.00f;
-  glm::vec3 cameraPos;
-  glm::vec3 cameraDirection;
-
-  Lamp *lamp;
+  Lamp *lamps[3];
 
   std::vector<std::unique_ptr<GameObject>> gameObjects;
 
-  void registerKeys();
   void generateRoom();
-  void processInput(float dt);
-
+  void updateLamp();
 public:
   MainScene(int width, int height, std::unique_ptr<InputManager> &inputManager);
 

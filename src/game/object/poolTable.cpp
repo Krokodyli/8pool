@@ -6,12 +6,6 @@ PoolTable::PoolTable(Model fabricModel, Model tableSideX, Model tableSideY,
   initModels(fabricModel, tableSideX, tableSideY, tableSideZ, tableLeg);
 }
 
-glm::mat4 PoolTable::getTransformation() {
-  glm::mat4 transformation(1.0f);
-  transformation = glm::translate(transformation, position);
-  return transformation;
-}
-
 void PoolTable::initModels(Model fabricModel, Model tableSideX,
                            Model tableSideY, Model tableSizeZ, Model tableLeg) {
   modelParts.push_back(fabricModel);

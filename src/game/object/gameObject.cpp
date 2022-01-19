@@ -7,7 +7,7 @@ GameObject::GameObject(Model model, glm::vec3 initialPos) {
   initPhysicalObject(initialPos);
 }
 
-void GameObject::update(float dt, InputManager &inputManager) {
+void GameObject::update(float dt) {
   updatePhysicalObject(dt);
 }
 
