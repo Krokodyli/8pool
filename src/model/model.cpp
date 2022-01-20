@@ -18,5 +18,6 @@ ModelMaterial Model::getMaterial() { return material; }
 bool Model::isTextured() { return hasTexture; }
 unsigned int Model::getTextureID() { return textureID; }
 glm::vec3 Model::getColor() { return color; }
+void Model::setColor(glm::vec3 value) { color = value; }
 bool Model::isLightSource() { return lightSourceFlag; }
 void Model::setLightSourceFlag(bool value) { lightSourceFlag = value; }

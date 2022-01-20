@@ -2,7 +2,8 @@
 
 Robot::Robot(Model headModel, Model noseModel, glm::vec3 initialPos,
              RobotController *controller)
-    : controller(controller) {
+    : controller(controller)
+{
   initPhysicalObject(initialPos);
   initModels(headModel, noseModel);
   if (controller != nullptr)
@@ -12,13 +13,15 @@ Robot::Robot(Model headModel, Model noseModel, glm::vec3 initialPos,
   toggleLight();
 }
 
-void Robot::update(float dt) {
+void Robot::update(float dt)
+{
   updatePhysicalObject(dt);
   if (controller != nullptr)
     controller->control(*this);
 }
 
-std::vector<Light *> Robot::getModelLights() {
+std::vector<Light *> Robot::getModelLights()
+{
   if (!isLightTurnedOn)
     return {};
 
@@ -28,17 +31,23 @@ std::vector<Light *> Robot::getModelLights() {
   return {&light};
 }
 
-void Robot::setController(RobotController *newController) {
+void Robot::setController(RobotController *newController)
+{
   controller = newController;
   controller->init(*this);
 }
 
-void Robot::toggleLight() {
+void Robot::toggleLight()
+{
   isLightTurnedOn = !isLightTurnedOn;
+  glm::vec3 noseColor = isLightTurnedOn ? glm::vec3(1.0f, 1.0f, 1.0f)
+                                        : glm::vec3(0.0f);
   modelParts[1].setLightSourceFlag(isLightTurnedOn);
+  modelParts[1].setColor(noseColor);
 }
 
-void Robot::initModels(Model headModel, Model noseModel) {
+void Robot::initModels(Model headModel, Model noseModel)
+{
   modelParts.push_back(headModel);
   modelPartsPositions.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
   modelParts.push_back(noseModel);
@@ -46,7 +55,8 @@ void Robot::initModels(Model headModel, Model noseModel) {
       glm::vec3(0.0f, 0.0f, -(headSize + noseLength) / 2.0f));
 }
 
-void Robot::initLight() {
+void Robot::initLight()
+{
   light.lightType = LightType::spotlight;
 
   light.attenuation = glm::vec3(0.7f, 0.04f, 0.000f);

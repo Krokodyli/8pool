@@ -24,7 +24,10 @@ public:
 
   bool isTextured();
   unsigned int getTextureID();
+
   glm::vec3 getColor();
+  void setColor(glm::vec3 value);
+
   bool isLightSource();
   void setLightSourceFlag(bool value);
 };
