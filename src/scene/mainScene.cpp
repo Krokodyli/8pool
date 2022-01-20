@@ -11,7 +11,7 @@ MainScene::MainScene(int width, int height,
 void MainScene::init() {
   MainSceneLoader loader(gameObjects, resourceManager);
   loader.loadResources();
-  resourceManager.useShader(renderer, "phong");
+  resourceManager.useShader(renderer, "blinn");
 
   robot = loader.generateRobot();
   controller.setRobot(robot);

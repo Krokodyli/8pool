@@ -46,7 +46,10 @@ void MainSceneController::updateRenderer(float dt, Renderer &renderer,
   deltaY *= sensivity;
   renderer.setFogFactor(renderer.getFogFactor() + deltaY);
 
-  if(inputManager->isKeyPressed(KEY_SHADER2))
+
+  if(inputManager->isKeyPressed(KEY_SHADER1))
+    resourceManager.useShader(renderer, "blinn");
+  else if(inputManager->isKeyPressed(KEY_SHADER2))
     resourceManager.useShader(renderer, "phong");
   else if(inputManager->isKeyPressed(KEY_SHADER3))
     resourceManager.useShader(renderer, "gourand");

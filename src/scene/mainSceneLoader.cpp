@@ -143,7 +143,7 @@ void MainSceneLoader::generateRoom()
 void MainSceneLoader::loadShaders()
 {
   std::vector<std::string> shaders = {"phong", "gourand", "flat",
-                                      "noshading"};
+                                      "noshading", "blinn" };
   resourceManager.loadShaders(shaders);
 }
 
