@@ -4,7 +4,7 @@
 #include "../game/object/ball.h"
 #include "../game/object/lamp.h"
 #include "../game/object/poolTable.h"
-#include "../game/object/prop.h"
+#include "../game/object/multipartGameObject.h"
 #include "../keys.h"
 #include "../renderer.h"
 #include "../resourceManager/resourceManager.h"

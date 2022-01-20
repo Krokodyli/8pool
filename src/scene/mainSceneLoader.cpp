@@ -114,21 +114,21 @@ void MainSceneLoader::generateRoom() {
   Model wallXM(resourceManager.getMeshID("wallX"), color, material);
   Model wallZM(resourceManager.getMeshID("wallZ"), color, material);
 
-  gameObjects.push_back(std::make_unique<Prop>(
+  gameObjects.push_back(std::make_unique<MultipartGameObject>(
       floorM, glm::vec3(0.0f, -tableHeight - thickness / 2.0f, 0.0f)));
-  gameObjects.push_back(std::make_unique<Prop>(
+  gameObjects.push_back(std::make_unique<MultipartGameObject>(
       floorM,
       glm::vec3(0.0f, roomSize.y - tableHeight + thickness / 2.0f, 0.0f)));
 
   float wallYPos = roomSize.y / 2.0f - tableHeight;
-  gameObjects.push_back(std::make_unique<Prop>(
+  gameObjects.push_back(std::make_unique<MultipartGameObject>(
       wallZM, glm::vec3(-roomSize.x / 2.0f, wallYPos, 0.0f)));
-  gameObjects.push_back(std::make_unique<Prop>(
+  gameObjects.push_back(std::make_unique<MultipartGameObject>(
       wallZM, glm::vec3(roomSize.x / 2.0f, wallYPos, 0.0f)));
 
-  gameObjects.push_back(std::make_unique<Prop>(
+  gameObjects.push_back(std::make_unique<MultipartGameObject>(
       wallXM, glm::vec3(0.0f, wallYPos, -roomSize.z / 2.0f)));
-  gameObjects.push_back(std::make_unique<Prop>(
+  gameObjects.push_back(std::make_unique<MultipartGameObject>(
       wallXM, glm::vec3(0.0f, wallYPos, roomSize.z / 2.0f)));
 }
 

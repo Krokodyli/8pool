@@ -2,9 +2,9 @@
 
 #include "../../model/model.h"
 #include "../controller/robotController.h"
-#include "prop.h"
+#include "multipartGameObject.h"
 
-class Robot : public Prop {
+class Robot : public MultipartGameObject {
 private:
   static constexpr float robotSpeed = 0.0f;
   RobotController *controller;

@@ -1,15 +1,15 @@
-#include "prop.h"
+#include "multipartGameObject.h"
 
-Prop::Prop(Model model, glm::vec3 initialPos)
+MultipartGameObject::MultipartGameObject(Model model, glm::vec3 initialPos)
   : GameObject(model, initialPos) { }
 
-Prop::Prop(std::vector<Model> modelParts, glm::vec3 initialPos, std::vector<glm::vec3> partsRelativePositions) {
+MultipartGameObject::MultipartGameObject(std::vector<Model> modelParts, glm::vec3 initialPos, std::vector<glm::vec3> partsRelativePositions) {
   initPhysicalObject(initialPos);
   this->modelParts = modelParts;
   modelPartsPositions = partsRelativePositions;
 }
 
-std::vector<glm::mat4> Prop::getTransformations() {
+std::vector<glm::mat4> MultipartGameObject::getTransformations() {
   if(modelParts.size() == 1)
     return GameObject::getTransformations();
 

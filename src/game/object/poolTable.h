@@ -1,10 +1,10 @@
 #pragma once
 
 #include "../../model/model.h"
-#include "prop.h"
+#include "multipartGameObject.h"
 #include "physicalObject.h"
 
-class PoolTable : public Prop {
+class PoolTable : public MultipartGameObject {
 private:
   void initModels(Model fabricModel, Model tableSideX, Model tableSideY,
                   Model tableSideZ, Model tableLeg);
