@@ -1,4 +1,5 @@
 #include "mainSceneController.h"
+#include "../logger/logger.h"
 
 MainSceneController::MainSceneController(
     std::unique_ptr<InputManager> inputManager, float aspectRatio)
@@ -29,6 +30,20 @@ void MainSceneController::update(float dt) {
   updateFreeCameraMode(dt);
   updateRobotCameraMode(dt);
   updateBallCameraMode(dt);
+
+  ballController.update(dt, *inputManager);
+
+  for (auto &lampController : lampControllers)
+    lampController->update(dt, *inputManager);
+}
+
+void MainSceneController::updateRenderer(float dt, Renderer &renderer) {
+  float sensivity = 0.01f;
+  double deltaY, deltaX;
+  inputManager->getScrollDelta(deltaX, deltaY);
+  inputManager->resetScrollDelta();
+  deltaY *= sensivity;
+  renderer.setFogFactor(renderer.getFogFactor() + deltaY);
 }
 
 ControllerMode MainSceneController::getCurrentMode() { return mode; }
@@ -37,13 +52,28 @@ InputManager *MainSceneController::getInputManager() {
   return inputManager.get();
 }
 
-void MainSceneController::setFollowedBall(Ball *ball) {
-  followedBall = ball;
-}
+void MainSceneController::setFollowedBall(Ball *ball) { followedBall = ball; }
 
 void MainSceneController::setRobot(Robot *robot) {
-  robotController = std::make_unique<RobotController>();
-  robot->setController(robotController.get());
+  robot->setController(&robotController);
+}
+
+void MainSceneController::setBalls(std::vector<Ball *> &balls) {
+  for (auto ball : balls)
+    ball->setController(&ballController);
+}
+
+void MainSceneController::setLamps(std::vector<Lamp *> &lamps) {
+  auto lamp1Controller = std::make_unique<LampController>(KEY_LIGHT1_TOGGLE);
+  auto lamp2Controller = std::make_unique<LampController>(
+      KEY_LIGHT2_TOGGLE, 2.0f, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+  auto lamp3Controller = std::make_unique<LampController>(KEY_LIGHT3_TOGGLE);
+  lamps[0]->setController(lamp1Controller.get());
+  lamps[1]->setController(lamp2Controller.get());
+  lamps[2]->setController(lamp3Controller.get());
+  lampControllers.push_back(std::move(lamp1Controller));
+  lampControllers.push_back(std::move(lamp2Controller));
+  lampControllers.push_back(std::move(lamp3Controller));
 }
 
 void MainSceneController::init() {
@@ -66,6 +96,10 @@ void MainSceneController::init() {
   inputManager->registerKey(GLFW_KEY_4, KEY_SHADER4);
   inputManager->registerKey(GLFW_KEY_SPACE, KEY_ACTION);
   inputManager->registerKey(GLFW_KEY_TAB, KEY_SWITCH);
+  inputManager->registerKey(GLFW_KEY_F, KEY_MOVE_TOGGLE);
+  inputManager->registerKey(GLFW_KEY_7, KEY_LIGHT1_TOGGLE);
+  inputManager->registerKey(GLFW_KEY_8, KEY_LIGHT2_TOGGLE);
+  inputManager->registerKey(GLFW_KEY_9, KEY_LIGHT3_TOGGLE);
   inputManager->init();
 }
 
@@ -130,8 +164,8 @@ void MainSceneController::updateRobotCameraMode(float dt) {
   if (mode != ControllerMode::robotCamera)
     return;
 
-  robotController->update(dt, *inputManager);
-  robotController->updateEyeCamera(robotCamera);
+  robotController.update(dt, *inputManager);
+  robotController.updateEyeCamera(robotCamera);
 }
 
 void MainSceneController::updateBallCameraMode(float dt) {

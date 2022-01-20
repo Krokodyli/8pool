@@ -14,6 +14,8 @@ private:
   int boundMesh;
   int boundTexture;
 
+  float fogFactor;
+
   void bindMeshIfNecessary(Mesh &mesh);
 public:
   Renderer();
@@ -27,4 +29,7 @@ public:
 
   Camera *getCamera();
   void setCamera(Camera *camera);
+
+  void setFogFactor(float newFogFactor);
+  float getFogFactor();
 };

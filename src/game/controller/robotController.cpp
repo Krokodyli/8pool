@@ -7,8 +7,8 @@ void RobotController::init(Robot &robot) {
                          Robot::headSize / 2.0f + 0.02f);
   robotPos = robot.getPosition();
   robotRotation = robot.getRotation();
-  yaw = 0.0f;
-  pitch = -90.0f;
+  yaw = -90.0f;
+  pitch = 0.0f;
   action = false;
 }
 

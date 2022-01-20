@@ -17,12 +17,12 @@ private:
   Renderer renderer;
   MainSceneController controller;
 
-  Lamp *lamps[3];
+  Robot *robot;
+  Lamp *movingLamp;
 
   std::vector<std::unique_ptr<GameObject>> gameObjects;
 
-  void generateRoom();
-  void updateLamp();
+  void moveLamp();
 public:
   MainScene(int width, int height, std::unique_ptr<InputManager> &inputManager);
 

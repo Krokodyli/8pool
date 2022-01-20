@@ -2,6 +2,7 @@
 
 #include <unordered_map>
 #include "includes/glfw.h"
+#include "scrollManager.h"
 
 class InputManager {
 private:
@@ -15,6 +16,8 @@ private:
 
   double mouseX, mouseY;
   double oldMouseX, oldMouseY;
+
+  ScrollManager scrollManager;
 
 public:
   InputManager(GLFWwindow *window);
@@ -34,4 +37,7 @@ public:
   double getMouseDeltaX();
   double getMouseDeltaY();
   void getMouseDelta(double &x, double &y);
+
+  void getScrollDelta(double &x, double &y);
+  void resetScrollDelta();
 };

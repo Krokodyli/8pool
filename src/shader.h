@@ -11,10 +11,10 @@
 
 #define INFO_LOG_SIZE 1024
 
-#define SHAD_NR_LIGHTS 10
-#define SHAD_LIGHT_SECTION_BEGIN 11
+#define SHAD_NR_LIGHTS 5
+#define SHAD_LIGHT_SECTION_BEGIN 13
 #define SHAD_LIGHT_SECTION_LEN 8
-#define SHAD_LOCATIONS_ARR_SIZE 90
+#define SHAD_LOCATIONS_ARR_SIZE 53
 
 #define SHAD_LOC_OBJ_TYPE 0
 #define SHAD_LOC_MODEL_MAT 1
@@ -30,6 +30,9 @@
 #define SHAD_LOC_MAT_SPECULAR 9
 #define SHAD_LOC_MAT_SHININESS 10
 
+#define SHAD_LOC_FOG_FACTOR 11
+#define SHAD_LOC_FOG_COLOR 12
+
 #define SHAD_LIGHT_TYPE 0
 #define SHAD_LIGHT_POS 1
 #define SHAD_LIGHT_DIR 2
@@ -43,7 +46,7 @@ enum class ShaderType { vertex, fragment, program };
 
 class Shader {
 private:
-  static constexpr int maxLightSources = 10;
+  static constexpr int maxLightSources = 5;
 
   bool isLoaded;
   unsigned int id;

@@ -35,12 +35,6 @@ void Robot::setController(RobotController *newController) {
 
 void Robot::toggleLight() {
   isLightTurnedOn = !isLightTurnedOn;
-  glm::vec3 noseColor =
-      isLightTurnedOn ? glm::vec3(1.0f, 1.0f, 1.0f) : glm::vec3(0.0f);
-
-  auto meshID = modelParts[1].getMeshID();
-  auto material = modelParts[1].getMaterial();
-  modelParts[1] = Model(meshID, noseColor, material);
   modelParts[1].setLightSourceFlag(isLightTurnedOn);
 }
 
@@ -55,7 +49,7 @@ void Robot::initModels(Model headModel, Model noseModel) {
 void Robot::initLight() {
   light.lightType = LightType::spotlight;
 
-  light.attenuation = glm::vec3(1.0f, 0.09f, 0.032f);
+  light.attenuation = glm::vec3(0.7f, 0.04f, 0.000f);
 
   light.ambient = glm::vec3(0.0f);
   light.diffuse = glm::vec3(1.0f, 1.0f, 1.0f);

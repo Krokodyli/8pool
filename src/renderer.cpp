@@ -6,12 +6,16 @@ Renderer::Renderer() {
   boundTexture = -1;
   camera = nullptr;
   shader = nullptr;
+  fogFactor = 0.0f;
 }
 
 void Renderer::prepareView() {
   shader->bindUniformMat4f(SHAD_LOC_VIEW_MAT, camera->getViewMat());
   shader->bindUniformMat4f(SHAD_LOC_PROJECTION_MAT, camera->getProjectionMat());
   shader->bindUniformVec3f(SHAD_LOC_VIEW_POS, camera->getPosition());
+
+  shader->bindUniformFloat(SHAD_LOC_FOG_FACTOR, fogFactor);
+  shader->bindUniformVec3f(SHAD_LOC_FOG_COLOR, glm::vec3(0.57f, 0.59f, 0.59f));
 }
 
 void Renderer::registerLights(std::vector<Light *> &lights) {
@@ -81,6 +85,16 @@ void Renderer::setShader(Shader *newShader) {
 }
 
 Camera *Renderer::getCamera() { return camera; }
+
+void Renderer::setFogFactor(float newFogFactor) {
+  fogFactor = newFogFactor;
+  fogFactor = std::min(1.0f, fogFactor);
+  fogFactor = std::max(0.0f, fogFactor);
+}
+
+float Renderer::getFogFactor() {
+  return fogFactor;
+}
 
 void Renderer::bindMeshIfNecessary(Mesh &mesh) {
   unsigned int meshID = mesh.getID();

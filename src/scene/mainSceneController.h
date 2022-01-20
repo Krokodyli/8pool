@@ -1,10 +1,12 @@
 #pragma once
 
-#include "../inputManager.h"
-#include "../game/object/ball.h"
 #include "../camera.h"
-#include "../keys.h"
+#include "../game/object/ball.h"
+#include "../game/object/lamp.h"
 #include "../game/object/robot.h"
+#include "../renderer.h"
+#include "../inputManager.h"
+#include "../keys.h"
 #include <memory>
 
 enum class ControllerMode { freeCamera, robotCamera, ballCamera };
@@ -20,7 +22,9 @@ private:
   float freeCameraPitch;
 
   Camera robotCamera;
-  std::unique_ptr<RobotController> robotController;
+  RobotController robotController;
+  BallController ballController;
+  std::vector<std::unique_ptr<LampController>> lampControllers;
 
   Camera ballCamera;
   glm::vec3 ballCameraPos;
@@ -39,9 +43,13 @@ public:
   Camera *getCurrentCamera();
 
   void update(float dt);
+  void updateRenderer(float dt, Renderer &renderer);
 
   ControllerMode getCurrentMode();
   InputManager* getInputManager();
+
   void setFollowedBall(Ball *ball);
   void setRobot(Robot *robot);
+  void setBalls(std::vector<Ball*> &balls);
+  void setLamps(std::vector<Lamp*> &lamps);
 };

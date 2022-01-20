@@ -1,9 +1,12 @@
 #include "ball.h"
 
-Ball::Ball(Model model, glm::vec3 initialPos)
-  : GameObject(model, initialPos) { }
+Ball::Ball(Model model, glm::vec3 initialPos, BallController *controller)
+    : GameObject(model, initialPos), controller(controller) {}
 
 void Ball::update(float dt) {
+  if (controller != nullptr && !controller->getMoveFlag())
+    return;
+
   auto tableBounds = glm::vec2(1.12f, 2.24f);
   if (position.x + ballRadius > tableBounds.x / 2.0f) {
     position.x = tableBounds.x / 2.0f - ballRadius;
@@ -23,4 +26,8 @@ void Ball::update(float dt) {
   }
   angularVelocity = velocity / ballRadius;
   updatePhysicalObject(dt);
+}
+
+void Ball::setController(BallController *newController) {
+  controller = newController;
 }

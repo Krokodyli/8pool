@@ -35,6 +35,9 @@ uniform sampler2D u_texture;
 uniform material u_material;
 uniform light u_lights[NR_LIGHTS];
 
+uniform float u_fog_factor;
+uniform vec3 u_fog_color;
+
 vec3 normal;
 vec3 view_dir;
 vec3 color;
@@ -75,7 +78,8 @@ vec3 calc_point_light(light light) {
   float spec = pow(max(dot(view_dir, reflect_dir), 0.0), u_material.shininess);
 
   float distance = length(light.position - v_pos);
-  float attenuation = 1.0 / (((distance * light.attenuation.z) + light.attenuation.y) * distance + light.attenuation.x);
+  float attenuation = 1.0 / (((distance * light.attenuation.z) 
+                      + light.attenuation.y) * distance + light.attenuation.x);
 
   vec3 ambient = light.ambient * u_material.ambient * attenuation;
   vec3 diffuse = light.diffuse * diff * u_material.diffuse * attenuation;
@@ -92,15 +96,18 @@ vec3 calc_spot_light(light light) {
   float spec = pow(max(dot(view_dir, reflect_dir), 0.0), u_material.shininess);
 
   float distance = length(light.position - v_pos);
-  float attenuation = 1.0 / (((distance * light.attenuation.z) + light.attenuation.y) * distance + light.attenuation.x);
+  float attenuation = 1.0 / (((distance * light.attenuation.z) 
+                      + light.attenuation.y) * distance + light.attenuation.x);
 
   float theta = dot(light_dir, normalize(-light.direction));
   float epsilon = light.cut_off.x - light.cut_off.y;
   float intensity = clamp((theta - light.cut_off.y) / epsilon, 0.0, 1.0);
 
   vec3 ambient = light.ambient * u_material.ambient * attenuation;
-  vec3 diffuse = light.diffuse * diff * u_material.diffuse * attenuation * intensity;
-  vec3 specular = light.specular * spec * u_material.specular * attenuation * intensity;
+  vec3 diffuse = light.diffuse * diff * u_material.diffuse 
+                 * attenuation * intensity;
+  vec3 specular = light.specular * spec * u_material.specular 
+                 * attenuation * intensity;
 
   return (ambient + diffuse) * color + specular;
 }
@@ -113,5 +120,8 @@ vec3 calc_object_color() {
 }
 
 vec3 calc_fogged_color(vec3 color) {
-  return color;
+  float distance = length(u_view_pos - v_pos);
+  float fog_factor = -distance * u_fog_factor;
+  fog_factor = clamp(exp(fog_factor), 0.0, 1.0);
+  return mix(u_fog_color, color, fog_factor);
 }

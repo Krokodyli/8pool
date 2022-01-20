@@ -1,14 +1,15 @@
 #include "inputManager.h"
 
-InputManager::InputManager(GLFWwindow *glWindow) : glWindow(glWindow) {
-  for(int i = 0; i <= maxKeyCode; i++) {
+InputManager::InputManager(GLFWwindow *glWindow)
+    : glWindow(glWindow), scrollManager(glWindow) {
+  for (int i = 0; i <= maxKeyCode; i++) {
     keyStatus[i] = false;
     oldKeyStatus[i] = false;
   }
 }
 
 bool InputManager::registerKey(int glfwCode, int keyCode) {
-  if(keyCode < 0 || keyCode > maxKeyCode)
+  if (keyCode < 0 || keyCode > maxKeyCode)
     return false;
 
   glfwKeyCodeToKeyCode[glfwCode] = keyCode;
@@ -16,12 +17,10 @@ bool InputManager::registerKey(int glfwCode, int keyCode) {
   return true;
 }
 
-void InputManager::init() {
-  update();
-}
+void InputManager::init() { update(); }
 
 void InputManager::update() {
-  for(const auto &entry : glfwKeyCodeToKeyCode) {
+  for (const auto &entry : glfwKeyCodeToKeyCode) {
     oldKeyStatus[entry.second] = keyStatus[entry.second];
     bool keyDown = (glfwGetKey(glWindow, entry.first) == GLFW_PRESS);
     keyStatus[entry.second] = keyDown;
@@ -58,4 +57,12 @@ double InputManager::getMouseDeltaY() { return mouseY - oldMouseY; }
 void InputManager::getMouseDelta(double &x, double &y) {
   x = mouseX - oldMouseX;
   y = mouseY - oldMouseY;
+}
+
+void InputManager::getScrollDelta(double &x, double &y) {
+  scrollManager.getScrollDelta(x, y);
+}
+
+void InputManager::resetScrollDelta() {
+  scrollManager.resetScrollDelta();
 }

@@ -101,7 +101,8 @@ void Shader::bindLights(std::vector<Light *> &lights) {
   int i;
   for (i = 0; i < lights.size() && i < maxLightSources; i++) {
     int offset = SHAD_LIGHT_SECTION_BEGIN + i * SHAD_LIGHT_SECTION_LEN;
-    glUniform1ui(locations[offset + SHAD_LIGHT_TYPE], (unsigned int)lights[i]->lightType);
+    glUniform1ui(locations[offset + SHAD_LIGHT_TYPE],
+                 (unsigned int)lights[i]->lightType);
     glUniform3fv(locations[offset + SHAD_LIGHT_POS], 1,
                  glm::value_ptr(lights[i]->position));
     glUniform3fv(locations[offset + SHAD_LIGHT_DIR], 1,
@@ -199,7 +200,9 @@ void Shader::generateLocations() {
       {SHAD_LOC_MAT_AMBIENT, "u_material.ambient"},
       {SHAD_LOC_MAT_DIFFUSE, "u_material.diffuse"},
       {SHAD_LOC_MAT_SPECULAR, "u_material.specular"},
-      {SHAD_LOC_MAT_SHININESS, "u_material.shininess"}};
+      {SHAD_LOC_MAT_SHININESS, "u_material.shininess"},
+      {SHAD_LOC_FOG_FACTOR, "u_fog_factor"},
+      {SHAD_LOC_FOG_COLOR, "u_fog_color"}};
 
   for (auto &entry : locationMap)
     locations[entry.first] = glGetUniformLocation(id, entry.second);
