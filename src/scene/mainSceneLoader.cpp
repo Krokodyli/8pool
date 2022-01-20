@@ -5,13 +5,15 @@ MainSceneLoader::MainSceneLoader(
     ResourceManager &resourceManager)
     : gameObjects(gameObjects), resourceManager(resourceManager) {}
 
-void MainSceneLoader::loadResources() {
+void MainSceneLoader::loadResources()
+{
   loadShaders();
   loadTextures();
   generateMeshes();
 }
 
-Robot *MainSceneLoader::generateRobot() {
+Robot *MainSceneLoader::generateRobot()
+{
   Model robotHeadModel(resourceManager.getMeshID("robotHead"),
                        resourceManager.getTextureID("robot.png"),
                        ModelMaterials::plastic);
@@ -28,11 +30,13 @@ Robot *MainSceneLoader::generateRobot() {
   return robotPtr;
 }
 
-void MainSceneLoader::generateLamps(std::vector<Lamp *> &lamps) {
+void MainSceneLoader::generateLamps(std::vector<Lamp *> &lamps)
+{
   Model lampModel(resourceManager.getMeshID("ball"),
                   glm::vec3(1.0f, 1.0f, 1.0f), ModelMaterials::plastic);
 
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < 3; i++)
+  {
     auto lamp = std::make_unique<Lamp>(lampModel,
                                        glm::vec3((i - 1) * 4.0f, 2.0f, 0.0f));
     lamps.push_back(lamp.get());
@@ -40,7 +44,8 @@ void MainSceneLoader::generateLamps(std::vector<Lamp *> &lamps) {
   }
 }
 
-PoolTable *MainSceneLoader::generatePoolTable() {
+PoolTable *MainSceneLoader::generatePoolTable()
+{
   Model fabricModel(resourceManager.getMeshID("poolTable"),
                     resourceManager.getTextureID("poolTable.png"),
                     ModelMaterials::fabric);
@@ -71,12 +76,14 @@ PoolTable *MainSceneLoader::generatePoolTable() {
   return tablePtr;
 }
 
-void MainSceneLoader::generateBalls(std::vector<Ball *> &balls) {
+void MainSceneLoader::generateBalls(std::vector<Ball *> &balls)
+{
 
   Model ballModel(resourceManager.getMeshID("ball"),
                   resourceManager.getTextureID("sphere.png"),
                   ModelMaterials::plastic);
-  for (int i = 0; i < 10; i++) {
+  for (int i = 0; i < 10; i++)
+  {
     auto pos = glm::vec3(0.0f, Ball::ballRadius, 0.0f);
     pos.x =
         (rand() % 100 / 100.0f) * PoolTable::width - PoolTable::width / 2.0f;
@@ -94,7 +101,8 @@ void MainSceneLoader::generateBalls(std::vector<Ball *> &balls) {
   }
 }
 
-void MainSceneLoader::generateRoom() {
+void MainSceneLoader::generateRoom()
+{
   auto roomSize = glm::vec3(10.f, 4.0f, 10.f);
   auto tableHeight = 0.787f;
   std::unordered_map<std::string, std::unique_ptr<Mesh>> meshes;
@@ -132,12 +140,15 @@ void MainSceneLoader::generateRoom() {
       wallXM, glm::vec3(0.0f, wallYPos, roomSize.z / 2.0f)));
 }
 
-void MainSceneLoader::loadShaders() {
-  std::vector<std::string> shaders = {"phong", "gourand" };
+void MainSceneLoader::loadShaders()
+{
+  std::vector<std::string> shaders = {"phong", "gourand", "flat",
+                                      "noshading"};
   resourceManager.loadShaders(shaders);
 }
 
-void MainSceneLoader::generateMeshes() {
+void MainSceneLoader::generateMeshes()
+{
 
   float borderThickness = 0.05f;
   float tableWidth = PoolTable::width;
@@ -182,7 +193,8 @@ void MainSceneLoader::generateMeshes() {
   resourceManager.addMeshes(meshes);
 }
 
-void MainSceneLoader::loadTextures() {
+void MainSceneLoader::loadTextures()
+{
   std::vector<std::string> textures = {"sphere.png", "cube.png",
                                        "poolTable.png", "robot.png"};
   resourceManager.loadTextures(textures);

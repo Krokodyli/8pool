@@ -50,6 +50,10 @@ void MainSceneController::updateRenderer(float dt, Renderer &renderer,
     resourceManager.useShader(renderer, "phong");
   else if(inputManager->isKeyPressed(KEY_SHADER3))
     resourceManager.useShader(renderer, "gourand");
+  else if(inputManager->isKeyPressed(KEY_SHADER4))
+    resourceManager.useShader(renderer, "flat");
+  else if(inputManager->isKeyPressed(KEY_SHADER5))
+    resourceManager.useShader(renderer, "noshading");
 }
 
 ControllerMode MainSceneController::getCurrentMode() { return mode; }
@@ -100,6 +104,7 @@ void MainSceneController::init() {
   inputManager->registerKey(GLFW_KEY_2, KEY_SHADER2);
   inputManager->registerKey(GLFW_KEY_3, KEY_SHADER3);
   inputManager->registerKey(GLFW_KEY_4, KEY_SHADER4);
+  inputManager->registerKey(GLFW_KEY_5, KEY_SHADER5);
   inputManager->registerKey(GLFW_KEY_SPACE, KEY_ACTION);
   inputManager->registerKey(GLFW_KEY_TAB, KEY_SWITCH);
   inputManager->registerKey(GLFW_KEY_F, KEY_MOVE_TOGGLE);

@@ -1,24 +1,21 @@
 #version 330 core
-layout (location = 0) in vec3 lPos;
-layout (location = 1) in vec3 lNormal;
-layout (location = 2) in vec2 lTexCoords;
 
-#define NR_LIGHTS 5
+#define NR_LIGHTS 4
 
-struct Material {
+struct material {
   vec3 ambient;
   vec3 diffuse;
   vec3 specular;
   float shininess;
 };
 
-struct Light {
+struct light {
   uint type;
 
   vec3 position;
   vec3 direction;
 
-  vec2 cutOff;
+  vec2 cut_off;
   vec3 attenuation;
 
   vec3 ambient;
@@ -26,87 +23,115 @@ struct Light {
   vec3 specular;
 };
 
-uniform uint uObjectType;
-uniform vec3 uColor;
-uniform sampler2D uTexture;
-uniform Material uMaterial;
-uniform Light uLights[NR_LIGHTS];
+layout (location = 0) in vec3 p_pos;
+layout (location = 1) in vec3 p_normal;
+layout (location = 2) in vec2 p_tex_coords;
 
-flat out vec3 result;
+uniform mat4 u_model;
+uniform mat3 u_normal_transform;
+uniform mat4 u_view;
+uniform mat4 u_projection;
 
-uniform mat4 uModel;
-uniform mat3 uModelNormal;
-uniform mat4 uView;
-uniform mat4 uProjection;
-uniform vec3 uViewPos;
+uniform uint u_object_type;
+uniform vec3 u_color;
+uniform sampler2D u_texture;
+uniform material u_material;
+uniform light u_lights[NR_LIGHTS];
 
-vec3 norm;
+uniform vec3 u_view_pos;
+
+uniform float u_fog_factor;
+uniform vec3 u_fog_color;
+
 vec3 pos;
-vec3 viewDir;
+vec3 normal;
 vec3 color;
+vec3 view_dir;
 
-vec3 calculatePointLight(Light light);
-vec3 calculateDirectionalLight(Light light);
-vec3 calculateObjectColor();
+vec3 calc_point_light(light light);
+vec3 calc_spot_light(light light);
+vec3 calc_object_color();
+vec3 calc_fogged_color(vec3 color);
 
-void main() {
-  gl_Position = uProjection * uView * uModel * vec4(lPos, 1.0f);
+flat out vec3 v_color;
 
-  norm = normalize(uModelNormal * lNormal);
-  color = calculateObjectColor();
-  pos = vec3(gl_Position);
-  viewDir = normalize(uViewPos - pos);
+void main()
+{
+  vec4 global_pos = u_model * vec4(p_pos, 1.0f);
+  pos = vec3(global_pos);
+  color = calc_object_color();
+  view_dir = normalize(u_view_pos - pos);
+  normal = u_normal_transform * p_normal;
 
-  if(uObjectType / uint(2) == uint(0)) {
-    result = vec3(0.0f, 0.0f, 0.0f);
+  vec3 result_color = vec3(0.0f);;
+  if(u_object_type / uint(2) == uint(0)) {
     for(int i = 0; i < NR_LIGHTS; i++) {
-      if(uLights[i].type == uint(1))
-        result += calculatePointLight(uLights[i]);
-      else if(uLights[i].type == uint(2))
-        result += calculateDirectionalLight(uLights[i]);
+      if(u_lights[i].type == uint(1))
+        result_color += calc_point_light(u_lights[i]);
+      else if(u_lights[i].type == uint(2))
+        result_color += calc_spot_light(u_lights[i]);
     }
   }
   else {
-    result = color;
+    result_color = color;
   }
+
+  v_color = calc_fogged_color(result_color);
+  gl_Position = u_projection * u_view * global_pos;
 }
 
-vec3 calculatePointLight(Light light) {
-  vec3 lightDir = normalize(light.position - pos);
-  float diff = max(dot(norm, lightDir), 0.0);
+vec3 calc_point_light(light light) {
+  vec3 light_dir = normalize(light.position - pos);
+  float diff = max(dot(normal, light_dir), 0.0);
 
-  vec3 reflectDir = reflect(-lightDir, norm);
-  float spec = pow(max(dot(viewDir, reflectDir), 0.0), uMaterial.shininess);
+  vec3 reflect_dir = reflect(-light_dir, normal);
+  float spec = pow(max(dot(view_dir, reflect_dir), 0.0), u_material.shininess);
 
   float distance = length(light.position - pos);
-  float attenuation = 1.0 / (((distance * light.attenuation.z) + light.attenuation.y) * distance + light.attenuation.x);
+  float attenuation = 1.0 / (((distance * light.attenuation.z) 
+                      + light.attenuation.y) * distance + light.attenuation.x);
 
-  vec3 ambient = light.ambient * uMaterial.ambient * attenuation;
-  vec3 diffuse = light.diffuse * diff * uMaterial.diffuse * attenuation;
-  vec3 specular = light.specular * spec * uMaterial.specular * attenuation;
+  vec3 ambient = light.ambient * u_material.ambient * attenuation;
+  vec3 diffuse = light.diffuse * diff * u_material.diffuse * attenuation;
+  vec3 specular = light.specular * spec * u_material.specular * attenuation;
 
   return (ambient + diffuse) * color + specular;
 }
 
-vec3 calculateDirectionalLight(Light light) {
-    vec3 lightDir = normalize(-light.direction);
+vec3 calc_spot_light(light light) {
+  vec3 light_dir = normalize(light.position - pos);
+  float diff = max(dot(normal, light_dir), 0.0);
 
-    float diff = max(dot(norm, lightDir), 0.0);
+  vec3 reflect_dir = reflect(-light_dir, normal);
+  float spec = pow(max(dot(view_dir, reflect_dir), 0.0), u_material.shininess);
 
-    vec3 reflectDir = reflect(-lightDir, norm);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), uMaterial.shininess);
-    
-    vec3 ambient  = light.ambient  * uMaterial.ambient;
-    vec3 diffuse  = light.diffuse  * diff * uMaterial.diffuse;
-    vec3 specular = light.specular * spec * uMaterial.specular;
+  float dist = length(light.position - pos);
+  float attenuation = 1.0 / (((dist * light.attenuation.z) 
+                      + light.attenuation.y) * dist + light.attenuation.x);
 
-    return ambient + diffuse + specular;
+  float theta = dot(light_dir, normalize(-light.direction));
+  float epsilon = light.cut_off.x - light.cut_off.y;
+  float intensity = clamp((theta - light.cut_off.y) / epsilon, 0.0, 1.0);
+
+  vec3 ambient = light.ambient * u_material.ambient * attenuation;
+  vec3 diffuse = light.diffuse * diff * u_material.diffuse 
+                 * attenuation * intensity;
+  vec3 specular = light.specular * spec * u_material.specular 
+                 * attenuation * intensity;
+
+  return (ambient + diffuse) * color + specular;
 }
 
-vec3 calculateObjectColor() {
-  if((uObjectType % uint(2)) == uint(0)) {
-    return uColor;
-  } else {
-    return vec3(texture(uTexture, lTexCoords));
-  }
+vec3 calc_object_color() {
+  if((u_object_type % (uint(2))) == uint(0))
+    return u_color;
+  else
+    return vec3(texture(u_texture, p_tex_coords));
+}
+
+vec3 calc_fogged_color(vec3 color) {
+  float dist = length(u_view_pos - pos);
+  float fog_factor = -dist * u_fog_factor;
+  fog_factor = clamp(exp(fog_factor), 0.0, 1.0);
+  return mix(u_fog_color, color, fog_factor);
 }
