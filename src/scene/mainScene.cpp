@@ -34,7 +34,7 @@ void MainScene::init() {
 
 void MainScene::update(float dt) {
   controller.update(dt);
-  controller.updateRenderer(dt, renderer);
+  controller.updateRenderer(dt, renderer, resourceManager);
 
   moveLamp();
 

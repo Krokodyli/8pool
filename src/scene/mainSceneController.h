@@ -9,9 +9,15 @@
 #include "../keys.h"
 #include <memory>
 
-enum class ControllerMode { freeCamera, robotCamera, ballCamera };
+enum class ControllerMode
+{
+  freeCamera,
+  robotCamera,
+  ballCamera
+};
 
-class MainSceneController {
+class MainSceneController
+{
 private:
   ControllerMode mode;
   std::unique_ptr<InputManager> inputManager;
@@ -43,13 +49,14 @@ public:
   Camera *getCurrentCamera();
 
   void update(float dt);
-  void updateRenderer(float dt, Renderer &renderer);
+  void updateRenderer(float dt, Renderer &renderer,
+                      ResourceManager &resourceManager);
 
   ControllerMode getCurrentMode();
-  InputManager* getInputManager();
+  InputManager *getInputManager();
 
   void setFollowedBall(Ball *ball);
   void setRobot(Robot *robot);
-  void setBalls(std::vector<Ball*> &balls);
-  void setLamps(std::vector<Lamp*> &lamps);
+  void setBalls(std::vector<Ball *> &balls);
+  void setLamps(std::vector<Lamp *> &lamps);
 };

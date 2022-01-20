@@ -107,7 +107,7 @@ add_executable(
   src/model/model.cpp
   src/inputManager.cpp
   src/logger/timer.cpp
-  src/game/object/prop.cpp
+  src/game/object/multipartGameObject.cpp
   src/game/object/robot.cpp
   src/scene/mainSceneController.cpp
   src/game/controller/robotController.cpp

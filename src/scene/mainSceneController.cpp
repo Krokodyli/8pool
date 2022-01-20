@@ -37,13 +37,19 @@ void MainSceneController::update(float dt) {
     lampController->update(dt, *inputManager);
 }
 
-void MainSceneController::updateRenderer(float dt, Renderer &renderer) {
+void MainSceneController::updateRenderer(float dt, Renderer &renderer,
+                                         ResourceManager &resourceManager) {
   float sensivity = 0.01f;
   double deltaY, deltaX;
   inputManager->getScrollDelta(deltaX, deltaY);
   inputManager->resetScrollDelta();
   deltaY *= sensivity;
   renderer.setFogFactor(renderer.getFogFactor() + deltaY);
+
+  if(inputManager->isKeyPressed(KEY_SHADER2))
+    resourceManager.useShader(renderer, "phong");
+  else if(inputManager->isKeyPressed(KEY_SHADER3))
+    resourceManager.useShader(renderer, "gourand");
 }
 
 ControllerMode MainSceneController::getCurrentMode() { return mode; }
