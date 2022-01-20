@@ -36,6 +36,8 @@ private:
   glm::vec3 ballCameraPos;
   Ball *followedBall;
 
+  bool shouldCloseFlag;
+
   void init();
   void updateMode();
   void updateFreeCameraMode(float dt);
@@ -59,4 +61,6 @@ public:
   void setRobot(Robot *robot);
   void setBalls(std::vector<Ball *> &balls);
   void setLamps(std::vector<Lamp *> &lamps);
+
+  bool shouldClose();
 };

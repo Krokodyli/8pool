@@ -6,9 +6,10 @@
 
 MainScene::MainScene(int width, int height,
                      std::unique_ptr<InputManager> &inputManager)
-  : controller(std::move(inputManager), (float)width/(float)height) { }
+    : controller(std::move(inputManager), (float)width / (float)height) { }
 
-void MainScene::init() {
+void MainScene::init()
+{
   MainSceneLoader loader(gameObjects, resourceManager);
   loader.loadResources();
   resourceManager.useShader(renderer, "blinn");
@@ -16,7 +17,7 @@ void MainScene::init() {
   robot = loader.generateRobot();
   controller.setRobot(robot);
 
-  std::vector<Lamp*> lamps;
+  std::vector<Lamp *> lamps;
   loader.generateLamps(lamps);
   movingLamp = lamps[1];
   movingLamp->setPosition(glm::vec3(0.0f, 0.9f, 1.1f));
@@ -24,7 +25,7 @@ void MainScene::init() {
 
   loader.generatePoolTable();
 
-  std::vector<Ball*> balls;
+  std::vector<Ball *> balls;
   loader.generateBalls(balls);
   controller.setBalls(balls);
   controller.setFollowedBall(balls[0]);
@@ -32,7 +33,8 @@ void MainScene::init() {
   loader.generateRoom();
 }
 
-void MainScene::update(float dt) {
+void MainScene::update(float dt)
+{
   controller.update(dt);
   controller.updateRenderer(dt, renderer, resourceManager);
 
@@ -42,14 +44,14 @@ void MainScene::update(float dt) {
     gameObject->update(dt);
 }
 
-void MainScene::render() {
+void MainScene::render()
+{
   renderer.setCamera(controller.getCurrentCamera());
-
-
 
   renderer.prepareView();
   std::vector<Light *> lights;
-  for (auto &gameObject : gameObjects) {
+  for (auto &gameObject : gameObjects)
+  {
     auto modelLights = gameObject->getModelLights();
     for (auto light : modelLights)
       lights.push_back(light);
@@ -60,9 +62,14 @@ void MainScene::render() {
     renderer.render(*gameObject, resourceManager);
 }
 
-void MainScene::moveLamp() {
+bool MainScene::shouldClose() {
+  return controller.shouldClose();
+}
+
+void MainScene::moveLamp()
+{
   auto lampPos = glm::vec2(movingLamp->getPosition().x,
-                          movingLamp->getPosition().z);
+                           movingLamp->getPosition().z);
   movingLamp->setVelocity(glm::vec3(-lampPos.y, 0.0f, lampPos.x));
   movingLamp->setVelocity(glm::vec3(0.0f));
 }

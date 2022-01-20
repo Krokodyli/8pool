@@ -35,6 +35,9 @@ void MainSceneController::update(float dt) {
 
   for (auto &lampController : lampControllers)
     lampController->update(dt, *inputManager);
+
+  if(inputManager->isKeyPressed(KEY_QUIT))
+    shouldCloseFlag = true;
 }
 
 void MainSceneController::updateRenderer(float dt, Renderer &renderer,
@@ -88,6 +91,8 @@ void MainSceneController::setLamps(std::vector<Lamp *> &lamps) {
   lampControllers.push_back(std::move(lamp2Controller));
   lampControllers.push_back(std::move(lamp3Controller));
 }
+
+bool MainSceneController::shouldClose() { return shouldCloseFlag; }
 
 void MainSceneController::init() {
   mode = ControllerMode::freeCamera;

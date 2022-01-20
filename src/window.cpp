@@ -25,7 +25,7 @@ void Window::runLoop() {
   int framesUnder46 = 0;
   int framesUnder61 = 0;
 
-  while (!glfwWindowShouldClose(glWindow)) {
+  while (!glfwWindowShouldClose(glWindow) && !scene->shouldClose()) {
     frames++;
     lastTime = time;
     time = glfwGetTime();
