@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include "../../filesystemHelper.h"
+#include "../../utils/filesystemHelper.h"
 
 class TextureLoader {
 private:

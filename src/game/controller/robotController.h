@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../inputManager.h"
-#include "../../camera.h"
+#include "../../input/inputManager.h"
+#include "../../renderer/camera.h"
 
 class Robot;
 

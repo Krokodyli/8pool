@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../filesystemHelper.h"
+#include "../../utils/filesystemHelper.h"
 #include "../../includes/glad.h"
 #include "../../includes/glfw.h"
 #include "textureLoader.h"

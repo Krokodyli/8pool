@@ -1,7 +1,7 @@
 #pragma once
 
 #include <memory>
-#include "../inputManager.h"
+#include "../input/inputManager.h"
 
 class Scene {
 public:

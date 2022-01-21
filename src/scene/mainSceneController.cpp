@@ -1,5 +1,4 @@
 #include "mainSceneController.h"
-#include "../logger/logger.h"
 
 MainSceneController::MainSceneController(
     std::unique_ptr<InputManager> inputManager, float aspectRatio)
@@ -36,7 +35,7 @@ void MainSceneController::update(float dt) {
   for (auto &lampController : lampControllers)
     lampController->update(dt, *inputManager);
 
-  if(inputManager->isKeyPressed(KEY_QUIT))
+  if (inputManager->isKeyPressed(KEY_QUIT))
     shouldCloseFlag = true;
 }
 
@@ -49,16 +48,15 @@ void MainSceneController::updateRenderer(float dt, Renderer &renderer,
   deltaY *= sensivity;
   renderer.setFogFactor(renderer.getFogFactor() + deltaY);
 
-
-  if(inputManager->isKeyPressed(KEY_SHADER1))
+  if (inputManager->isKeyPressed(KEY_SHADER1))
     resourceManager.useShader(renderer, "blinn");
-  else if(inputManager->isKeyPressed(KEY_SHADER2))
+  else if (inputManager->isKeyPressed(KEY_SHADER2))
     resourceManager.useShader(renderer, "phong");
-  else if(inputManager->isKeyPressed(KEY_SHADER3))
+  else if (inputManager->isKeyPressed(KEY_SHADER3))
     resourceManager.useShader(renderer, "gourand");
-  else if(inputManager->isKeyPressed(KEY_SHADER4))
+  else if (inputManager->isKeyPressed(KEY_SHADER4))
     resourceManager.useShader(renderer, "flat");
-  else if(inputManager->isKeyPressed(KEY_SHADER5))
+  else if (inputManager->isKeyPressed(KEY_SHADER5))
     resourceManager.useShader(renderer, "noshading");
 }
 
@@ -103,38 +101,28 @@ void MainSceneController::init() {
 
   ballCameraPos = glm::vec3(-1.0f, 2.0f, 0.0f);
 
-  inputManager->registerKey(GLFW_KEY_Q, KEY_QUIT);
-  inputManager->registerKey(GLFW_KEY_W, KEY_FORWARD);
-  inputManager->registerKey(GLFW_KEY_S, KEY_BACKWARD);
-  inputManager->registerKey(GLFW_KEY_A, KEY_LEFT);
-  inputManager->registerKey(GLFW_KEY_D, KEY_RIGHT);
-  inputManager->registerKey(GLFW_KEY_1, KEY_SHADER1);
-  inputManager->registerKey(GLFW_KEY_2, KEY_SHADER2);
-  inputManager->registerKey(GLFW_KEY_3, KEY_SHADER3);
-  inputManager->registerKey(GLFW_KEY_4, KEY_SHADER4);
-  inputManager->registerKey(GLFW_KEY_5, KEY_SHADER5);
-  inputManager->registerKey(GLFW_KEY_SPACE, KEY_ACTION);
-  inputManager->registerKey(GLFW_KEY_TAB, KEY_SWITCH);
-  inputManager->registerKey(GLFW_KEY_F, KEY_MOVE_TOGGLE);
-  inputManager->registerKey(GLFW_KEY_7, KEY_LIGHT1_TOGGLE);
-  inputManager->registerKey(GLFW_KEY_8, KEY_LIGHT2_TOGGLE);
-  inputManager->registerKey(GLFW_KEY_9, KEY_LIGHT3_TOGGLE);
+  std::unordered_map<int, int> keysToRegister{
+      {GLFW_KEY_Q, KEY_QUIT},          {GLFW_KEY_W, KEY_FORWARD},
+      {GLFW_KEY_S, KEY_BACKWARD},      {GLFW_KEY_A, KEY_LEFT},
+      {GLFW_KEY_D, KEY_RIGHT},         {GLFW_KEY_1, KEY_SHADER1},
+      {GLFW_KEY_2, KEY_SHADER2},       {GLFW_KEY_3, KEY_SHADER3},
+      {GLFW_KEY_4, KEY_SHADER4},       {GLFW_KEY_5, KEY_SHADER5},
+      {GLFW_KEY_SPACE, KEY_ACTION},    {GLFW_KEY_TAB, KEY_SWITCH},
+      {GLFW_KEY_F, KEY_MOVE_TOGGLE},   {GLFW_KEY_7, KEY_LIGHT1_TOGGLE},
+      {GLFW_KEY_8, KEY_LIGHT2_TOGGLE},
+  };
+
+  for (auto &entry : keysToRegister)
+    inputManager->registerKey(entry.first, entry.second);
+
   inputManager->init();
 }
 
 void MainSceneController::updateMode() {
   if (inputManager->isKeyPressed(KEY_SWITCH)) {
-    switch (mode) {
-    case ControllerMode::freeCamera:
-      mode = ControllerMode::robotCamera;
-      break;
-    case ControllerMode::robotCamera:
-      mode = ControllerMode::ballCamera;
-      break;
-    case ControllerMode::ballCamera:
-      mode = ControllerMode::freeCamera;
-      break;
-    }
+    unsigned int uintMode = (unsigned int)mode;
+    uintMode = (uintMode + 1) % 3;
+    mode = (ControllerMode)uintMode;
   }
 }
 

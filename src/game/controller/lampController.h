@@ -1,8 +1,8 @@
 #pragma once
 
 #include "../../includes/glm.h"
-#include "../../inputManager.h"
-#include "../../keys.h"
+#include "../../input/inputManager.h"
+#include "../../scene/keys.h"
 
 class Lamp;
 

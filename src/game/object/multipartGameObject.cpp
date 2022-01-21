@@ -3,7 +3,9 @@
 MultipartGameObject::MultipartGameObject(Model model, glm::vec3 initialPos)
   : GameObject(model, initialPos) { }
 
-MultipartGameObject::MultipartGameObject(std::vector<Model> modelParts, glm::vec3 initialPos, std::vector<glm::vec3> partsRelativePositions) {
+MultipartGameObject::MultipartGameObject(
+    std::vector<Model> modelParts, glm::vec3 initialPos,
+    std::vector<glm::vec3> partsRelativePositions) {
   initPhysicalObject(initialPos);
   this->modelParts = modelParts;
   modelPartsPositions = partsRelativePositions;

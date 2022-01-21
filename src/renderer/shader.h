@@ -1,9 +1,10 @@
 #pragma once
 
-#include "includes/glad.h"
-#include "includes/glm.h"
-#include "light/light.h"
-#include "model/modelMaterial.h"
+#include "../includes/glad.h"
+#include "../includes/glm.h"
+#include "../light/light.h"
+#include "../logger/logger.h"
+#include "../model/modelMaterial.h"
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -14,7 +15,7 @@
 #define SHAD_NR_LIGHTS 5
 #define SHAD_LIGHT_SECTION_BEGIN 13
 #define SHAD_LIGHT_SECTION_LEN 8
-#define SHAD_LOCATIONS_ARR_SIZE 53
+#define SHAD_LOCATIONS_ARR_SIZE 100
 
 #define SHAD_LOC_OBJ_TYPE 0
 #define SHAD_LOC_MODEL_MAT 1

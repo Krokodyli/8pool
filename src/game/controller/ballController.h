@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../inputManager.h"
-#include "../../keys.h"
+#include "../../input/inputManager.h"
+#include "../../scene/keys.h"
 
 class Ball;
 

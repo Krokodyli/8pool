@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../filesystemHelper.h"
+#include "../utils/filesystemHelper.h"
 #include "../logger/logger.h"
-#include "../shader.h"
+#include "../renderer/shader.h"
 #include <string>
 #include <unordered_map>
 #include <vector>

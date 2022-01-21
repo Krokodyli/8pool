@@ -1,12 +1,13 @@
 #pragma once
 
-#include "../camera.h"
+#include "../renderer/camera.h"
 #include "../game/object/ball.h"
 #include "../game/object/lamp.h"
 #include "../game/object/robot.h"
-#include "../renderer.h"
-#include "../inputManager.h"
-#include "../keys.h"
+#include "../renderer/renderer.h"
+#include "../input/inputManager.h"
+#include "../scene/keys.h"
+#include "../logger/logger.h"
 #include <memory>
 
 enum class ControllerMode

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <unordered_map>
-#include "includes/glfw.h"
+#include "../includes/glfw.h"
 #include "scrollManager.h"
 
 class InputManager {

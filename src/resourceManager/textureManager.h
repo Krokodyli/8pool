@@ -2,7 +2,7 @@
 
 #include <unordered_map>
 #include <vector>
-#include "../filesystemHelper.h"
+#include "../utils/filesystemHelper.h"
 #include "../logger/logger.h"
 #include "../model/texture/texture.h"
 

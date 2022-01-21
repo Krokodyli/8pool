@@ -1,14 +1,18 @@
 #pragma once
 
-#include "../camera.h"
 #include "../game/object/ball.h"
 #include "../game/object/lamp.h"
-#include "../game/object/poolTable.h"
 #include "../game/object/multipartGameObject.h"
-#include "../keys.h"
-#include "../renderer.h"
+#include "../game/object/poolTable.h"
+#include "../game/object/robot.h"
+#include "../model/mesh/cuboidMeshGen.h"
+#include "../model/mesh/sphereMeshGen.h"
+#include "../renderer/camera.h"
+#include "../renderer/renderer.h"
 #include "../resourceManager/resourceManager.h"
+#include "../scene/keys.h"
 #include "mainSceneController.h"
+#include "mainSceneLoader.h"
 #include "scene.h"
 
 class MainScene : public Scene {

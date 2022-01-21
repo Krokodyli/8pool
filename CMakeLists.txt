@@ -80,41 +80,41 @@ add_custom_target(texturesLink ALL COMMAND ${CMAKE_COMMAND} -E create_symlink ${
 set(CMAKE_BUILD_TYPE Debug)
 add_executable(
   game
-  src/logger/logger.cpp
-  src/camera.cpp
-  src/game/object/poolTable.cpp
-  src/game/object/physicalObject.cpp
-  src/game/object/gameObject.cpp
-  src/game/object/lamp.cpp
+  src/utils/filesystemHelper.cpp
+  src/utils/glfwInstance.cpp
+  src/input/inputManager.cpp
   src/game/object/ball.cpp
-  src/scene/mainScene.cpp
+  src/game/object/physicalObject.cpp
+  src/input/scrollManager.cpp
   src/resourceManager/resourceManager.cpp
-  src/resourceManager/textureManager.cpp
-  src/resourceManager/shaderManager.cpp
-  src/resourceManager/meshManager.cpp
-  src/renderer.cpp
-  src/window.cpp
-  src/filesystemHelper.cpp
-  src/main.cpp
-  src/shader.cpp
-  src/glfwInstance.cpp
-  src/model/mesh/sphereMeshGen.cpp
-  src/model/mesh/mesh.cpp
-  src/model/mesh/cuboidMeshGen.cpp
-  src/model/modelMaterial.cpp
-  src/model/texture/textureLoader.cpp
-  src/model/texture/texture.cpp
+  src/game/object/lamp.cpp
   src/model/model.cpp
-  src/inputManager.cpp
-  src/logger/timer.cpp
-  src/game/object/multipartGameObject.cpp
-  src/game/object/robot.cpp
+  src/resourceManager/meshManager.cpp
+  src/model/mesh/mesh.cpp
+  src/renderer/renderer.cpp
+  src/window.cpp
+  src/scene/mainScene.cpp
+  src/model/mesh/sphereMeshGen.cpp
+  src/renderer/shader.cpp
+  src/model/texture/textureLoader.cpp
+  src/logger/logger.cpp
   src/scene/mainSceneController.cpp
-  src/game/controller/robotController.cpp
+  src/logger/timer.cpp
+  src/main.cpp
+  src/model/modelMaterial.cpp
+  src/resourceManager/shaderManager.cpp
   src/scene/mainSceneLoader.cpp
   src/game/controller/ballController.cpp
   src/game/controller/lampController.cpp
-  src/scrollManager.cpp
+  src/model/texture/texture.cpp
+  src/game/object/multipartGameObject.cpp
+  src/game/object/gameObject.cpp
+  src/renderer/camera.cpp
+  src/model/mesh/cuboidMeshGen.cpp
+  src/game/object/poolTable.cpp
+  src/resourceManager/textureManager.cpp
+  src/game/object/robot.cpp
+  src/game/controller/robotController.cpp
 )
 
 target_link_libraries(game glfw glm glad)

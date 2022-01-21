@@ -1,10 +1,10 @@
 #pragma once
 
 #include "camera.h"
-#include "game/object/gameObject.h"
-#include "model/mesh/mesh.h"
-#include "resourceManager/resourceManager.h"
-#include "shader.h"
+#include "../game/object/gameObject.h"
+#include "../model/mesh/mesh.h"
+#include "../resourceManager/resourceManager.h"
+#include "../renderer/shader.h"
 
 class Renderer {
 private:

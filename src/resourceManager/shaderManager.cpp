@@ -1,5 +1,5 @@
 #include "shaderManager.h"
-#include "../renderer.h"
+#include "../renderer/renderer.h"
 
 void ShaderManager::load(std::vector<std::string> &shadersToLoad) {
   for(auto& shaderName : shadersToLoad)

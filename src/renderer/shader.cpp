@@ -1,5 +1,4 @@
-#include "shader.h"
-#include "logger/logger.h"
+#include "../renderer/shader.h"
 #include <unordered_map>
 
 Shader::Shader() {

@@ -1,5 +1,4 @@
 #include "renderer.h"
-#include "logger/timer.h"
 
 Renderer::Renderer() {
   boundMesh = -1;

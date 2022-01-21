@@ -1,6 +1,6 @@
 #include "robotController.h"
 #include "../object/robot.h"
-#include "../../keys.h"
+#include "../../scene/keys.h"
 
 void RobotController::init(Robot &robot) {
   eyesOffset = glm::vec3(0.0f, Robot::headSize / 4.0f,

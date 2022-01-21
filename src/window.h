@@ -1,11 +1,12 @@
 #pragma once
 
+#include "utils/filesystemHelper.h"
+#include "utils/glfwInstance.h"
 #include "includes/glad.h"
-#include <chrono>
-#include "glfwInstance.h"
-#include "inputManager.h"
-#include "scene/scene.h"
+#include "input/inputManager.h"
 #include "scene/mainScene.h"
+#include "scene/scene.h"
+#include <chrono>
 #include <exception>
 #include <iostream>
 #include <stdexcept>

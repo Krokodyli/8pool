@@ -1,10 +1,11 @@
 #pragma once
 
-#include "includes/glm.h"
+#include "../includes/glm.h"
 
 class Camera {
 private:
-  const float nearDist = 0.1f, farDist = 100.0f;
+  float nearDist;
+  float farDist;
 
   float fov;
   float aspectRatio;
@@ -14,6 +15,8 @@ private:
 
 public:
   Camera(float fov, float aspectRatio);
+
+  Camera(float fov, float aspectRatio, float nearDist, float farDist);
 
   void lookAt(glm::vec3 eye, glm::vec3 target, glm::vec3 up);
 

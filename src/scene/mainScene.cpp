@@ -1,8 +1,4 @@
 #include "mainScene.h"
-#include "../game/object/robot.h"
-#include "../model/mesh/cuboidMeshGen.h"
-#include "../model/mesh/sphereMeshGen.h"
-#include "mainSceneLoader.h"
 
 MainScene::MainScene(int width, int height,
                      std::unique_ptr<InputManager> &inputManager)
