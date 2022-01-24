@@ -7,7 +7,7 @@ void Ball::update(float dt) {
   if (controller != nullptr && !controller->getMoveFlag())
     return;
 
-  auto tableBounds = glm::vec2(1.12f, 2.24f);
+  auto tableBounds = glm::vec2(PoolTable::width, PoolTable::length);
   if (position.x + ballRadius > tableBounds.x / 2.0f) {
     position.x = tableBounds.x / 2.0f - ballRadius;
     velocity.x *= -1;
@@ -24,7 +24,9 @@ void Ball::update(float dt) {
     position.z = -tableBounds.y / 2.0f + ballRadius;
     velocity.z *= -1;
   }
+
   angularVelocity = velocity / ballRadius;
+
   updatePhysicalObject(dt);
 }
 

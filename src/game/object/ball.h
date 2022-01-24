@@ -4,6 +4,7 @@
 #include "../controller/ballController.h"
 #include "gameObject.h"
 #include "physicalObject.h"
+#include "poolTable.h"
 
 class Ball : public GameObject {
 private:
