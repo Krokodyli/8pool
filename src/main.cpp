@@ -6,7 +6,7 @@
 
 int main(int argc, char** argv) {
   FilesystemHelper::init(argv[0]);
-  Window window(1600, 900, "My window");
+  Window window(1600, 900, "8pool");
   try {
     window.init();
   } catch(std::exception &ex) {

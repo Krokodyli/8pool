@@ -80,9 +80,10 @@ void MainSceneController::setBalls(std::vector<Ball *> &balls) {
 void MainSceneController::setLamps(std::vector<Lamp *> &lamps) {
   auto lamp1Controller = std::make_unique<LampController>(KEY_LIGHT1_TOGGLE);
   auto lamp2Controller = std::make_unique<LampController>(
-      KEY_LIGHT2_TOGGLE, 2.0f, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+                                                          KEY_LIGHT2_TOGGLE, 1.0f, 2.0f, glm::vec3(0.0f, 1.0f, 0.0f));
   auto lamp3Controller = std::make_unique<LampController>(KEY_LIGHT3_TOGGLE);
   lamps[0]->setController(lamp1Controller.get());
+  lamps[1]->setPosition(glm::vec3(0.0f, 1.1f, 0.0f));
   lamps[1]->setController(lamp2Controller.get());
   lamps[2]->setController(lamp3Controller.get());
   lampControllers.push_back(std::move(lamp1Controller));
@@ -109,7 +110,7 @@ void MainSceneController::init() {
       {GLFW_KEY_4, KEY_SHADER4},       {GLFW_KEY_5, KEY_SHADER5},
       {GLFW_KEY_SPACE, KEY_ACTION},    {GLFW_KEY_TAB, KEY_SWITCH},
       {GLFW_KEY_F, KEY_MOVE_TOGGLE},   {GLFW_KEY_7, KEY_LIGHT1_TOGGLE},
-      {GLFW_KEY_8, KEY_LIGHT2_TOGGLE},
+      {GLFW_KEY_8, KEY_LIGHT2_TOGGLE}, {GLFW_KEY_9, KEY_LIGHT3_TOGGLE}
   };
 
   for (auto &entry : keysToRegister)

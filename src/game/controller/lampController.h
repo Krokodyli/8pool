@@ -12,15 +12,18 @@ private:
   int toggleKey;
 
   bool isRotating;
-  float speed;
-  glm::vec3 rotationCenter;
+
+  glm::vec3 center;
+  float radius;
+  float rotationTime;
   glm::vec3 rotationAxis;
 
-  glm::vec3 calculatedVelocity;
+  float time;
 
 public:
-  LampController(int toggleKey, float speed,
-                 glm::vec3 rotationCenter, glm::vec3 rotationAxis);
+  LampController(int toggleKey, float radius, float rotationTime,
+                 glm::vec3 rotationAxis);
+
   LampController(int toggleKey);
 
   void init(Lamp &lamp);
