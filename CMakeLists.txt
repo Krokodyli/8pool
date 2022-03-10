@@ -118,4 +118,7 @@ add_executable(
 )
 
 target_link_libraries(game glfw glm glad)
+if(UNIX AND NOT APPLE)
+  target_link_libraries(game rt)
+endif()
 target_include_directories(game INTERFACE ${glm_SOURCE_DIR})
